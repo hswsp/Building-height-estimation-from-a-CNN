@@ -214,7 +214,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
 	# layer_5: [batch, 31, 31, ndf * 8] => [batch, 30, 30, 1]
 	name = "disc_conv2d_%s" % (nb_conv)
     x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
-    x_out = Activation('sigmoid')(x)
+    x = Activation('sigmoid')(x)
     
 	# # 全连接
     # x_flat = Flatten()(x)
@@ -251,7 +251,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
 
     # x_out = Dense(2, activation="softmax", name="disc_output")(x)
 
-    discriminator_model = Model(inputs=list_input, outputs=[x_out], name=model_name)
+    discriminator_model = Model(inputs=list_input, outputs=[x], name=model_name)
 
     return discriminator_model
 
