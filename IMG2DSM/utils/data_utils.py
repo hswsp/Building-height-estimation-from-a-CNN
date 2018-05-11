@@ -30,6 +30,8 @@ def get_nb_patch(img_dim, patch_size, image_data_format):
         img_dim_disc = (img_dim[0], patch_size[0], patch_size[1])
 
     elif image_data_format == "channels_last":
+	print img_dim[0]
+	print patch_size[0]
         assert img_dim[0] % patch_size[0] == 0, "patch_size does not divide height"
         assert img_dim[1] % patch_size[1] == 0, "patch_size does not divide width"
         nb_patch = (img_dim[0] // patch_size[0]) * (img_dim[1] // patch_size[1])
@@ -61,26 +63,33 @@ def extract_patches(X, image_data_format, patch_size):  #从大图中抽取patch
 
 def load_data(dset, image_data_format):
 
-    with h5py.File(dset+TrainData, "r") as hf:
+    	with h5py.File(dset+TrainData, "r") as hf:
 	
-		X_full_train1 = hf["depths"][:].astype(np.float32)
+		X_full_train = hf["depths"][:].astype(np.float32)
 		# X_full_train = normalization(X_full_train)
 		
+<<<<<<< HEAD
 		X_sketch_train1 = hf["images"][:].astype(np.float32)
 		X_sketch_train1 = normalization(X_sketch_train1)
 	
 	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
+=======
+		X_sketch_train = hf["images"][:].astype(np.float16)
+		X_sketch_train = normalization(X_sketch_train)
+		
+#	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
+>>>>>>> a119091a40540a32e9a974fc3d0b4c841508690a
 	
-		X_full_train2 = hf["depths"][:].astype(np.float32)
-		# X_full_train = normalization(X_full_train)
+#		X_full_train2 = hf["depths"][:].astype(np.float32)
+#		# X_full_train = normalization(X_full_train)
 		
-		X_sketch_train2 = hf["images"][:].astype(np.float32)
-		X_sketch_train2 = normalization(X_sketch_train2)
+#		X_sketch_train2 = hf["images"][:].astype(np.float32)
+#		X_sketch_train2 = normalization(X_sketch_train2)
 		
-	X_full_train = np.concatenate([X_full_train1,X_full_train2],axis = 0)#横轴连接块
-	del X_full_train1,X_full_train2
-	X_sketch_train = np.concatenate([X_sketch_train1,X_sketch_train2],axis = 0)
-	del X_sketch_train1,X_sketch_train2
+#	X_full_train = np.concatenate([X_full_train1,X_full_train2],axis = 0)#横轴连接块
+#	del X_full_train1,X_full_train2
+#	X_sketch_train = np.concatenate([X_sketch_train1,X_sketch_train2],axis = 0)
+#	del X_sketch_train1,X_sketch_train2
 
         # X_full_train = hf["train_data_full"][:].astype(np.float32)
         # X_full_train = normalization(X_full_train)
@@ -88,21 +97,27 @@ def load_data(dset, image_data_format):
         # X_sketch_train = hf["train_data_sketch"][:].astype(np.float32)
         # X_sketch_train = normalization(X_sketch_train)
 
-        if image_data_format == "channels_last":
-            X_full_train = X_full_train.transpose(0, 2, 3, 1)
-            X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
+       	if image_data_format == "channels_last":
+#            	X_full_train = X_full_train.transpose(0, 2, 3, 1)
+		X_full_train = np.expand_dims(X_full_train, axis=3)
+            	X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
+<<<<<<< HEAD
 	with h5py.File(dset+ValData, "r") as hv:
+=======
+    	with h5py.File(dset+ValData, "r") as hv:
+>>>>>>> a119091a40540a32e9a974fc3d0b4c841508690a
 	
-        X_full_val = hv["depths"][:].astype(np.float32)
-        # X_full_val = normalization(X_full_val)
+        	X_full_val = hv["depths"][:].astype(np.float16)
+        	# X_full_val = normalization(X_full_val)
 
-        X_sketch_val = hv["images"][:].astype(np.float32)
-        X_sketch_val = normalization(X_sketch_val)
+        	X_sketch_val = hv["images"][:].astype(np.float16)
+      	  	X_sketch_val = normalization(X_sketch_val)
 
         if image_data_format == "channels_last":
-            X_full_val = X_full_val.transpose(0, 2, 3, 1)
-            X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
+		X_full_val = np.expand_dims(X_full_val, axis=3)
+#            	X_full_val = X_full_val.transpose(0, 2, 3, 1)
+            	X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
 
         return X_full_train, X_sketch_train, X_full_val, X_sketch_val
 
