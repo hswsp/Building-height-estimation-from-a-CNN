@@ -92,7 +92,7 @@ def load_data(dset, image_data_format):
 
        	if image_data_format == "channels_last":
 #            	X_full_train = X_full_train.transpose(0, 2, 3, 1)
-		X_full_train = numpy.expand_dims(X_full_train, axis=3)
+		X_full_train = np.expand_dims(X_full_train, axis=3)
             	X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
     	with h5py.File(dset+ValData, "r") as hv:
@@ -104,7 +104,7 @@ def load_data(dset, image_data_format):
       	  	X_sketch_val = normalization(X_sketch_val)
 
         if image_data_format == "channels_last":
-		X_full_val = numpy.expand_dims(X_full_val, axis=3)
+		X_full_val = np.expand_dims(X_full_val, axis=3)
 #            	X_full_val = X_full_val.transpose(0, 2, 3, 1)
             	X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
 
