@@ -184,7 +184,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
     returns : model (keras NN) the Neural Net model
     """
 
-    list_input = [Input(shape=img_dim, name="disc_input_%s" % i) for i in range(nb_patch)]
+    #list_input = [Input(shape=img_dim, name="disc_input_%s" % i) for i in range(nb_patch)]
 
     if K.image_dim_ordering() == "channels_first":
         bn_axis = 1
@@ -206,7 +206,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
 	
     for i, f in enumerate(list_filters[1:]):  # i start from 0
         name = "disc_conv2d_%s" % (i + 2)
-	stride = 1 if i == nb_conv - 2 else 2  # last layer here has stride 1
+        stride = 1 if i == nb_conv - 2 else 2  # last layer here has stride 1
         x = Conv2D(f, (3, 3), strides=(stride, stride), name=name, padding="same")(x)
         x = BatchNormalization(axis=bn_axis)(x)
         x = LeakyReLU(0.2)(x)
@@ -251,7 +251,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
 
     # x_out = Dense(2, activation="softmax", name="disc_output")(x)
 
-    discriminator_model = Model(inputs=list_input, outputs=[x], name=model_name)
+    discriminator_model = Model(inputs= [x_input], outputs=[x], name=model_name) # list_input
 
     return discriminator_model
 

@@ -7,7 +7,7 @@ import h5py
 import matplotlib.pylab as plt
 
 TrainData='test.mat'
-ValData = 'Vaihingen.mat'
+ValData = 'test.mat'               #'Vaihingen.mat'
 
 def normalization(X):
 
