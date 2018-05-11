@@ -72,10 +72,10 @@ def load_data(dset, image_data_format):
 		X_sketch_train1 = hf["images"][:].astype(np.float32)
 		X_sketch_train1 = normalization(X_sketch_train1)
 	
-	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
+#	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
 
-		X_sketch_train = hf["images"][:].astype(np.float16)
-		X_sketch_train = normalization(X_sketch_train)
+#		X_sketch_train = hf["images"][:].astype(np.float16)
+#		X_sketch_train = normalization(X_sketch_train)
 		
 #	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
 
@@ -103,10 +103,6 @@ def load_data(dset, image_data_format):
 			
 
 	with h5py.File(dset+ValData, "r") as hv:
-
-    	with h5py.File(dset+ValData, "r") as hv:
-
-	
         	X_full_val = hv["depths"][:].astype(np.float16)
         	# X_full_val = normalization(X_full_val)
 
