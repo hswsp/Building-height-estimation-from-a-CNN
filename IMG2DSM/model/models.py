@@ -5,7 +5,7 @@ from keras.layers import Input, Concatenate
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.normalization import BatchNormalization
 from keras.layers.pooling import MaxPooling2D
-import keras.backend as K
+from keras import backend as K
 import numpy as np
 
 
