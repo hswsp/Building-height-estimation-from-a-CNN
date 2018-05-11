@@ -204,15 +204,15 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
 	
     for i, f in enumerate(list_filters[1:]):  # i start from 0
         name = "disc_conv2d_%s" % (i + 2)
-		stride = 1 if i == nb_conv - 2 else 2  # last layer here has stride 1
+	stride = 1 if i == nb_conv - 2 else 2  # last layer here has stride 1
         x = Conv2D(f, (3, 3), strides=(stride, stride), name=name, padding="same")(x)
         x = BatchNormalization(axis=bn_axis)(x)
         x = LeakyReLU(0.2)(x)
     
 	# layer_5: [batch, 31, 31, ndf * 8] => [batch, 30, 30, 1]
 	name = "disc_conv2d_%s" % (nb_conv)
-    x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
-    x_out = K.sigmoid(x)
+        x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
+    	x_out = K.sigmoid(x)
     
 	# # 全连接
     # x_flat = Flatten()(x)
