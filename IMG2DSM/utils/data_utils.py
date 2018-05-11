@@ -92,7 +92,7 @@ def load_data(dset, image_data_format):
             X_full_train = X_full_train.transpose(0, 2, 3, 1)
             X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
-    with h5py.File(dset+ValData, "r") as hv:
+	with h5py.File(dset+ValData, "r") as hv:
 	
         X_full_val = hv["depths"][:].astype(np.float32)
         # X_full_val = normalization(X_full_val)
