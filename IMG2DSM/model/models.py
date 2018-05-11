@@ -212,7 +212,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
         x = LeakyReLU(0.2)(x)
     
 	# layer_5: [batch, 31, 31, ndf * 8] => [batch, 30, 30, 1]
-	name = "disc_conv2d_%s" % (nb_conv)
+	name = "disc_conv2d_%s" % (nb_conv+1)
     x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
     x = Activation('sigmoid')(x)
     
