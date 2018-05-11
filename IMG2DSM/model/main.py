@@ -1,5 +1,7 @@
 import os
 import argparse
+# Import the backend
+from keras import backend as K
 
 
 def launch_training(**kwargs):
@@ -35,8 +37,7 @@ if __name__ == "__main__":
     elif args.backend == "tensorflow":
         os.environ["KERAS_BACKEND"] = "tensorflow"
 
-    # Import the backend
-    import keras.backend as K
+  
 
     # manually set dim ordering otherwise it is not changed
     if args.backend == "theano":
