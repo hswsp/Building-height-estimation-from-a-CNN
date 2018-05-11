@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*- 
 from keras.datasets import mnist
 from keras.utils import np_utils
 import numpy as np

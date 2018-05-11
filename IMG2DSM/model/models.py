@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*- 
 from keras.models import Model
 from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda, Reshape
 from keras.layers.convolutional import Conv2D, Deconv2D, ZeroPadding2D, UpSampling2D
