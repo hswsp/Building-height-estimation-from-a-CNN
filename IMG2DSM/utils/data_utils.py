@@ -6,7 +6,7 @@ import h5py
 
 import matplotlib.pylab as plt
 
-TrainData='Potsdam.mat'
+TrainData='test.mat'
 ValData = 'Vaihingen.mat'
 
 def normalization(X):
@@ -68,18 +68,17 @@ def load_data(dset, image_data_format):
 		X_full_train = hf["depths"][:].astype(np.float32)
 		# X_full_train = normalization(X_full_train)
 		
-<<<<<<< HEAD
+
 		X_sketch_train1 = hf["images"][:].astype(np.float32)
 		X_sketch_train1 = normalization(X_sketch_train1)
 	
 	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
-=======
+
 		X_sketch_train = hf["images"][:].astype(np.float16)
 		X_sketch_train = normalization(X_sketch_train)
 		
 #	with h5py.File(dset+'Potsdam1.mat', "r") as hf:
->>>>>>> a119091a40540a32e9a974fc3d0b4c841508690a
-	
+
 #		X_full_train2 = hf["depths"][:].astype(np.float32)
 #		# X_full_train = normalization(X_full_train)
 		
@@ -102,11 +101,11 @@ def load_data(dset, image_data_format):
 		X_full_train = np.expand_dims(X_full_train, axis=3)
             	X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
-<<<<<<< HEAD
+
 	with h5py.File(dset+ValData, "r") as hv:
-=======
+
     	with h5py.File(dset+ValData, "r") as hv:
->>>>>>> a119091a40540a32e9a974fc3d0b4c841508690a
+
 	
         	X_full_val = hv["depths"][:].astype(np.float16)
         	# X_full_val = normalization(X_full_val)
