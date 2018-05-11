@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Train model')
     parser.add_argument('patch_size', type=int, nargs=2, action="store", help="Patch size for D")
-    parser.add_argument('--backend', type=str, default="theano", help="theano or tensorflow")
+    parser.add_argument('--backend', type=str, default="tensorflow", help="theano or tensorflow")
     parser.add_argument('--generator', type=str, default="upsampling", help="upsampling or deconv")
     parser.add_argument('--dset', type=str, default="/home/download/", help="dataset path")
     parser.add_argument('--batch_size', default=4, type=int, help='Batch size')
