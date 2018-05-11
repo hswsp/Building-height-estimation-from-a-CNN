@@ -13,6 +13,7 @@ import random
 import collections
 import math
 import time
+import h5py
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_dir", help="path to folder containing images")
@@ -270,7 +271,7 @@ def load_examples():
         path_queue = tf.train.string_input_producer(input_paths,
                                                     shuffle=a.mode == "train")  # 函数把我们需要的全部文件打包为一个tf内部的queue类型，之后tf开文件就从这个queue中取目录了，
         reader = tf.WholeFileReader()  # tf.WholeFileReader加载完整图像文件到内存
-        paths, contents = reader.read(path_queue)
+        paths, contents = reader.read(path_queue) #path为图片路径
         raw_input = decode(contents)
         raw_input = tf.image.convert_image_dtype(raw_input, dtype=tf.float32)
 
@@ -575,7 +576,7 @@ def main():
         # disable these features in test mode
         a.scale_size = CROP_SIZE
         a.flip = False
-# 打印出所有key-value
+	# 打印出所有key-value
     for k, v in a._get_kwargs():
         print(k, "=", v)
 
@@ -673,7 +674,7 @@ def main():
             size = [CROP_SIZE, int(round(CROP_SIZE * a.aspect_ratio))]
             image = tf.image.resize_images(image, size=size, method=tf.image.ResizeMethod.BICUBIC)
 
-        return tf.image.convert_image_dtype(image, dtype=tf.uint8, saturate=True)
+        return tf.image.convert_image_dtype(image, dtype=tf.uint8, saturate=True) #图片归一化，[0,1],dtype类型数据
 
     # reverse any processing on images so they can be written to disk or displayed to user
     with tf.name_scope("convert_inputs"):
@@ -704,7 +705,7 @@ def main():
         tf.summary.image("outputs", converted_outputs)
 
     with tf.name_scope("predict_real_summary"):
-        tf.summary.image("predict_real", tf.image.convert_image_dtype(model.predict_real, dtype=tf.uint8))
+        tf.summary.image("predict_real", tf.image.convert_image_dtype(model.predict_real, dtype=tf.uint8)) #tf.summary.image 将图像写入 summary
 
     with tf.name_scope("predict_fake_summary"):
         tf.summary.image("predict_fake", tf.image.convert_image_dtype(model.predict_fake, dtype=tf.uint8))
