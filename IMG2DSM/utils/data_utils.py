@@ -22,20 +22,24 @@ def inverse_normalization(X):
 def get_nb_patch(img_dim, patch_size, image_data_format):
 
     assert image_data_format in ["channels_first", "channels_last"], "Bad image_data_format"
+    assert img_dim[0] % patch_size[0] == 0, "patch_size does not divide height"
+    assert img_dim[1] % patch_size[1] == 0, "patch_size does not divide width"
+    nb_patch = (img_dim[0] // patch_size[0]) * (img_dim[1] // patch_size[1])
+    img_dim_disc = (patch_size[0], patch_size[1])
 
-    if image_data_format == "channels_first":
-        assert img_dim[1] % patch_size[0] == 0, "patch_size does not divide height"
-        assert img_dim[2] % patch_size[1] == 0, "patch_size does not divide width"
-        nb_patch = (img_dim[1] // patch_size[0]) * (img_dim[2] // patch_size[1])
-        img_dim_disc = (img_dim[0], patch_size[0], patch_size[1])
-
-    elif image_data_format == "channels_last":
-        print img_dim[0]
-        print patch_size[0]
-        assert img_dim[0] % patch_size[0] == 0, "patch_size does not divide height"
-        assert img_dim[1] % patch_size[1] == 0, "patch_size does not divide width"
-        nb_patch = (img_dim[0] // patch_size[0]) * (img_dim[1] // patch_size[1])
-        img_dim_disc = (patch_size[0], patch_size[1], img_dim[-1])
+    # if image_data_format == "channels_first":
+    #     assert img_dim[1] % patch_size[0] == 0, "patch_size does not divide height"
+    #     assert img_dim[2] % patch_size[1] == 0, "patch_size does not divide width"
+    #     nb_patch = (img_dim[1] // patch_size[0]) * (img_dim[2] // patch_size[1])
+    #     img_dim_disc = (img_dim[0], patch_size[0], patch_size[1])
+    #
+    # elif image_data_format == "channels_last":
+    #     print img_dim[0]
+    #     print patch_size[0]
+    #     assert img_dim[0] % patch_size[0] == 0, "patch_size does not divide height"
+    #     assert img_dim[1] % patch_size[1] == 0, "patch_size does not divide width"
+    #     nb_patch = (img_dim[0] // patch_size[0]) * (img_dim[1] // patch_size[1])
+    #     img_dim_disc = (patch_size[0], patch_size[1], img_dim[-1])
 
     return nb_patch, img_dim_disc
 
@@ -63,8 +67,8 @@ def extract_patches(X, image_data_format, patch_size):  #从大图中抽取patch
 
 def load_data(dset, image_data_format):
 
-    	with h5py.File(dset+TrainData, "r") as hf:
-	
+    with h5py.File(dset+TrainData, "r") as hf:
+
 		X_full_train = hf["depths"][:].astype(np.float16)
 		# X_full_train = normalization(X_full_train)
 		
@@ -98,7 +102,7 @@ def load_data(dset, image_data_format):
 
        	if image_data_format == "channels_last":
             # X_full_train = X_full_train.transpose(0, 2, 3, 1)
-            X_full_train = np.expand_dims(X_full_train, axis=3)
+            # X_full_train = np.expand_dims(X_full_train, axis=3)
             # X_full_train = np.concatenate(X_full_train,X_full_train,X_full_train, axis = 3)
             X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
@@ -111,7 +115,7 @@ def load_data(dset, image_data_format):
       	  	X_sketch_val = normalization(X_sketch_val)
 
         if image_data_format == "channels_last":
-            X_full_val = np.expand_dims(X_full_val, axis=3)
+            # X_full_val = np.expand_dims(X_full_val, axis=3)
             # X_full_val = np.concatenate(X_full_val, X_full_val, X_full_val, axis=3)
 #            X_full_val = X_full_val.transpose(0, 2, 3, 1)
             X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)

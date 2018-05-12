@@ -118,7 +118,7 @@ def generator_unet_upsampling(img_dim, bn_mode, model_name="generator_unet_upsam
     return generator_unet
 
 
-def generator_unet_deconv(img_dim, bn_mode, batch_size, model_name="generator_unet_deconv"):
+def generator_unet_deconv(img_dim,dsm_dim, bn_mode, batch_size, model_name="generator_unet_deconv"):
 
     assert K.backend() == "tensorflow", "Not implemented with theano backend"
 
@@ -167,7 +167,7 @@ def generator_unet_deconv(img_dim, bn_mode, batch_size, model_name="generator_un
         h, w = h * 2, w * 2
 
     x = Activation("relu")(list_decoder[-1])
-    o_shape = (batch_size,) + img_dim[:-1] # for channel last
+    o_shape = (batch_size,) + dsm_dim # only H*W for DSM     #img_dim
     x = Deconv2D(nb_channels, (3, 3), output_shape=o_shape, strides=(2, 2), padding="same")(x)
     x = Activation("tanh")(x)
 
@@ -256,16 +256,17 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
     return discriminator_model
 
 
-def DCGAN(generator, discriminator_model, img_dim, patch_size, image_dim_ordering):
+def DCGAN(generator, discriminator_model, img_dim, dsm_dim, patch_size, image_dim_ordering):
 
     gen_input = Input(shape=img_dim, name="DCGAN_input")
 
     generated_image = generator(gen_input)
 
-    if image_dim_ordering == "channels_first":
-        h, w = img_dim[1:]
-    else:
-        h, w = img_dim[:-1]
+    # if image_dim_ordering == "channels_first":
+    #     h, w = img_dim[1:]
+    # else:
+    #     h, w = img_dim[:-1]
+    h,w = dsm_dim
     ph, pw = patch_size
 
     list_row_idx = [(i * ph, (i + 1) * ph) for i in range(h // ph)]
@@ -274,10 +275,11 @@ def DCGAN(generator, discriminator_model, img_dim, patch_size, image_dim_orderin
     list_gen_patch = []
     for row_idx in list_row_idx:
         for col_idx in list_col_idx:
-            if image_dim_ordering == "channels_last":
-                x_patch = Lambda(lambda z: z[:, row_idx[0]:row_idx[1], col_idx[0]:col_idx[1], :])(generated_image)
-            else:
-                x_patch = Lambda(lambda z: z[:, :, row_idx[0]:row_idx[1], col_idx[0]:col_idx[1]])(generated_image)
+            # if image_dim_ordering == "channels_last":
+            #     x_patch = Lambda(lambda z: z[:, row_idx[0]:row_idx[1], col_idx[0]:col_idx[1], :])(generated_image)
+            # else:
+            #     x_patch = Lambda(lambda z: z[:, :, row_idx[0]:row_idx[1], col_idx[0]:col_idx[1]])(generated_image)
+            x_patch = Lambda(lambda z: z[:, row_idx[0]:row_idx[1], col_idx[0]:col_idx[1]])(generated_image)
             list_gen_patch.append(x_patch)
 
     DCGAN_output = discriminator_model(list_gen_patch)
