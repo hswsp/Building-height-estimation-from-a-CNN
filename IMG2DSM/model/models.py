@@ -167,7 +167,7 @@ def generator_unet_deconv(img_dim, bn_mode, batch_size, model_name="generator_un
         h, w = h * 2, w * 2
 
     x = Activation("relu")(list_decoder[-1])
-    o_shape = (batch_size,) + img_dim
+    o_shape = (batch_size,) + img_dim[:-1] # for channel last
     x = Deconv2D(nb_channels, (3, 3), output_shape=o_shape, strides=(2, 2), padding="same")(x)
     x = Activation("tanh")(x)
 
