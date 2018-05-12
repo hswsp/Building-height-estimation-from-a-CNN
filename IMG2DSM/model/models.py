@@ -249,9 +249,9 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
         x_mbd = MBD(x_mbd)
         x = Concatenate(axis=bn_axis)([x, x_mbd])
 
-    # x_out = Dense(2, activation="softmax", name="disc_output")(x)
+    x_out = Dense(2, activation="softmax", name="disc_output")(x)
 
-    discriminator_model = Model(inputs= [x_input], outputs=[x], name=model_name) # list_input
+    discriminator_model = Model(inputs= [x_input], outputs=[x_out], name=model_name) # list_input
 
     return discriminator_model
 
