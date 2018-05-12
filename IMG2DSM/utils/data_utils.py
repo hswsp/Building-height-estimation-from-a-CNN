@@ -6,8 +6,8 @@ import h5py
 
 import matplotlib.pylab as plt
 
-TrainData1='Postdam.mat'
-TrainData2='Postdam1.mat'
+TrainData1='Potsdam.mat'
+TrainData2='Potsdam1.mat'
 ValData = 'Vaihingen.mat'               #'Vaihingen.mat'
 
 def normalization(X):
