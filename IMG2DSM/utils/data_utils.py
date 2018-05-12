@@ -88,7 +88,7 @@ def load_largeData(X_full,img_type):
 
 def load_data(dset, image_data_format):
 
-    with h5py.File(dset+TrainData1, "r") as hf:
+    with h5py.File(dset+'test.mat', "r") as hf: #TrainData1
         X_full_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
         X_full_train = load_largeData(X_full_train,'depths')
         X_sketch_train = hf["images"]
@@ -102,23 +102,23 @@ def load_data(dset, image_data_format):
         #     X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
         #     X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
         hf.close()
-    with h5py.File(dset+TrainData2, "r") as hm:
-        X_full_train1 = hm["depths"]
-        X_full_train1 = load_largeData(X_full_train1,'depths')
-        X_sketch_train1 = hm["images"]
-        X_sketch_train1 = load_largeData(X_sketch_train1,'images')
-        hm.close()
+    # with h5py.File(dset+TrainData2, "r") as hm:
+    #     X_full_train1 = hm["depths"]
+    #     X_full_train1 = load_largeData(X_full_train1,'depths')
+    #     X_sketch_train1 = hm["images"]
+    #     X_sketch_train1 = load_largeData(X_sketch_train1,'images')
+    #     hm.close()
+    #
+    # X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
+    # X_sketch_train = np.concatenate((X_sketch_train, X_sketch_train1),axis = 0)
+    #
+    # if image_data_format == "channels_last":
+    #     X_full_train = np.expand_dims(X_full_train, axis=3)
+    #     X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
+    #     X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 
-    X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
-    X_sketch_train = np.concatenate((X_sketch_train, X_sketch_train1),axis = 0)
 
-    if image_data_format == "channels_last":
-        X_full_train = np.expand_dims(X_full_train, axis=3)
-        X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
-        X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
-
-
-    with h5py.File(dset+ValData, "r") as hv:
+    with h5py.File(dset+'test_val.mat', "r") as hv:#ValData
             X_full_val = hv["depths"]
             dsm_num = len(X_full_val)
             X_full_val = np.array(X_full_val[:dsm_num / 4]).astype(np.float16)
