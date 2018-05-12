@@ -295,22 +295,22 @@ def load(model_name, img_dim, nb_patch, bn_mode, use_mbd, batch_size):
     if model_name == "generator_unet_upsampling":
         model = generator_unet_upsampling(img_dim, bn_mode, model_name=model_name)
         model.summary()
-        from keras.utils import plot_model
-        plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+        # from keras.utils import plot_model
+        # plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
         return model
 
     if model_name == "generator_unet_deconv": #该函数将画出模型结构图,并保存成图片:
         model = generator_unet_deconv(img_dim,  bn_mode, batch_size, model_name=model_name)
         model.summary()
-        from keras.utils import plot_model
-        plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+        # from keras.utils import plot_model
+        # plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
         return model
 
     if model_name == "DCGAN_discriminator":
         model = DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name=model_name, use_mbd=use_mbd)
         model.summary()
-        from keras.utils import plot_model
-        plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+        # from keras.utils import plot_model
+        # plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
         return model
 
 
