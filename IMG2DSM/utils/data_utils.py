@@ -69,10 +69,9 @@ def load_data(dset, image_data_format):
 
     with h5py.File(dset+TrainData, "r") as hf:
         X_full_train = hf["depths"][:].astype(np.float16)
-		# X_full_train = normalization(X_full_train)
-		X_sketch_train = hf["images"][:].astype(np.float16)
-		X_sketch_train = normalization(X_sketch_train)
-	
+        # X_full_train = normalization(X_full_train)
+        X_sketch_train = hf["images"][:].astype(np.float16)
+        X_sketch_train = normalization(X_sketch_train)
 	# with h5py.File(dset+'Potsdam1.mat', "r") as hf:
     #
 	# 	X_sketch_train = hf["images"][:].astype(np.float16)
@@ -106,16 +105,15 @@ def load_data(dset, image_data_format):
 	with h5py.File(dset+ValData, "r") as hv:
         	X_full_val = hv["depths"][:].astype(np.float16)
         	# X_full_val = normalization(X_full_val)
-
-        	X_sketch_val = hv["images"][:].astype(np.float16)
-      	  	X_sketch_val = normalization(X_sketch_val)
+            X_sketch_val = hv["images"][:].astype(np.float16)
+            X_sketch_val = normalization(X_sketch_val)
             if image_data_format == "channels_last":
                 # X_full_val = np.expand_dims(X_full_val, axis=3)
                 # X_full_val = np.concatenate(X_full_val, X_full_val, X_full_val, axis=3)
                 # X_full_val = X_full_val.transpose(0, 2, 3, 1)
                 X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
 
-        return X_full_train, X_sketch_train, X_full_val, X_sketch_val
+    return X_full_train, X_sketch_train, X_full_val, X_sketch_val
 
 
 def gen_batch(X1, X2, batch_size):
