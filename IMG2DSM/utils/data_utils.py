@@ -65,7 +65,7 @@ def load_largeData(X_full):
     X_full1 = X_full[:dsm_num/4]
     X_full2 = X_full[dsm_num / 4:dsm_num / 2]
     X1 = np.concatenate((X_full1,X_full2), axis = 0)
-    del X_full,X_full2
+    del X_full1,X_full2
     X_full3 = X_full[dsm_num / 2:3 * dsm_num / 4]
     X_full4 = X_full[3 * dsm_num / 4:]
     X2 = np.concatenate((X_full3, X_full4), axis=0)
@@ -104,7 +104,7 @@ def load_data(dset, image_data_format):
         X_full_train = np.expand_dims(X_full_train, axis=3)
         X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
         X_sketch_train = normalization(X_sketch_train.astype(np.float16)).transpose(0, 2, 3, 1)
-        
+
 
     with h5py.File(dset+ValData, "r") as hv:
             X_full_val = hv["depths"][:].astype(np.float16)
