@@ -10,12 +10,12 @@ TrainData='test.mat'
 ValData = 'test_val.mat'               #'Vaihingen.mat'
 
 def normalization(X):
-
+#[0,255]=>[-1,1]
     return X / 127.5 - 1
 
 
 def inverse_normalization(X):
-
+# [-1,1]=>[0,1]
     return (X + 1.) / 2.
 
 
@@ -92,7 +92,7 @@ def load_data(dset, image_data_format):
         # X_sketch_train = normalization(X_sketch_train)
         if image_data_format == "channels_last":
             X_full_train = np.expand_dims(X_full_train, axis=3)
-            X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3)
+            X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
             X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
 
@@ -157,9 +157,11 @@ def plot_generated_batch(X_full, X_sketch, generator_model, batch_size, image_da
     X_gen = generator_model.predict(X_sketch)
 
     X_sketch = inverse_normalization(X_sketch)
-    X_full = inverse_normalization(X_full)
+    # X_full = inverse_normalization(X_full)
     X_gen = inverse_normalization(X_gen)
 
+
+    #take the first 8 picture
     Xs = X_sketch[:8]
     Xg = X_gen[:8]
     Xr = X_full[:8]
@@ -167,8 +169,8 @@ def plot_generated_batch(X_full, X_sketch, generator_model, batch_size, image_da
     if image_data_format == "channels_last":
         X = np.concatenate((Xs, Xg, Xr), axis=0)
         list_rows = []
-        for i in range(int(X.shape[0] // 4)):
-            Xr = np.concatenate([X[k] for k in range(4 * i, 4 * (i + 1))], axis=1)
+        for i in range(int(X.shape[0] // 4)): # = 6
+            Xr = np.concatenate([X[k] for k in range(4 * i, 4 * (i + 1))], axis=1) # 按行拼起来（上下）
             list_rows.append(Xr)
 
         Xr = np.concatenate(list_rows, axis=0)

@@ -14,16 +14,16 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="59">
+            <state relative-caret-position="285">
               <caret line="18" column="58" selection-start-line="18" selection-start-column="58" selection-end-line="18" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
+            <state relative-caret-position="1482">
               <caret line="208" column="5" lean-forward="true" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="6" />
             </state>
           </provider>
@@ -32,8 +32,8 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="133" column="66" selection-start-line="133" selection-start-column="58" selection-end-line="133" selection-end-column="66" />
+            <state relative-caret-position="1788">
+              <caret line="146" column="53" selection-start-line="146" selection-start-column="36" selection-end-line="146" selection-end-column="53" />
               <folding>
                 <element signature="e#25#34#0" expanded="true" />
               </folding>
@@ -41,11 +41,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="data_utils.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="data_utils.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils/data_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1522">
-              <caret line="99" column="22" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="22" />
+            <state relative-caret-position="21">
+              <caret line="172" column="88" selection-start-line="172" selection-start-column="88" selection-end-line="172" selection-end-column="88" />
             </state>
           </provider>
         </entry>
@@ -57,8 +57,8 @@
       <list>
         <option value="$PROJECT_DIR$/model/main.py" />
         <option value="$PROJECT_DIR$/model/train.py" />
-        <option value="$PROJECT_DIR$/utils/data_utils.py" />
         <option value="$PROJECT_DIR$/model/models.py" />
+        <option value="$PROJECT_DIR$/utils/data_utils.py" />
       </list>
     </option>
   </component>
@@ -71,7 +71,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
     <option name="width" value="3150" />
@@ -171,17 +171,24 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/model/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1482">
+          <caret line="208" column="5" lean-forward="true" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
+        <state relative-caret-position="285">
           <caret line="18" column="58" selection-start-line="18" selection-start-column="58" selection-end-line="18" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/model/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="133" column="66" selection-start-line="133" selection-start-column="58" selection-end-line="133" selection-end-column="66" />
+        <state relative-caret-position="1788">
+          <caret line="146" column="53" selection-start-line="146" selection-start-column="36" selection-end-line="146" selection-end-column="53" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
           </folding>
@@ -190,15 +197,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/data_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1522">
-          <caret line="99" column="22" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="208" column="5" lean-forward="true" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="6" />
+        <state relative-caret-position="21">
+          <caret line="172" column="88" selection-start-line="172" selection-start-column="88" selection-end-line="172" selection-end-column="88" />
         </state>
       </provider>
     </entry>
