@@ -32,8 +32,8 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="743">
-              <caret line="83" column="45" lean-forward="true" selection-start-line="83" selection-start-column="45" selection-end-line="83" selection-end-column="45" />
+            <state relative-caret-position="230">
+              <caret line="50" column="43" lean-forward="true" selection-start-line="50" selection-start-column="43" selection-end-line="50" selection-end-column="43" />
               <folding>
                 <element signature="e#25#34#0" expanded="true" />
               </folding>
@@ -45,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/utils/data_utils.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="81">
-              <caret line="102" column="12" lean-forward="true" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+              <caret line="70" column="20" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="20" />
               <folding>
                 <element signature="e#3312#3363#0" />
               </folding>
@@ -60,8 +60,8 @@
       <list>
         <option value="$PROJECT_DIR$/model/main.py" />
         <option value="$PROJECT_DIR$/model/models.py" />
-        <option value="$PROJECT_DIR$/model/train.py" />
         <option value="$PROJECT_DIR$/utils/data_utils.py" />
+        <option value="$PROJECT_DIR$/model/train.py" />
       </list>
     </option>
   </component>
@@ -74,7 +74,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
     <option name="width" value="3150" />
@@ -141,7 +141,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1293" height="733" extended-state="6" />
+    <frame x="-6" y="-6" width="1293" height="733" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -190,8 +190,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="743">
-          <caret line="83" column="45" lean-forward="true" selection-start-line="83" selection-start-column="45" selection-end-line="83" selection-end-column="45" />
+        <state relative-caret-position="230">
+          <caret line="50" column="43" lean-forward="true" selection-start-line="50" selection-start-column="43" selection-end-line="50" selection-end-column="43" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
           </folding>
@@ -201,7 +201,7 @@
     <entry file="file://$PROJECT_DIR$/utils/data_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="81">
-          <caret line="102" column="12" lean-forward="true" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="12" />
+          <caret line="70" column="20" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="20" />
           <folding>
             <element signature="e#3312#3363#0" />
           </folding>
