@@ -6,8 +6,9 @@ import h5py
 
 import matplotlib.pylab as plt
 
-TrainData='test.mat'
-ValData = 'test_val.mat'               #'Vaihingen.mat'
+TrainData1='Postdam.mat'
+TrainData2='Postdam1.mat'
+ValData = 'Vaihingen.mat'               #'Vaihingen.mat'
 
 def normalization(X):
 #[0,255]=>[-1,1]
@@ -62,16 +63,29 @@ def extract_patches(X, image_data_format, patch_size):  #从大图中抽取patch
 
 def load_data(dset, image_data_format):
 
-    with h5py.File(dset+TrainData, "r") as hf:
+    with h5py.File(dset+TrainData1, "r") as hf:
         X_full_train = hf["depths"][:].astype(np.float16)
         # X_full_train = normalization(X_full_train)
         X_sketch_train = hf["images"][:].astype(np.float16)
         X_sketch_train = normalization(X_sketch_train)
-	# with h5py.File(dset+'Potsdam1.mat', "r") as hf:
-    #
-	# 	X_sketch_train = hf["images"][:].astype(np.float16)
-	# 	X_sketch_train = normalization(X_sketch_train)
-	#
+        if image_data_format == "channels_last":
+            X_full_train = np.expand_dims(X_full_train, axis=3)
+            X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
+            X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
+
+	with h5py.File(dset+TrainData2, "r") as hm:
+            X_full_train1 = hm["depths"][:].astype(np.float16)
+            # X_full_train = normalization(X_full_train)
+            X_sketch_train1 = hm["images"][:].astype(np.float16)
+            X_sketch_train1 = normalization(X_sketch_train1)
+            if image_data_format == "channels_last":
+                X_full_train1 = np.expand_dims(X_full_train1, axis=3)
+                X_full_train1 = np.concatenate((X_full_train1, X_full_train1, X_full_train1),axis=3)  # zero aixis is number, 3 is channel
+                X_sketch_train1 = X_sketch_train1.transpose(0, 2, 3, 1)
+
+    X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
+    X_sketch_train = np.concatenate((X_sketch_train, X_sketch_train1),axis = 0)
+
 	# with h5py.File(dset+'Potsdam1.mat', "r") as hf:
     #
 	# 	X_full_train2 = hf["depths"][:].astype(np.float32)
@@ -90,11 +104,6 @@ def load_data(dset, image_data_format):
 		
         # X_sketch_train = hf["train_data_sketch"][:].astype(np.float32)
         # X_sketch_train = normalization(X_sketch_train)
-        if image_data_format == "channels_last":
-            X_full_train = np.expand_dims(X_full_train, axis=3)
-            X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
-            X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
-			
 
 	with h5py.File(dset+ValData, "r") as hv:
             X_full_val = hv["depths"][:].astype(np.float16)
