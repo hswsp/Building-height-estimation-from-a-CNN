@@ -84,27 +84,7 @@ def load_data(dset, image_data_format):
 
     X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
     X_sketch_train = np.concatenate((X_sketch_train, X_sketch_train1),axis = 0)
-
-	# with h5py.File(dset+'Potsdam1.mat', "r") as hf:
-    #
-	# 	X_full_train2 = hf["depths"][:].astype(np.float32)
-	# 	# X_full_train = normalization(X_full_train)
-	#
-	# 	X_sketch_train2 = hf["images"][:].astype(np.float32)
-	# 	X_sketch_train2 = normalization(X_sketch_train2)
-	#
-	# X_full_train = np.concatenate([X_full_train1,X_full_train2],axis = 0)#横轴连接块
-	# del X_full_train1,X_full_train2
-	# X_sketch_train = np.concatenate([X_sketch_train1,X_sketch_train2],axis = 0)
-	# del X_sketch_train1,X_sketch_train2
-
-        # X_full_train = hf["train_data_full"][:].astype(np.float32)
-        # X_full_train = normalization(X_full_train)
-		
-        # X_sketch_train = hf["train_data_sketch"][:].astype(np.float32)
-        # X_sketch_train = normalization(X_sketch_train)
-
-	with h5py.File(dset+ValData, "r") as hv:
+    with h5py.File(dset+ValData, "r") as hv:
             X_full_val = hv["depths"][:].astype(np.float16)
             # X_full_val = normalization(X_full_val)
             X_sketch_val = hv["images"][:].astype(np.float16)
