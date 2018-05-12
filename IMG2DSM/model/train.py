@@ -62,7 +62,8 @@ def train(**kwargs):
 
         # Load generator model
         generator_model = models.load("generator_unet_%s" % generator,
-                                      DSM_dim,#img_dim
+                                      img_dim
+                                      DSM_dim,#
                                       nb_patch,
                                       bn_mode,
                                       use_mbd,
