@@ -184,7 +184,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
     returns : model (keras NN) the Neural Net model
     """
 
-    #list_input = [Input(shape=img_dim, name="disc_input_%s" % i) for i in range(nb_patch)]
+    list_input = [Input(shape=img_dim, name="disc_input_%s" % i) for i in range(nb_patch)]
 
     if K.image_dim_ordering() == "channels_first":
         bn_axis = 1
