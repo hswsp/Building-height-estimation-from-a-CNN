@@ -23,8 +23,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-245">
-              <caret line="258" column="49" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="49" />
+            <state relative-caret-position="-492">
+              <caret line="197" lean-forward="true" selection-start-line="197" selection-end-line="197" />
             </state>
           </provider>
         </entry>
@@ -32,8 +32,8 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="63" column="45" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="45" />
+            <state relative-caret-position="572">
+              <caret line="133" column="66" selection-start-line="133" selection-start-column="58" selection-end-line="133" selection-end-column="66" />
               <folding>
                 <element signature="e#25#34#0" expanded="true" />
               </folding>
@@ -56,9 +56,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/model/main.py" />
-        <option value="$PROJECT_DIR$/model/models.py" />
         <option value="$PROJECT_DIR$/model/train.py" />
         <option value="$PROJECT_DIR$/utils/data_utils.py" />
+        <option value="$PROJECT_DIR$/model/models.py" />
       </list>
     </option>
   </component>
@@ -71,7 +71,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-15" />
     <option name="y" value="-15" />
     <option name="width" value="3150" />
@@ -171,13 +171,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/model/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-245">
-          <caret line="258" column="49" selection-start-line="258" selection-start-column="42" selection-end-line="258" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="59">
@@ -192,10 +185,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-492">
+          <caret line="197" lean-forward="true" selection-start-line="197" selection-end-line="197" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="63" column="45" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="45" />
+        <state relative-caret-position="572">
+          <caret line="133" column="66" selection-start-line="133" selection-start-column="58" selection-end-line="133" selection-end-column="66" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
           </folding>
