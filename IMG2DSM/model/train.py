@@ -46,12 +46,11 @@ def train(**kwargs):
 
     # Load and rescale data
     X_full_train, X_sketch_train, X_full_val, X_sketch_val = data_utils.load_data(dset, image_data_format)
-    # img_dim = X_full_train.shape[-3:]
-    img_dim = X_sketch_train.shape[-3:]   # optical image
-    DSM_dim = X_full_train.shape[-2:] # DSM
+    img_dim = X_full_train.shape[-3:]
+
 
     # Get the number of non overlapping patch and the size of input image to the discriminator
-    nb_patch, img_dim_disc = data_utils.get_nb_patch(DSM_dim, patch_size, image_data_format) #img_dim
+    nb_patch, img_dim_disc = data_utils.get_nb_patch(img_dim, patch_size, image_data_format) #img_dim
 
     try:
 
@@ -63,7 +62,6 @@ def train(**kwargs):
         # Load generator model
         generator_model = models.load("generator_unet_%s" % generator,
                                       img_dim,
-                                      DSM_dim,#
                                       nb_patch,
                                       bn_mode,
                                       use_mbd,
@@ -71,7 +69,6 @@ def train(**kwargs):
         # Load discriminator model
         discriminator_model = models.load("DCGAN_discriminator",
                                           img_dim_disc,
-                                          DSM_dim,
                                           nb_patch,
                                           bn_mode,
                                           use_mbd,
@@ -83,7 +80,6 @@ def train(**kwargs):
         DCGAN_model = models.DCGAN(generator_model,
                                    discriminator_model,
                                    img_dim,
-                                   DSM_dim, #
                                    patch_size,
                                    image_data_format)
 
