@@ -120,10 +120,19 @@ def load_data(dset, image_data_format):
 
     with h5py.File(dset+ValData, "r") as hv:
             X_full_val = hv["depths"]
+            dsm_num = len(X_full_val)
+            X_full1 = np.array(X_full_val[:dsm_num / 4]).astype(np.float16)
+            X_full2 = np.array(X_full_val[dsm_num / 4:dsm_num / 2]).astype(np.float16)
+            X_full_val = np.concatenate((X_full1, X_full2), axis=0)
+            del X_full1, X_full2
+
             # X_full_val = normalization(X_full_val)
             X_sketch_val =hv["images"]
-            X_full_val = load_largeData(X_full_val,'depths')
-            X_sketch_val = load_largeData(X_sketch_val, 'images')
+            img_num = len(X_sketch_val)
+            X_full1 = np.array(X_sketch_val[:img_num / 4])
+            X_full2 = np.array(X_sketch_val[img_num / 4:img_num / 2])
+            X_sketch_val = normalization(np.concatenate((X_full1.astype(np.float16), X_full2.astype(np.float16)), axis=0))
+            del X_full1, X_full2
             # X_sketch_val = normalization(X_sketch_val)
             if image_data_format == "channels_last":
                 X_full_val = np.expand_dims(X_full_val, axis=3)
