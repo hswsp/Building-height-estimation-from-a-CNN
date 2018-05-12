@@ -103,8 +103,8 @@ def load_data(dset, image_data_format):
 			
 
 	with h5py.File(dset+ValData, "r") as hv:
-        	X_full_val = hv["depths"][:].astype(np.float16)
-        	# X_full_val = normalization(X_full_val)
+            X_full_val = hv["depths"][:].astype(np.float16)
+            # X_full_val = normalization(X_full_val)
             X_sketch_val = hv["images"][:].astype(np.float16)
             X_sketch_val = normalization(X_sketch_val)
             if image_data_format == "channels_last":
