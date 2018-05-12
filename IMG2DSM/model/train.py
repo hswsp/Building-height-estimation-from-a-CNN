@@ -71,6 +71,7 @@ def train(**kwargs):
         # Load discriminator model
         discriminator_model = models.load("DCGAN_discriminator",
                                           img_dim_disc,
+                                          DSM_dim,
                                           nb_patch,
                                           bn_mode,
                                           use_mbd,
