@@ -23,8 +23,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="253" column="50" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
+            <state relative-caret-position="57">
+              <caret line="232" column="16" lean-forward="true" selection-start-line="232" selection-start-column="16" selection-end-line="232" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -32,7 +32,7 @@
       <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
+            <state relative-caret-position="-19">
               <caret line="102" column="28" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="28" />
             </state>
           </provider>
@@ -175,13 +175,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="102" column="28" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/data_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1235">
@@ -189,10 +182,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="102" column="28" selection-start-line="102" selection-start-column="16" selection-end-line="102" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="253" column="50" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
+        <state relative-caret-position="57">
+          <caret line="232" column="16" lean-forward="true" selection-start-line="232" selection-start-column="16" selection-end-line="232" selection-end-column="16" />
         </state>
       </provider>
     </entry>
