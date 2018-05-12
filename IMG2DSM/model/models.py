@@ -84,7 +84,7 @@ def generator_unet_upsampling(img_dim, bn_mode, model_name="generator_unet_upsam
 
     # Encoder
     list_encoder = [Conv2D(list_nb_filters[0], (3, 3),
-                           strides=(2, 2), name="unet_conv2D_1", padding="same")(unet_input)]
+                           strides=(2, 2), name="unet_conv2D_1", padding="same")(unet_input)] #先做一个卷积
     for i, f in enumerate(list_nb_filters[1:]):
         name = "unet_conv2D_%s" % (i + 2)
         conv = conv_block_unet(list_encoder[-1], f, name, bn_mode, bn_axis)
@@ -211,43 +211,43 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
         x = BatchNormalization(axis=bn_axis)(x)
         x = LeakyReLU(0.2)(x)
     
-	# layer_5: [batch, 31, 31, ndf * 8] => [batch, 30, 30, 1]
-	name = "disc_conv2d_%s" % (nb_conv+1)
-    x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
-    x = Activation('sigmoid')(x)
+    # # layer_5: [batch, 31, 31, ndf * 8] => [batch, 30, 30, 1]
+    # name = "disc_conv2d_%s" % (nb_conv+1)
+    # x = Conv2D(1, (3, 3), strides=(1, 1), name=name, padding="same")(x)
+    # x = Activation('sigmoid')(x)
     
-	# # 全连接
-    # x_flat = Flatten()(x)
-    # x = Dense(2, activation="softmax", name="disc_dense")(x_flat)
+	# 全连接
+    x_flat = Flatten()(x)
+    x = Dense(2, activation="softmax", name="disc_dense")(x_flat)
 
-    # PatchGAN = Model(inputs=[x_input], outputs=[x, x_flat], name="PatchGAN")
-    # print("PatchGAN summary")
-    # PatchGAN.summary()
+    PatchGAN = Model(inputs=[x_input], outputs=[x, x_flat], name="PatchGAN")
+    print("PatchGAN summary")
+    PatchGAN.summary()
 
-    # x = [PatchGAN(patch)[0] for patch in list_input]
-    # x_mbd = [PatchGAN(patch)[1] for patch in list_input]
+    x = [PatchGAN(patch)[0] for patch in list_input]  #x.shape=[list的个数，2(每一个输入经过网络后全连接的结果)]
+    x_mbd = [PatchGAN(patch)[1] for patch in list_input]
 
-    # if len(x) > 1:
-        # x = Concatenate(axis=bn_axis)(x)  #最后一维拼接
-    # else:
-        # x = x[0]
+    if len(x) > 1:
+        x = Concatenate(axis=bn_axis)(x)  #最后一维拼接
+    else:
+        x = x[0]
 
-    # if use_mbd:
-        # if len(x_mbd) > 1:
-            # x_mbd = Concatenate(axis=bn_axis)(x_mbd)
-        # else:
-            # x_mbd = x_mbd[0]
+    if use_mbd:
+        if len(x_mbd) > 1:
+            x_mbd = Concatenate(axis=bn_axis)(x_mbd)
+        else:
+            x_mbd = x_mbd[0]
 
-        # num_kernels = 100
-        # dim_per_kernel = 5
+        num_kernels = 100
+        dim_per_kernel = 5
 
-        # M = Dense(num_kernels * dim_per_kernel, use_bias=False, activation=None)
-        # MBD = Lambda(minb_disc, output_shape=lambda_output)
+        M = Dense(num_kernels * dim_per_kernel, use_bias=False, activation=None)
+        MBD = Lambda(minb_disc, output_shape=lambda_output)
 
-        # x_mbd = M(x_mbd)
-        # x_mbd = Reshape((num_kernels, dim_per_kernel))(x_mbd)
-        # x_mbd = MBD(x_mbd)
-        # x = Concatenate(axis=bn_axis)([x, x_mbd])
+        x_mbd = M(x_mbd)
+        x_mbd = Reshape((num_kernels, dim_per_kernel))(x_mbd)
+        x_mbd = MBD(x_mbd)
+        x = Concatenate(axis=bn_axis)([x, x_mbd])
 
     # x_out = Dense(2, activation="softmax", name="disc_output")(x)
 

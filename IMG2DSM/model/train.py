@@ -113,7 +113,7 @@ def train(**kwargs):
                                                            label_flipping=label_flipping)
 
                 # Update the discriminator
-                disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)  # Y_disc是[a,b]形状的标签
+                disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)  # Y_disc是[a,b]形状的标签，也就是输出的形状
 
                 # Create a batch to feed the generator model
                 X_gen_target, X_gen = next(data_utils.gen_batch(X_full_train, X_sketch_train, batch_size))

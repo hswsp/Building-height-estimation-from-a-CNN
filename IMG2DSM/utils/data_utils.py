@@ -7,7 +7,7 @@ import h5py
 import matplotlib.pylab as plt
 
 TrainData='test.mat'
-ValData = 'test.mat'               #'Vaihingen.mat'
+ValData = 'test_val.mat'               #'Vaihingen.mat'
 
 def normalization(X):
 
@@ -121,6 +121,7 @@ def gen_batch(X1, X2, batch_size):
 
     while True:
         idx = np.random.choice(X1.shape[0], batch_size, replace=False) #random choice
+        # X1.shape[0]为所有数据总量
         yield X1[idx], X2[idx]
 
 
