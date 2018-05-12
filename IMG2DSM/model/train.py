@@ -48,7 +48,7 @@ def train(**kwargs):
     X_full_train, X_sketch_train, X_full_val, X_sketch_val = data_utils.load_data(dset, image_data_format)
     # img_dim = X_full_train.shape[-3:]
     img_dim = X_sketch_train.shape[-3:]   # optical image
-    DSM_dim = X_full_train[-2:] # DSM
+    DSM_dim = X_full_train.shape[-2:] # DSM
 
     # Get the number of non overlapping patch and the size of input image to the discriminator
     nb_patch, img_dim_disc = data_utils.get_nb_patch(DSM_dim, patch_size, image_data_format) #img_dim
