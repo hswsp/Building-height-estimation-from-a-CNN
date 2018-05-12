@@ -192,7 +192,7 @@ def DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name="DCGAN_discrimina
         bn_axis = -1
 
     nb_filters = 64
-    nb_conv = int(np.floor(np.log(img_dim[1]) / np.log(2)))-5 +1 # total number,一直到31*31
+    nb_conv = int(np.floor(np.log(img_dim[1]) / np.log(2))) # total number,一直到31*31 -5 +1
     list_filters = [nb_filters * min(8, (2 ** i)) for i in range(nb_conv)]
 	
 
