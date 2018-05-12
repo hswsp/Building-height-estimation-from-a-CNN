@@ -118,7 +118,7 @@ def generator_unet_upsampling(img_dim, bn_mode, model_name="generator_unet_upsam
     return generator_unet
 
 
-def generator_unet_deconv(img_dim, dsm_dim, bn_mode, batch_size, model_name="generator_unet_deconv"):
+def generator_unet_deconv(img_dim, bn_mode, batch_size, model_name="generator_unet_deconv"):
 
     assert K.backend() == "tensorflow", "Not implemented with theano backend"
 
