@@ -91,9 +91,8 @@ def load_data(dset, image_data_format):
         # X_sketch_train = hf["train_data_sketch"][:].astype(np.float32)
         # X_sketch_train = normalization(X_sketch_train)
         if image_data_format == "channels_last":
-            X_full_train1 = np.expand_dims(X_full_train, axis=3)
-            X_full_train = np.concatenate(X_full_train1,X_full_train1, axis = 3)
-            X_full_train = np.concatenate(X_full_train, X_full_train1, axis=3)
+            X_full_train = np.expand_dims(X_full_train, axis=3)
+            X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3)
             X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 			
 
@@ -103,9 +102,8 @@ def load_data(dset, image_data_format):
             X_sketch_val = hv["images"][:].astype(np.float16)
             X_sketch_val = normalization(X_sketch_val)
             if image_data_format == "channels_last":
-                X_full_val1 = np.expand_dims(X_full_val, axis=3)
-                X_full_val = np.concatenate(X_full_val1, X_full_val1,  axis=3)
-                X_full_val = np.concatenate(X_full_val, X_full_val1, axis=3)
+                X_full_val = np.expand_dims(X_full_val, axis=3)
+                X_full_val = np.concatenate((X_full_val, X_full_val,X_full_val),  axis=3)
                 X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
 
     return X_full_train, X_sketch_train, X_full_val, X_sketch_val
