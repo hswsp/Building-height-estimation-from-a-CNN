@@ -24,7 +24,7 @@
         <entry file="file://$PROJECT_DIR$/model/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="456">
-              <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+              <caret line="253" column="50" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -192,7 +192,7 @@
     <entry file="file://$PROJECT_DIR$/model/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
-          <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+          <caret line="253" column="50" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
         </state>
       </provider>
     </entry>
