@@ -74,13 +74,13 @@ def load_largeData(X_full,img_type):
         del X_full3, X_full4
         X_full_train = np.concatenate((X1, X2), axis=0)
     elif img_type == 'images':
-        X_full1 = np.array(X_full[:dsm_num / 4]).astype(np.float16)
-        X_full2 = np.array(X_full[dsm_num / 4:dsm_num / 2]).astype(np.float16)
-        X1 = normalization(np.concatenate((X_full1, X_full2), axis=0))
+        X_full1 = np.array(X_full[:dsm_num / 4])
+        X_full2 = np.array(X_full[dsm_num / 4:dsm_num / 2])
+        X1 = normalization(np.concatenate((X_full1.astype(np.float16), X_full2.astype(np.float16)), axis=0))
         del X_full1, X_full2
-        X_full3 = np.array(X_full[dsm_num / 2:3 * dsm_num / 4]).astype(np.float16)
-        X_full4 = np.array(X_full[3 * dsm_num / 4:]).astype(np.float16)
-        X2 = normalization(np.concatenate((X_full3, X_full4), axis=0))
+        X_full3 = np.array(X_full[dsm_num / 2:3 * dsm_num / 4])
+        X_full4 = np.array(X_full[3 * dsm_num / 4:])
+        X2 = normalization(np.concatenate((X_full3.astype(np.float16), X_full4.astype(np.float16)), axis=0))
         del X_full3, X_full4
         X_full_train = np.concatenate((X1, X2), axis=0)
     return X_full_train
