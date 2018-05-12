@@ -60,18 +60,29 @@ def extract_patches(X, image_data_format, patch_size):  #从大图中抽取patch
 
     return list_X
 
-def load_largeData(X_full):
+def load_largeData(X_full,img_type):
     dsm_num = len(X_full)
     print dsm_num
-    X_full1 = np.array(X_full[:dsm_num/4]).astype(np.float16)
-    X_full2 = np.array(X_full[dsm_num / 4:dsm_num / 2]).astype(np.float16)
-    X1 = np.concatenate((X_full1,X_full2), axis = 0)
-    del X_full1,X_full2
-    X_full3 = np.array(X_full[dsm_num / 2:3 * dsm_num / 4]).astype(np.float16)
-    X_full4 = np.array(X_full[3 * dsm_num / 4:]).astype(np.float16)
-    X2 = np.concatenate((X_full3, X_full4), axis=0)
-    del X_full3, X_full4
-    X_full_train = np.concatenate((X1, X2), axis=0)
+    if img_type == 'depths':
+        X_full1 = np.array(X_full[:dsm_num/4]).astype(np.float16)
+        X_full2 = np.array(X_full[dsm_num / 4:dsm_num / 2]).astype(np.float16)
+        X1 = np.concatenate((X_full1,X_full2), axis = 0)
+        del X_full1,X_full2
+        X_full3 = np.array(X_full[dsm_num / 2:3 * dsm_num / 4]).astype(np.float16)
+        X_full4 = np.array(X_full[3 * dsm_num / 4:]).astype(np.float16)
+        X2 = np.concatenate((X_full3, X_full4), axis=0)
+        del X_full3, X_full4
+        X_full_train = np.concatenate((X1, X2), axis=0)
+    elif img_type == 'images':
+        X_full1 = np.array(X_full[:dsm_num / 4]).astype(np.float16)
+        X_full2 = np.array(X_full[dsm_num / 4:dsm_num / 2]).astype(np.float16)
+        X1 = normalization(np.concatenate((X_full1, X_full2), axis=0))
+        del X_full1, X_full2
+        X_full3 = np.array(X_full[dsm_num / 2:3 * dsm_num / 4]).astype(np.float16)
+        X_full4 = np.array(X_full[3 * dsm_num / 4:]).astype(np.float16)
+        X2 = normalization(np.concatenate((X_full3, X_full4), axis=0))
+        del X_full3, X_full4
+        X_full_train = np.concatenate((X1, X2), axis=0)
     return X_full_train
 
 
@@ -79,9 +90,9 @@ def load_data(dset, image_data_format):
 
     with h5py.File(dset+TrainData1, "r") as hf:
         X_full_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
-        X_full_train = load_largeData(X_full_train)
+        X_full_train = load_largeData(X_full_train,'depths')
         X_sketch_train = hf["images"]
-        X_sketch_train = load_largeData(X_sketch_train)
+        X_sketch_train = load_largeData(X_sketch_train,'images')
         # X_full_train = hf["depths"][:].astype(np.float16)
         # # X_full_train = normalization(X_full_train)
         # X_sketch_train = hf["images"][:].astype(np.float16)
@@ -93,9 +104,9 @@ def load_data(dset, image_data_format):
         hf.close()
     with h5py.File(dset+TrainData2, "r") as hm:
         X_full_train1 = hm["depths"]
-        X_full_train1 = load_largeData(X_full_train1)
+        X_full_train1 = load_largeData(X_full_train1,'depths')
         X_sketch_train1 = hm["images"]
-        X_sketch_train1 = load_largeData(X_sketch_train1)
+        X_sketch_train1 = load_largeData(X_sketch_train1,'images')
         hm.close()
 
     X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
@@ -104,14 +115,16 @@ def load_data(dset, image_data_format):
     if image_data_format == "channels_last":
         X_full_train = np.expand_dims(X_full_train, axis=3)
         X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
-        X_sketch_train = normalization(X_sketch_train).transpose(0, 2, 3, 1)
+        X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 
 
     with h5py.File(dset+ValData, "r") as hv:
-            X_full_val = np.array(hv["depths"][:].astype(np.float16))
+            X_full_val = hv["depths"]
             # X_full_val = normalization(X_full_val)
-            X_sketch_val = np.array(hv["images"][:].astype(np.float16))
-            X_sketch_val = normalization(X_sketch_val)
+            X_sketch_val =hv["images"]
+            X_full_val = load_largeData(X_full_val,'depths')
+            X_sketch_val = load_largeData(X_sketch_val, 'images')
+            # X_sketch_val = normalization(X_sketch_val)
             if image_data_format == "channels_last":
                 X_full_val = np.expand_dims(X_full_val, axis=3)
                 X_full_val = np.concatenate((X_full_val, X_full_val,X_full_val),  axis=3)
