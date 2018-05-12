@@ -112,10 +112,10 @@ def load_data(dset, image_data_format):
     # X_full_train = np.concatenate((X_full_train, X_full_train1),axis = 0)
     # X_sketch_train = np.concatenate((X_sketch_train, X_sketch_train1),axis = 0)
     #
-    # if image_data_format == "channels_last":
-    #     X_full_train = np.expand_dims(X_full_train, axis=3)
-    #     X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
-    #     X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
+    if image_data_format == "channels_last":
+        X_full_train = np.expand_dims(X_full_train, axis=3)
+        X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
+        X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 
 
     with h5py.File(dset+'test_val.mat', "r") as hv:#ValData
