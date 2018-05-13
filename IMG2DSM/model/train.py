@@ -150,7 +150,7 @@ def train(**kwargs):
             print("")
             print('Epoch %s/%s, Time: %s' % (e + 1, nb_epoch, time.time() - start))
 
-            if e % 5 == 0:
+            if e % 50 == 0: # print at every 50 epoch
                 gen_weights_path = os.path.join('../../models/%s/gen_weights_epoch%s.h5' % (model_name, e))
                 generator_model.save_weights(gen_weights_path, overwrite=True)
 
