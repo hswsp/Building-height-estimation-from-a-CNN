@@ -7,6 +7,7 @@ import models
 from keras.utils import generic_utils
 from keras.optimizers import Adam, SGD
 from keras import backend as K
+import tensorflow as tf
 # Utils
 sys.path.append("../utils")
 import general_utils
@@ -45,8 +46,8 @@ def train(**kwargs):
     general_utils.setup_logging(model_name)
 
     # Load and rescale data
-    X_full_train, X_sketch_train, X_full_val, X_sketch_val = data_utils.load_data(dset, image_data_format)
-    img_dim = X_full_train.shape[-3:]
+    y_data, X_data, y_data_val, X_data_val = data_utils.load_data(dset, image_data_format)
+    img_dim = y_data.shape[-3:]
 
 
     # Get the number of non overlapping patch and the size of input image to the discriminator
@@ -93,6 +94,9 @@ def train(**kwargs):
         gen_loss = 100
         disc_loss = 100
 
+        # before training init writer (for tensorboard log) / model
+        writer = tf.summary.FileWriter('../logs/')
+
         # Start training
         print("Start training")
         for e in range(nb_epoch):
@@ -101,7 +105,7 @@ def train(**kwargs):
             batch_counter = 1
             start = time.time()
 
-            for X_full_batch, X_sketch_batch in data_utils.gen_batch(X_full_train, X_sketch_train, batch_size):
+            for X_full_batch, X_sketch_batch in data_utils.gen_batch(y_data, X_data, batch_size):
 
                 # Create a batch to feed the discriminator model
                 X_disc, y_disc = data_utils.get_disc_batch(X_full_batch,
@@ -117,7 +121,7 @@ def train(**kwargs):
                 disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)  # Y_disc是[a,b]形状的标签，也就是输出的形状
 
                 # Create a batch to feed the generator model
-                X_gen_target, X_gen = next(data_utils.gen_batch(X_full_train, X_sketch_train, batch_size))
+                X_gen_target, X_gen = next(data_utils.gen_batch(y_data, X_data, batch_size))
 				# next() 返回迭代器的下一个项目。
 				# choice() 方法返回一个列表，元组或字符串的随机项。
                 y_gen = np.zeros((X_gen.shape[0], 2), dtype=np.uint8)
@@ -130,17 +134,29 @@ def train(**kwargs):
                 discriminator_model.trainable = True
 
                 batch_counter += 1
+                # G total loss=loss_weights*gen_loss'
                 progbar.add(batch_size, values=[("D logloss", disc_loss),
                                                 ("G tot", gen_loss[0]),
                                                 ("G L1", gen_loss[1]),
                                                 ("G logloss", gen_loss[2])])
+                
+                #save in tensorboard
+                tf.summary.scalar("D logloss", disc_loss)
+                tf.summary.scalar("G tot", gen_loss[0])
+                tf.summary.scalar("G L1", gen_loss[1])
+                tf.summary.scalar("G logloss", gen_loss[2]))
+                merged=tf.summary.merge_all()  
+                #summary = tf.Summary(value=[tf.Summary.Value(tag="loss", 
+                                             simple_value=value), ])
 
+                writer.add_summary(merged,e)  
+                
                 # Save images for visualization
                 if batch_counter % (n_batch_per_epoch / 2) == 0:
                     # Get new images from validation
                     data_utils.plot_generated_batch(X_full_batch, X_sketch_batch, generator_model,
                                                     batch_size, image_data_format, "training")
-                    X_full_batch, X_sketch_batch = next(data_utils.gen_batch(X_full_val, X_sketch_val, batch_size))
+                    X_full_batch, X_sketch_batch = next(data_utils.gen_batch(y_data_val, X_data_val, batch_size))
                     data_utils.plot_generated_batch(X_full_batch, X_sketch_batch, generator_model,
                                                     batch_size, image_data_format, "validation")
 
