@@ -7,12 +7,22 @@ import models
 from keras.utils import generic_utils
 from keras.optimizers import Adam, SGD
 from keras import backend as K
-import tensorflow as tf
+from keras.callbacks import TensorBoard
 # Utils
 sys.path.append("../utils")
 import general_utils
 import data_utils
 
+
+# using tensorboard
+def write_log(callback, names, logs, batch_no):
+    for name, value in zip(names, logs):
+        summary = tf.Summary()
+        summary_value = summary.value.add()
+        summary_value.simple_value = value
+        summary_value.tag = name
+        callback.writer.add_summary(summary, batch_no)
+        callback.writer.flush()
 
 def l1_loss(y_true, y_pred):
     return K.sum(K.abs(y_pred - y_true), axis=-1)
@@ -94,8 +104,14 @@ def train(**kwargs):
         gen_loss = 100
         disc_loss = 100
 
-        # before training init writer (for tensorboard log) / model
-        writer = tf.summary.FileWriter('../logs/')
+        # before training init callback (for tensorboard log) 
+        callback_DCGAN = TensorBoard('../logs/DCGAN/')
+        callback_DCGAN.set_model(DCGAN_model)
+        train_DCGAN_names = ["train_G_tot", "train_G_L1" ,"train_G_logloss"]
+        
+        callback_dis = TensorBoard('../logs/Dis/')
+        callback_dis.set_model(discriminator_model)
+        train_dis_names = ["train_D_logloss"]
 
         # Start training
         print("Start training")
@@ -105,11 +121,11 @@ def train(**kwargs):
             batch_counter = 1
             start = time.time()
 
-            for X_full_batch, X_sketch_batch in data_utils.gen_batch(y_data, X_data, batch_size):
+            for y_data_batch, X_data_batch in data_utils.gen_batch(y_data, X_data, batch_size):
 
                 # Create a batch to feed the discriminator model
-                X_disc, y_disc = data_utils.get_disc_batch(X_full_batch,
-                                                           X_sketch_batch,
+                X_disc, y_disc = data_utils.get_disc_batch(y_data_batch,
+                                                           X_data_batch,
                                                            generator_model,
                                                            batch_counter,
                                                            patch_size,
@@ -118,7 +134,11 @@ def train(**kwargs):
                                                            label_flipping=label_flipping)
 
                 # Update the discriminator
-                disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)  # Y_disc get the shape like [a,b],which is the out put shape
+                disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)# Y_disc get the shape like [a,b],which is the out put shape
+                  
+                # write to tensorboard
+                write_log(callback_disN, train_dis_names, disc_loss, e)
+
 
                 # Create a batch to feed the generator model
                 X_gen_target, X_gen = next(data_utils.gen_batch(y_data, X_data, batch_size))
@@ -130,6 +150,8 @@ def train(**kwargs):
                 # Freeze the discriminator
                 discriminator_model.trainable = False
                 gen_loss = DCGAN_model.train_on_batch(X_gen, [X_gen_target, y_gen])
+
+                
                 # Unfreeze the discriminator
                 discriminator_model.trainable = True
 
@@ -140,28 +162,18 @@ def train(**kwargs):
                                                 ("G L1", gen_loss[1]),
                                                 ("G logloss", gen_loss[2])])
                 
-                #save in tensorboard
-                tf.summary.scalar("D logloss", disc_loss)
-                tf.summary.scalar("G tot", gen_loss[0])
-                tf.summary.scalar("G L1", gen_loss[1])
-                tf.summary.scalar("G logloss", gen_loss[2])
-
-                ##creat a Session 
-                sess = tf.Session()
-                merged=tf.summary.merge_all()  
-                # summary = tf.Summary(value=[tf.Summary.Value(tag="loss", 
-                #                              simple_value=value), ])
-                rs=sess.run(merged)
-                writer.add_summary(rs,e)  
+                # write to tensorboard
+                write_log(callback_DCGAN, train_DCGAN_names, gen_loss, e)
 
                 # Save images for visualization
                 if batch_counter % (n_batch_per_epoch / 2) == 0:
                     # Get new images from validation
-                    data_utils.plot_generated_batch(X_full_batch, X_sketch_batch, generator_model,
+                    data_utils.plot_generated_batch(y_data_batch, X_data_batch, generator_model,
                                                     batch_size, image_data_format, "training")
-                    X_full_batch, X_sketch_batch = next(data_utils.gen_batch(y_data_val, X_data_val, batch_size))
-                    data_utils.plot_generated_batch(X_full_batch, X_sketch_batch, generator_model,
+                    y_data_batch, X_data_batch = next(data_utils.gen_batch(y_data_val, X_data_val, batch_size))
+                    data_utils.plot_generated_batch(y_data_batch, X_data_batch, generator_model,
                                                     batch_size, image_data_format, "validation")
+                    
 
                 if batch_counter >= n_batch_per_epoch:
                     break

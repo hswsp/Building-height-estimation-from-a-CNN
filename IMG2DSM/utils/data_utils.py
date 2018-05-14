@@ -130,9 +130,9 @@ def load_data(dset, image_data_format):
            
             if image_data_format == "channels_last":
                 y_data_val = np.expand_dims(y_data_val, axis=3)
-                y_data_val = normalization(y_data_val.astype(np.float16))  #=>[-1,1]
+                y_data_val = normalization_float(y_data_val,np.max(y_data_val))  #=>[-1,1]
                 y_data_val = np.concatenate((y_data_val, y_data_val,y_data_val),  axis=3)
-                X_data_val = X_data_val.transpose(0, 2, 3, 1)
+                X_data_val = normalization(X_data_val.transpose(0, 2, 3, 1))
                 
 
     return y_data, X_data, y_data_val, X_data_val
@@ -154,7 +154,7 @@ def get_disc_batch(X_full_batch, X_sketch_batch, generator_model, batch_counter,
         # Produce an output
         X_disc = generator_model.predict(X_sketch_batch) # 根据输入图片预测的图片
         y_disc = np.zeros((X_disc.shape[0], 2), dtype=np.uint8)
-        y_disc[:, 0] = 1
+        y_disc[:, 0] = 1 # y_disc[:,0] represent gen image;y_disc[:,1] represent true image
 
         if label_flipping > 0:
             p = np.random.binomial(1, label_flipping)
