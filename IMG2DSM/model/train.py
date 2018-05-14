@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import numpy as np
+import tensorflow as tf
 import models
 from keras.utils import generic_utils
 from keras.optimizers import Adam, SGD
