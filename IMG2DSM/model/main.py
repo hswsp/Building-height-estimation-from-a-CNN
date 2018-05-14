@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 "batch_size": args.batch_size,
                 "n_batch_per_epoch": args.n_batch_per_epoch,
                 "nb_epoch": args.nb_epoch,
-                "model_name": "CNN",
+                "model_name": "PatchGAN",
                 "epoch": args.epoch,
                 "nb_classes": args.nb_classes,
                 "do_plot": args.do_plot,
