@@ -71,13 +71,13 @@ if __name__ == "__main__":
     # make disk
     isfigures=os.path.exists('../figures/')   
     if not isfigures:
-    os.makedirs('../figures/')
+        os.makedirs('../figures/')
     ismodels=os.path.exists('../models/')   
     if not isfigures:
-    os.makedirs('../models/') 
+        os.makedirs('../models/') 
     islog=os.path.exists('../logs/')   
     if not isfigures:
-    os.makedirs('../logs/')  
+        os.makedirs('../logs/')  
 
 
     # Launch training
