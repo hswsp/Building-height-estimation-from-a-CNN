@@ -303,14 +303,22 @@ def load(model_name, img_dim, nb_patch, bn_mode, use_mbd, batch_size):
         model = generator_unet_deconv(img_dim,  bn_mode, batch_size, model_name=model_name)
         model.summary()
         from keras.utils import plot_model
+<<<<<<< HEAD
         plot_model(model, to_file="../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+=======
+        plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+>>>>>>> 6430144eae59a3dcaabbb55f99b4a5105b2afaa0
         return model
 
     if model_name == "DCGAN_discriminator":
         model = DCGAN_discriminator(img_dim, nb_patch, bn_mode, model_name=model_name, use_mbd=use_mbd)
         model.summary()
         from keras.utils import plot_model
+<<<<<<< HEAD
         plot_model(model, to_file="../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+=======
+        plot_model(model, to_file="../../figures/%s.png" % model_name, show_shapes=True, show_layer_names=True)
+>>>>>>> 6430144eae59a3dcaabbb55f99b4a5105b2afaa0
         return model
 
 
