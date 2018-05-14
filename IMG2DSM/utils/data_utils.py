@@ -11,12 +11,16 @@ TrainData2='Potsdam1.mat'
 ValData = 'Vaihingen.mat'               #'Vaihingen.mat'
 
 def normalization(X):
-#[0,255]=>[-1,1]
+    #[0,255]=>[-1,1]
     return X / 127.5 - 1
 
+def normalization_float(X,maxX):
+    #[0,max]=>[-1,1]
+    X = X / maxX
+    return 2.0*X-1
 
 def inverse_normalization(X):
-# [-1,1]=>[0,1]
+    # [-1,1]=>[0,1]
     return (X + 1.) / 2.
 
 
@@ -88,6 +92,8 @@ def load_largeData(X_full,img_type):
 
 def load_data(dset, image_data_format):
 
+    # output:[-1,1]
+
     with h5py.File(dset+TrainData1, "r") as hf: #
         X_full_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
         X_full_train = load_largeData(X_full_train,'depths')
@@ -116,6 +122,7 @@ def load_data(dset, image_data_format):
         X_full_train = np.expand_dims(X_full_train, axis=3)
         X_full_train = np.concatenate((X_full_train,X_full_train,X_full_train), axis = 3) # zero aixis is number, 3 is channel
         X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
+        X_sketch_train = normalization_float(X_sketch_train,np.max(X_sketch_train)) # =>[-1,1]
 
 
     with h5py.File(dset+ValData, "r") as hv:#
@@ -138,7 +145,7 @@ def load_data(dset, image_data_format):
                 X_full_val = np.expand_dims(X_full_val, axis=3)
                 X_full_val = np.concatenate((X_full_val, X_full_val,X_full_val),  axis=3)
                 X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
-                X_sketch_val = normalization(X_sketch_val.astype(np.float16))
+                X_sketch_val = normalization(X_sketch_val.astype(np.float16))  #=>[-1,1]
 
     return X_full_train, X_sketch_train, X_full_val, X_sketch_val
 
