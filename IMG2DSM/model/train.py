@@ -137,7 +137,7 @@ def train(**kwargs):
                 disc_loss = discriminator_model.train_on_batch(X_disc, y_disc)# Y_disc get the shape like [a,b],which is the out put shape
                   
                 # write to tensorboard
-                write_log(callback_disN, train_dis_names, disc_loss, e)
+                write_log(callback_dis, train_dis_names, disc_loss, e)
 
 
                 # Create a batch to feed the generator model
