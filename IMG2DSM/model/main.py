@@ -68,16 +68,16 @@ if __name__ == "__main__":
                 "patch_size": args.patch_size,
                 "use_mbd": args.use_mbd
                 }
-    # make disk
-    isfigures=os.path.exists('../figures/')   
-    if not isfigures:
-        os.makedirs('../figures/')
-    ismodels=os.path.exists('../models/')   
-    if not isfigures:
-        os.makedirs('../models/') 
-    islog=os.path.exists('../logs/')   
-    if not isfigures:
-        os.makedirs('../logs/')  
+    # # make disk
+    # isfigures=os.path.exists('../figures/')   
+    # if not isfigures:
+    #     os.makedirs('../figures/')
+    # ismodels=os.path.exists('../models/')   
+    # if not isfigures:
+    #     os.makedirs('../models/') 
+    # islog=os.path.exists('../logs/')   
+    # if not isfigures:
+    #     os.makedirs('../logs/')  
 
 
     # Launch training

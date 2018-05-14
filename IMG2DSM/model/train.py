@@ -145,11 +145,14 @@ def train(**kwargs):
                 tf.summary.scalar("G tot", gen_loss[0])
                 tf.summary.scalar("G L1", gen_loss[1])
                 tf.summary.scalar("G logloss", gen_loss[2])
+
+                ##creat a Session 
+                sess = tf.Session()
                 merged=tf.summary.merge_all()  
                 # summary = tf.Summary(value=[tf.Summary.Value(tag="loss", 
                 #                              simple_value=value), ])
-
-                writer.add_summary(merged,e)  
+                rs=sess.run(merged)
+                writer.add_summary(rs,e)  
 
                 # Save images for visualization
                 if batch_counter % (n_batch_per_epoch / 2) == 0:
