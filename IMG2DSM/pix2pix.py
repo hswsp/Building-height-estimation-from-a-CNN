@@ -294,8 +294,9 @@ def load_examples():
     # synchronize seed for image operations so that we do the same operations to both
     # input and output images
     seed = random.randint(0, 2**31 - 1)
-    def transform(image):
+    def transform(image,depth):
         r = image
+        d = depth
         if a.flip:
             r = tf.image.random_flip_left_right(r, seed=seed)
 
@@ -304,8 +305,7 @@ def load_examples():
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
 
         offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)), dtype=tf.int32)
-		
-        #tf.random_uniform(shape,minval=0,maxval=None,dtype=tf.float32,seed=None,name=None) 
+		#tf.random_uniform(shape,minval=0,maxval=None,dtype=tf.float32,seed=None,name=None) 
 
         # use equal interval,non overlap
         # max_row = max_col = (a.scale_size-CROP_SIZE)/CROP_SIZE + 1 
@@ -316,18 +316,19 @@ def load_examples():
         #offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
         if a.scale_size > CROP_SIZE:
             r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
+            d = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
             #Frame Cutout { tarting Point Height,Starting Point Width, Frame Height, Box Width}
         elif a.scale_size < CROP_SIZE:
             raise Exception("scale size cannot be less than crop size")
-        return r
+        return r,d
 
-    with tf.name_scope("input_images"):
-        input_images = transform(inputs)
+    with tf.name_scope("input_tratgets"):
+        input_images ,targets_images= transform(inputs,targets)
 
-    with tf.name_scope("target_images"):
-        target_images = transform(targets)
+    # with tf.name_scope("target_images"):
+    #     target_images = transform(targets)
 
-    paths_batch, inputs_batch, targets_batch = tf.train.batch([paths, input_images, target_images], batch_size=a.batch_size) #tf.train.batch是按顺序读取数据，队列中的数据始终是一个有序的队列
+    paths_batch, inputs_batch, targets_batch = tf.train.batch([paths, input_images, targets_images], batch_size=a.batch_size) #tf.train.batch是按顺序读取数据，队列中的数据始终是一个有序的队列
     steps_per_epoch = int(math.ceil(len(input_paths) / a.batch_size))
 
     return Examples(
