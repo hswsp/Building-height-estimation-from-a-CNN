@@ -259,7 +259,8 @@ def load_examples():
         input_paths = sorted(input_paths)
 
     with tf.name_scope("load_images"):
-        path_queue = tf.train.string_input_producer(input_paths, shuffle=a.mode == "train") #函数把我们需要的全部文件打包为一个tf内部的queue类型，之后tf开文件就从这个queue中取目录了，
+        #The function packs all the files we need into a tf internal queue type. After tf opens the file, it takes a directory from the queue.
+        path_queue = tf.train.string_input_producer(input_paths, shuffle=a.mode == "train") 
         reader = tf.WholeFileReader() #tf.WholeFileReader加载完整图像文件到内存
         paths, contents = reader.read(path_queue)
         raw_input = decode(contents)
@@ -302,8 +303,8 @@ def load_examples():
         # assume we're going to be doing downscaling here
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
 
-        offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)), dtype=tf.int32)#cast(x, dtype, name=None) 将x的数据格式转化成dtype
-		#tf.random_uniform((4, 4), minval=low,maxval=high,dtype=tf.float32)))返回4*4的矩阵，产生于low和high之间，产生的值是均匀分布的。
+        offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)), dtype=tf.int32)
+		
         #tf.random_uniform(shape,minval=0,maxval=None,dtype=tf.float32,seed=None,name=None) 
 
         # use equal interval,non overlap
