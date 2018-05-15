@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import hdf5storage
 import h5py
 import math
-%matplotlib inline
+#%matplotlib inline
 import time
 from keras.models import Sequential, model_from_json, Model, load_model
 from keras.optimizers import SGD
