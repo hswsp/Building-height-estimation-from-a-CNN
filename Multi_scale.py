@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 import os
 import time
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import hdf5storage
 import scipy.io as scio
 import h5py
