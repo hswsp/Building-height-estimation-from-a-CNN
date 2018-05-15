@@ -94,7 +94,7 @@ def load_data(dset, image_data_format):
 
     # output:[-1,1]
 
-    with h5py.File(dset+'test.mat', "r") as hf: #TrainData1
+    with h5py.File(dset+TrainData1, "r") as hf: #'test.mat'
         y_data = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
         y_data = load_largeData(y_data,'depths')
         X_data = hf["images"]
@@ -119,14 +119,14 @@ def load_data(dset, image_data_format):
         
 
 
-    with h5py.File(dset+'test_val.mat', "r") as hv:#ValData
+    with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
             y_data_val = hv["depths"]
             dsm_num = len(y_data_val)
-            y_data_val = np.array(y_data_val[:dsm_num / 4]).astype(np.float16)
+            y_data_val = np.array(y_data_val[:dsm_num / 2]).astype(np.float16)
             
             X_data_val =hv["images"]
             img_num = len(X_data_val)
-            X_data_val = np.array(X_data_val[:img_num / 4]).astype(np.uint8)
+            X_data_val = np.array(X_data_val[:img_num / 2]).astype(np.uint8)
            
             if image_data_format == "channels_last":
                 y_data_val = np.expand_dims(y_data_val, axis=3)
