@@ -215,10 +215,10 @@ def plot_generated_batch(X_full, X_sketch, generator_model, batch_size, image_da
         Xr = Xr.transpose(1,2,0)
 
     if Xr.shape[-1] == 1:
-        plt.imshow(Xr[:, :, 0], cmap="gray")
+        plt.imwrite(Xr[:, :, 0],"../figures/current_batch_%s.png" % suffix, cmap="gray")
     else:
-        plt.imshow(Xr)
-    plt.axis("off")
-    plt.savefig("../figures/current_batch_%s.png" % suffix)
-    plt.clf()
-    plt.close()
+        plt.imread(Xr,"../figures/current_batch_%s.png" % suffix)
+    # plt.axis("off")
+    # plt.savefig("../figures/current_batch_%s.png" % suffix)
+    # plt.clf()
+    # plt.close()
