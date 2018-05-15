@@ -45,7 +45,7 @@ isExists=os.path.exists('./tmp')
 if not isExists:
     os.makedirs('./tmp')
 
-    def scale_invarient_error(y_true,y_pred):
+def scale_invarient_error(y_true,y_pred):
     log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
     log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
