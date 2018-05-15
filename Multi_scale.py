@@ -51,8 +51,8 @@ def scale_invarient_error(y_true,y_pred):
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 batch_size=32
-coarse_epochs = 1000
-fine_epoches = 1000
+coarse_epochs = 1500
+fine_epoches = 1500
 img_row=640
 img_cols=480
 learning_rate=0.1
