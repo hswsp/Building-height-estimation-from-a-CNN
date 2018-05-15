@@ -5,6 +5,7 @@ import numpy as np
 import h5py
 
 import matplotlib.pylab as plt
+import scipy
 
 TrainData1='Postdam.mat'
 TrainData2='Postdam1.mat'
@@ -215,9 +216,11 @@ def plot_generated_batch(X_full, X_sketch, generator_model, batch_size, image_da
         Xr = Xr.transpose(1,2,0)
 
     if Xr.shape[-1] == 1:
-        plt.imwrite(Xr[:, :, 0],"../figures/current_batch_%s.png" % suffix, cmap="gray")
+        # plt.imwrite(Xr[:, :, 0],"../figures/current_batch_%s.png" % suffix, cmap="gray")
+        scipy.misc.imsave("../figures/current_batch_%s.png" % suffix,Xr[:, :, 0])
     else:
-        plt.imwrite(Xr,"../figures/current_batch_%s.png" % suffix)
+        # plt.imwrite(Xr,"../figures/current_batch_%s.png" % suffix)
+        scipy.misc.imsave("../figures/current_batch_%s.png" % suffix,Xr)
     # plt.axis("off")
     # plt.savefig("../figures/current_batch_%s.png" % suffix)
     # plt.clf()
