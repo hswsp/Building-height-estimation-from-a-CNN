@@ -293,7 +293,7 @@ def load_examples():
 
     # synchronize seed for image operations so that we do the same operations to both
     # input and output images
-    # seed = random.randint(0, 2**31 - 1)
+    seed = random.randint(0, 2**31 - 1)
     def transform(image,depth):
         r = image
         d = depth
