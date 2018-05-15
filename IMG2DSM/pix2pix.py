@@ -313,9 +313,7 @@ def load_examples():
         # for row = 1:max_row      
         #     for col = 1:max_col        
         #         offset[row][col]=(row-1)*h_val
-
- 
-        offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
+        #offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
         if a.scale_size > CROP_SIZE:
             r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) # 画框裁剪 {起点高度，起点宽度，框高，框宽}
         elif a.scale_size < CROP_SIZE:
