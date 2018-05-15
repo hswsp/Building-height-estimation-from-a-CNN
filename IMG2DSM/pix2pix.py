@@ -315,7 +315,8 @@ def load_examples():
         #         offset[row][col]=(row-1)*h_val
         #offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
         if a.scale_size > CROP_SIZE:
-            r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) # 画框裁剪 {起点高度，起点宽度，框高，框宽}
+            r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
+            #Frame Cutout { tarting Point Height,Starting Point Width, Frame Height, Box Width}
         elif a.scale_size < CROP_SIZE:
             raise Exception("scale size cannot be less than crop size")
         return r
