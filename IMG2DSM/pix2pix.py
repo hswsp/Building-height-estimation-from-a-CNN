@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*- 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -13,7 +12,6 @@ import random
 import collections
 import math
 import time
-import h5py
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_dir", help="path to folder containing images")
@@ -56,14 +54,6 @@ CROP_SIZE = 256
 Examples = collections.namedtuple("Examples", "paths, inputs, targets, count, steps_per_epoch")
 Model = collections.namedtuple("Model", "outputs, predict_real, predict_fake, discrim_loss, discrim_grads_and_vars, gen_loss_GAN, gen_loss_L1, gen_grads_and_vars, train")
 
-root = '/home/smiletranquilly/FYP/pix2pix'
-isExists=os.path.exists(root)
-if not isExists:
-    os.makedirs(root) 
-os.chdir(root)
-
-# dataFile = '/home/download/nyu_depth_v2_labeled.mat'
-# output_dir = './output/'
 
 def preprocess(image):
     with tf.name_scope("preprocess"):
@@ -247,17 +237,17 @@ def load_examples():
     if a.input_dir is None or not os.path.exists(a.input_dir):
         raise Exception("input_dir does not exist")
 
-    input_paths = glob.glob(os.path.join(a.input_dir, "*.jpg"))  # 返回所有匹配的文件路径列表
+    input_paths = glob.glob(os.path.join(a.input_dir, "*.jpg")) #返回所有匹配的文件路径列表
     decode = tf.image.decode_jpeg
     if len(input_paths) == 0:
-        input_paths = glob.glob(os.path.join(a.input_dir, "*.png"))  # 没有jpg就看png
+        input_paths = glob.glob(os.path.join(a.input_dir, "*.png")) # 没有jpg就看png
         decode = tf.image.decode_png
 
     if len(input_paths) == 0:
         raise Exception("input_dir contains no image files")
 
     def get_name(path):
-        name, _ = os.path.splitext(os.path.basename(path))
+        name, _ = os.path.splitext(os.path.basename(path)) #返回path最后的文件名
         return name
 
     # if the image names are numbers, sort by the value rather than asciibetically
@@ -268,10 +258,9 @@ def load_examples():
         input_paths = sorted(input_paths)
 
     with tf.name_scope("load_images"):
-        path_queue = tf.train.string_input_producer(input_paths,
-                                                    shuffle=a.mode == "train")  # 函数把我们需要的全部文件打包为一个tf内部的queue类型，之后tf开文件就从这个queue中取目录了，
-        reader = tf.WholeFileReader()  # tf.WholeFileReader加载完整图像文件到内存
-        paths, contents = reader.read(path_queue) #path为图片路径
+        path_queue = tf.train.string_input_producer(input_paths, shuffle=a.mode == "train") #函数把我们需要的全部文件打包为一个tf内部的queue类型，之后tf开文件就从这个queue中取目录了，
+        reader = tf.WholeFileReader() #tf.WholeFileReader加载完整图像文件到内存
+        paths, contents = reader.read(path_queue)
         raw_input = decode(contents)
         raw_input = tf.image.convert_image_dtype(raw_input, dtype=tf.float32)
 
@@ -289,9 +278,9 @@ def load_examples():
             b_images = tf.stack([a_chan, b_chan], axis=2)
         else:
             # break apart image pair and move to range [-1, 1]
-            width = tf.shape(raw_input)[1]  # [height, width, channels]  #得到tensor的尺寸
-            a_images = preprocess(raw_input[:, :width // 2, :])
-            b_images = preprocess(raw_input[:, width // 2:, :])
+            width = tf.shape(raw_input)[1] # [height, width, channels]  #得到tensor的尺寸
+            a_images = preprocess(raw_input[:,:width//2,:]) 
+            b_images = preprocess(raw_input[:,width//2:,:])
 
     if a.which_direction == "AtoB":
         inputs, targets = [a_images, b_images]
@@ -302,8 +291,7 @@ def load_examples():
 
     # synchronize seed for image operations so that we do the same operations to both
     # input and output images
-    seed = random.randint(0, 2 ** 31 - 1)
-
+    seed = random.randint(0, 2**31 - 1)
     def transform(image):
         r = image
         if a.flip:
@@ -313,11 +301,21 @@ def load_examples():
         # assume we're going to be doing downscaling here
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
 
-        offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)),
-                         dtype=tf.int32)  # cast(x, dtype, name=None) 将x的数据格式转化成dtype
-        # tf.random_uniform((4, 4), minval=low,maxval=high,dtype=tf.float32)))返回4*4的矩阵，产生于low和high之间，产生的值是均匀分布的。
+        offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)), dtype=tf.int32)#cast(x, dtype, name=None) 将x的数据格式转化成dtype
+		#tf.random_uniform((4, 4), minval=low,maxval=high,dtype=tf.float32)))返回4*4的矩阵，产生于low和high之间，产生的值是均匀分布的。
+        #tf.random_uniform(shape,minval=0,maxval=None,dtype=tf.float32,seed=None,name=None) 
+
+        # use equal interval,non overlap
+        # max_row = max_col = (a.scale_size-CROP_SIZE)/CROP_SIZE + 1 
+        # offset = [[0 for col in range(max_col)] for row in range(max_row)]
+        # for row = 1:max_row      
+        #     for col = 1:max_col        
+        #         offset[row][col]=(row-1)*h_val
+
+ 
+        offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
         if a.scale_size > CROP_SIZE:
-            r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE)  # 画框裁剪 {起点高度，起点宽度，框高，框宽}
+            r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) # 画框裁剪 {起点高度，起点宽度，框高，框宽}
         elif a.scale_size < CROP_SIZE:
             raise Exception("scale size cannot be less than crop size")
         return r
@@ -328,8 +326,7 @@ def load_examples():
     with tf.name_scope("target_images"):
         target_images = transform(targets)
 
-    paths_batch, inputs_batch, targets_batch = tf.train.batch([paths, input_images, target_images],
-                                                              batch_size=a.batch_size)  # tf.train.batch是按顺序读取数据，队列中的数据始终是一个有序的队列
+    paths_batch, inputs_batch, targets_batch = tf.train.batch([paths, input_images, target_images], batch_size=a.batch_size) #tf.train.batch是按顺序读取数据，队列中的数据始终是一个有序的队列
     steps_per_epoch = int(math.ceil(len(input_paths) / a.batch_size))
 
     return Examples(
@@ -576,7 +573,7 @@ def main():
         # disable these features in test mode
         a.scale_size = CROP_SIZE
         a.flip = False
-	# 打印出所有key-value
+# 打印出所有key-value
     for k, v in a._get_kwargs():
         print(k, "=", v)
 
@@ -674,7 +671,7 @@ def main():
             size = [CROP_SIZE, int(round(CROP_SIZE * a.aspect_ratio))]
             image = tf.image.resize_images(image, size=size, method=tf.image.ResizeMethod.BICUBIC)
 
-        return tf.image.convert_image_dtype(image, dtype=tf.uint8, saturate=True) #图片归一化，[0,1],dtype类型数据
+        return tf.image.convert_image_dtype(image, dtype=tf.uint8, saturate=True)
 
     # reverse any processing on images so they can be written to disk or displayed to user
     with tf.name_scope("convert_inputs"):
@@ -705,7 +702,7 @@ def main():
         tf.summary.image("outputs", converted_outputs)
 
     with tf.name_scope("predict_real_summary"):
-        tf.summary.image("predict_real", tf.image.convert_image_dtype(model.predict_real, dtype=tf.uint8)) #tf.summary.image 将图像写入 summary
+        tf.summary.image("predict_real", tf.image.convert_image_dtype(model.predict_real, dtype=tf.uint8))
 
     with tf.name_scope("predict_fake_summary"):
         tf.summary.image("predict_fake", tf.image.convert_image_dtype(model.predict_fake, dtype=tf.uint8))
