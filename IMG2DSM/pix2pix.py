@@ -39,7 +39,7 @@ parser.add_argument("--ndf", type=int, default=64, help="number of discriminator
 parser.add_argument("--scale_size", type=int, default=286, help="scale images to this size before cropping to 256x256")
 parser.add_argument("--flip", dest="flip", action="store_true", help="flip images horizontally")
 parser.add_argument("--no_flip", dest="flip", action="store_false", help="don't flip images horizontally")
-parser.set_defaults(flip=True)
+parser.set_defaults(flip=False)
 parser.add_argument("--lr", type=float, default=0.0002, help="initial learning rate for adam")
 parser.add_argument("--beta1", type=float, default=0.5, help="momentum term of adam")
 parser.add_argument("--l1_weight", type=float, default=100.0, help="weight on L1 term for generator gradient")
@@ -293,16 +293,18 @@ def load_examples():
 
     # synchronize seed for image operations so that we do the same operations to both
     # input and output images
-    seed = random.randint(0, 2**31 - 1)
+    # seed = random.randint(0, 2**31 - 1)
     def transform(image,depth):
         r = image
         d = depth
-        if a.flip:
-            r = tf.image.random_flip_left_right(r, seed=seed)
+        # if a.flip:
+        #     r = tf.image.random_flip_left_right(r, seed=seed)
+        #     d = tf.image.random_flip_left_right(r, seed=seed)
 
         # area produces a nice downscaling, but does nearest neighbor for upscaling
         # assume we're going to be doing downscaling here
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
+        d = tf.image.resize_images(d, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
 
         offset = tf.cast(tf.floor(tf.random_uniform([2], 0, a.scale_size - CROP_SIZE + 1, seed=seed)), dtype=tf.int32)
 		#tf.random_uniform(shape,minval=0,maxval=None,dtype=tf.float32,seed=None,name=None) 
@@ -316,7 +318,7 @@ def load_examples():
         #offset = tf.cast(tf.floor(range(0,)), dtype=tf.int32)
         if a.scale_size > CROP_SIZE:
             r = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
-            d = tf.image.crop_to_bounding_box(r, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
+            d = tf.image.crop_to_bounding_box(d, offset[0], offset[1], CROP_SIZE, CROP_SIZE) 
             #Frame Cutout { tarting Point Height,Starting Point Width, Frame Height, Box Width}
         elif a.scale_size < CROP_SIZE:
             raise Exception("scale size cannot be less than crop size")
