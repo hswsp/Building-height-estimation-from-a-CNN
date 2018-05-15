@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser.add_argument('patch_size', type=int, nargs=2, action="store", help="Patch size for D")
     parser.add_argument('--backend', type=str, default="tensorflow", help="theano or tensorflow")
     parser.add_argument('--generator', type=str, default="deconv", help="upsampling or deconv")
-    parser.add_argument('--dset', type=str, default="/home/download/", help="dataset path")
+    parser.add_argument('--dset', type=str, default="/home/Dataset/", help="dataset path")
     parser.add_argument('--batch_size', default=4, type=int, help='Batch size')
     parser.add_argument('--n_batch_per_epoch', default=100, type=int, help="Number of training epochs")
     parser.add_argument('--nb_epoch', default=400, type=int, help="Number of batches per epoch")

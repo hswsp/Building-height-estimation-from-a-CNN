@@ -6,9 +6,9 @@ import h5py
 
 import matplotlib.pylab as plt
 
-TrainData1='Potsdam.mat'
-TrainData2='Potsdam1.mat'
-ValData = 'Vaihingen.mat'               #'Vaihingen.mat'
+TrainData1='Postdam.mat'
+TrainData2='Postdam1.mat'
+ValData = 'Postdam2.mat'               #'Vaihingen.mat'
 
 def normalization(X):
     #[0,255]=>[-1,1]
@@ -101,19 +101,19 @@ def load_data(dset, image_data_format):
         X_data = load_largeData(X_data,'images')
         
         hf.close()
-    # with h5py.File(dset+TrainData2, "r") as hm: #
-    #     y_data1 = hm["depths"]
-    #     y_data1 = load_largeData(y_data1,'depths')
-    #     X_data1 = hm["images"]
-    #     X_data1 = load_largeData(X_data1,'images')
-    #     hm.close()
+    with h5py.File(dset+TrainData2, "r") as hm: #
+        y_data1 = hm["depths"]
+        y_data1 = load_largeData(y_data1,'depths')
+        X_data1 = hm["images"]
+        X_data1 = load_largeData(X_data1,'images')
+        hm.close()
 
-    # y_data = np.concatenate((y_data, y_data1),axis = 0)
-    # X_data = np.concatenate((X_data, X_data1),axis = 0)
+    y_data = np.concatenate((y_data, y_data1),axis = 0)
+    X_data = np.concatenate((X_data, X_data1),axis = 0)
 
     if image_data_format == "channels_last":
         y_data = np.expand_dims(y_data, axis=3)
-        y_data = normalization_float(y_data,np.max(y_data)) # =>[-1,1]
+        y_data = normalization(y_data) # =>[-1,1] _float ,np.max(y_data)
         y_data = np.concatenate((y_data,y_data,y_data), axis = 3) # zero aixis is number, 3 is channel
         X_data = X_data.transpose(0, 2, 3, 1)
         
@@ -130,7 +130,7 @@ def load_data(dset, image_data_format):
            
             if image_data_format == "channels_last":
                 y_data_val = np.expand_dims(y_data_val, axis=3)
-                y_data_val = normalization_float(y_data_val,np.max(y_data_val))  #=>[-1,1]
+                y_data_val = normalization(y_data_val)  #=>[-1,1] _float ,np.max(y_data_val)
                 y_data_val = np.concatenate((y_data_val, y_data_val,y_data_val),  axis=3)
                 X_data_val = normalization(X_data_val.transpose(0, 2, 3, 1))
                 
