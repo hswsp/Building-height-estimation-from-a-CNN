@@ -115,7 +115,7 @@ def rescale(data):
     return data
 
 def rescale_float(label):
-    maxnum = np.max(label)；
+    maxnum = np.max(label)
     label=label.astype('float32')
     label = label /255.0
     return label
