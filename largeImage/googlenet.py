@@ -31,7 +31,7 @@ gamma =  0.96
 stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
-dset = '/home/Dataset/dataset'
+dset = '/home/Dataset/dataset/'
 TrainData1='Potsdam.mat'
 TrainData2='Potsdam1.mat'
 ValData = 'Vaihingen.mat'
