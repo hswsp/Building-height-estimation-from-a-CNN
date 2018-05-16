@@ -753,6 +753,7 @@ def main():
             # at most, process the test data once
             start = time.time()
             max_steps = min(examples.steps_per_epoch, max_steps)
+            
             for step in range(max_steps):
                 results = sess.run(display_fetches)
                 filesets = save_images(results)
@@ -776,7 +777,9 @@ def main():
                 options = None
                 run_metadata = None
                 if should(a.trace_freq):
-                    options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE) #配置运行时需要记录的信息
+                    #配置运行时需要记录的信息
+                    options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+                    #运行时记录运行信息的proto
                     run_metadata = tf.RunMetadata()
 
                 fetches = {
@@ -795,6 +798,7 @@ def main():
                 if should(a.display_freq):
                     fetches["display"] = display_fetches
 
+                #将配置信息和记录运行信息的proto传入运行的过程，从而记录运行时每一个节点的时间、空间开销信息
                 results = sess.run(fetches, options=options, run_metadata=run_metadata)
 
                 if should(a.summary_freq):
@@ -826,7 +830,9 @@ def main():
                     saver.save(sess, os.path.join(a.output_dir, "model"), global_step=sv.global_step)
 
                 if sv.should_stop():
+                    saver.save(sess, os.path.join(a.output_dir, "model"), global_step=sv.global_step)
                     break
+           
             # except tf.errors.OutOfRangeError:  
             #     print('done')  
             # finally:  
