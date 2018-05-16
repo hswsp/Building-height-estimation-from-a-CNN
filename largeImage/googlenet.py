@@ -33,8 +33,8 @@ stepsize = 100
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/dataset/'
 TrainData1='Postdam.mat'
-TrainData2='Postdam1.mat'
-ValData = 'Postdam2.mat'
+TrainData2='Postdam2.mat'
+ValData = 'Postdam4.mat'
 os.chdir(root)
 
 google_dir = './largeImage/model/'
