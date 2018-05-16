@@ -81,6 +81,7 @@ def load_largeData(X_depths,img_type):
         X2 = np.concatenate((X_depths3, X_depths4), axis=0)
         del X_depths3, X_depths4
         X_depths_train = np.concatenate((X1, X2), axis=0)
+        X_depths_train = np.array(X_depths_train)
     elif img_type == 'images':
         X_depths1 = np.array(X_depths[:dsm_num / 4]).astype(np.float32)
         X_depths2 = np.array(X_depths[dsm_num / 4:dsm_num / 2]).astype(np.float32) # must be float32 in order to divide
@@ -91,8 +92,9 @@ def load_largeData(X_depths,img_type):
         X2 = normalization(np.concatenate((X_depths3, X_depths4), axis=0))
         del X_depths3, X_depths4
         X_depths_train = np.concatenate((X1, X2), axis=0)
+        X_depths_train = np.array(X_depths_train)
 
-    return X_depths_train,dsm_num
+    return X_depths_train
 
 def loadData(dset):
     #channels_last
