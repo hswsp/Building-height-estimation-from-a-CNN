@@ -30,8 +30,8 @@ base_lr = 0.01
 gamma =  0.96
 stepsize = 100
 
-root = '/home/smiletranquilly/FYP/HeightEstimation/'
-dset = '/home/download/'
+root = '/home/smiletranquilly/HeightEstimation/'
+dset = '/home/Dataset/dataset'
 TrainData1='Potsdam.mat'
 TrainData2='Potsdam1.mat'
 ValData = 'Vaihingen.mat'
@@ -99,24 +99,25 @@ def loadData(dset):
     with h5py.File(dset+TrainData1, "r") as hf: 
         X_depths_train1 = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
 #         X_depths_train,num1 = load_largeData(X_depths_train,'depths')
-        X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)/4]).astype(np.float32)
+        X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
     
         X_images_train1 = hf["images"]
 #         X_images_train,num1 = load_largeData(X_images_train,'images')
-        X_images_train1 = np.array(X_images_train1[:len(X_images_train1) / 4]).astype(np.float32)
+        X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
         X_images_train1 = normalization(X_images_train1)
         hf.close()
 
     with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
         X_depths_train = hm["depths"]
-        X_depths_train,num = load_largeData(X_depths_train,'depths')
+        X_depths_train = load_largeData(X_depths_train,'depths')
         X_images_train = hm["images"]
-        X_images_train,num = load_largeData(X_images_train,'images')
+        X_images_train = load_largeData(X_images_train,'images')
         hm.close()
 
     X_depths_train = np.concatenate((X_depths_train, X_depths_train1),axis = 0)
-    X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0)
-    
+    X_depths_train = normalization(X_depths_train)
+
+    X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0) 
     X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
     
     with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
@@ -124,7 +125,7 @@ def loadData(dset):
             dsm_num_val = len(X_depths_val)
             print dsm_num_val
             X_depths_val = np.array(X_depths_val[:dsm_num_val / 4]).astype(np.float32)
-            X_depths_val = normalization_float(X_depths_val,np.max(X_depths_val))
+            X_depths_val = normalization(X_depths_val) #_float ,np.max(X_depths_val)
 
             X_images_val =hv["images"]
             img_num = len(X_images_val)
@@ -249,7 +250,7 @@ def google_net(model_name= 'modify_googlenet'):
 
 def rescale(data):
     data=data.astype('float32')
-    data /= 255    
+    data /= 255.0    
     return data
 
 def pred_single_image_depth_using_CNN(path):
@@ -277,7 +278,7 @@ def train():
 
     # Load and rescale data
     y_data, X_data, X_depths_val, X_images_val = loadData(dset)
-    y_data = normalization_float(y_data,np.max(y_data))
+    # y_data = normalization_float(y_data,np.max(y_data))
     
     
     img_num = len(X_data)
