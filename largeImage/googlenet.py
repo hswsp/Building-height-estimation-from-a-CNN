@@ -100,7 +100,7 @@ def loadData(dset):
         X_depths_train1 = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
 #         X_depths_train,num1 = load_largeData(X_depths_train,'depths')
         X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
-    
+        print X_depths_train1.shape
         X_images_train1 = hf["images"]
 #         X_images_train,num1 = load_largeData(X_images_train,'images')
         X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
@@ -110,10 +110,11 @@ def loadData(dset):
     with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
         X_depths_train = hm["depths"]
         X_depths_train = load_largeData(X_depths_train,'depths')
+        print X_depths_train.shape
         X_images_train = hm["images"]
         X_images_train = load_largeData(X_images_train,'images')
         hm.close()
-
+    
     X_depths_train = np.concatenate((X_depths_train, X_depths_train1),axis = 0)
     X_depths_train = normalization(X_depths_train)
 
