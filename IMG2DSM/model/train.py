@@ -191,6 +191,8 @@ def train(**kwargs):
 
                 DCGAN_weights_path = os.path.join('../models/%s/DCGAN_weights_epoch%s.h5' % (model_name, e))
                 DCGAN_model.save_weights(DCGAN_weights_path, overwrite=True)
+        # save model
+        generator_model.save("../models/gen_model.h5")
 
     except KeyboardInterrupt:
         pass
