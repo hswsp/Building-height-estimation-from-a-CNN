@@ -187,7 +187,7 @@ def plot_generated_batch(X_full, X_sketch, generator_model, batch_size, image_da
     X_gen = generator_model.predict(X_sketch)
 
     X_sketch = inverse_normalization(X_sketch)
-    # X_full = inverse_normalization(X_full)
+    X_full = inverse_normalization(X_full)
     X_gen = inverse_normalization(X_gen)
 
 
