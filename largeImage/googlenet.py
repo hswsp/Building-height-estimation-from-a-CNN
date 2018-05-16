@@ -33,8 +33,8 @@ stepsize = 100
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/dataset/'
 TrainData1='Postdam.mat'
-TrainData2='Postdam2.mat'
-ValData = 'Postdam4.mat'
+TrainData2='Postdam1.mat'
+ValData = 'Postdam2.mat'
 os.chdir(root)
 
 google_dir = './largeImage/model/'
@@ -62,6 +62,7 @@ def scale_invarient_error(y_true,y_pred):
 
 def normalization(X):
     #[0,255]=>[0,1]
+    X = X.data.astype('float32')
     return X / 255.0
 
 def normalization_float(X,maxX):
@@ -127,12 +128,12 @@ def loadData(dset):
             X_depths_val = hv["depths"]
             dsm_num_val = len(X_depths_val)
             print dsm_num_val
-            X_depths_val = np.array(X_depths_val[:dsm_num_val / 4]).astype(np.float32)
+            X_depths_val = np.array(X_depths_val[:dsm_num_val / 2]).astype(np.float32)
             X_depths_val = normalization(X_depths_val) #_float ,np.max(X_depths_val)
 
             X_images_val =hv["images"]
             img_num = len(X_images_val)
-            X_images_val = np.array(X_images_val[:img_num / 4])
+            X_images_val = np.array(X_images_val[:img_num / 2])
             
             X_images_val = X_images_val.transpose(0, 2, 3, 1)
             X_images_val = normalization(X_images_val.astype(np.float32))
