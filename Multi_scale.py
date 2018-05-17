@@ -29,7 +29,7 @@ fine_weights='./fine_data/building_fine_weights.h5'
 log_corsepath = './tmp/building_corse_log'
 log_finepath = './tmp/building_fine_log'
 
-dataFile='/home/download/city.mat'
+dataFile='/home/Dataset/Potsdam_1024.mat'
 
 # 新建文件夹
 isExists=os.path.exists('./coarse_data')    
