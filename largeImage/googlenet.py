@@ -51,6 +51,7 @@ if not isExists:
 def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
 
+# loss function
 def scale_invarient_error(y_true,y_pred):
     # log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
     # log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
@@ -245,8 +246,9 @@ def google_net(model_name= 'modify_googlenet'):
 
     #loss1/fc
     loss1_fc=Flatten(name='loss1/fl')(convloss1)
-    loss1_fc=Dense(16384,use_bias=True,bias_initializer=bias_ini)(loss1_fc) #128*128
+    loss1_fc=Dense(img_row*img_cols/4,use_bias=True,bias_initializer=bias_ini)(loss1_fc) #128*128
     loss1_fc=Activation('relu')(loss1_fc) 
+    dsm_out = Reshape((int(img_row/2),int(img_cols/2)))(loss1_fc)
 
     google_net = Model(input=inputs,output=loss1_fc,name = model_name)
 
