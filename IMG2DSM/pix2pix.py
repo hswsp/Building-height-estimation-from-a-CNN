@@ -55,9 +55,7 @@ CROP_SIZE = 256
 
 Examples = collections.namedtuple("Examples", "paths, inputs, targets, count, steps_per_epoch")
 Model = collections.namedtuple("Model", "outputs, predict_real, predict_fake, discrim_loss, discrim_grads_and_vars, gen_loss_GAN, gen_loss_L1, gen_grads_and_vars, train")
-# train_data1 = "Postdam.mat"
-# train_data2 = "Postdam1.mat"
-# ValData = 'Postdam2.mat'
+
 
 def preprocess(image):
     with tf.name_scope("preprocess"):
@@ -753,7 +751,7 @@ def main():
             # at most, process the test data once
             start = time.time()
             max_steps = min(examples.steps_per_epoch, max_steps)
-            
+
             for step in range(max_steps):
                 results = sess.run(display_fetches)
                 filesets = save_images(results)
