@@ -32,18 +32,18 @@ log_finepath = './tmp/building_fine_log'
 dataFile='/home/Dataset/Potsdam_1024.mat'
 
 # 新建文件夹
-isExists=os.path.exists('./coarse_data')    
+isExists=os.path.exists('coarse_data')    
 if not isExists:
     # 如果不存在则创建目录
-    os.makedirs('./coarse_data')
+    os.makedirs('coarse_data')
     
-isExists=os.path.exists('./fine_data')
+isExists=os.path.exists('fine_data')
 if not isExists:
-    os.makedirs('./fine_data')
+    os.makedirs('fine_data')
     
-isExists=os.path.exists('./tmp')
+isExists=os.path.exists('tmp')
 if not isExists:
-    os.makedirs('./tmp')
+    os.makedirs('tmp')
 
 def scale_invarient_error(y_true,y_pred):
     log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
