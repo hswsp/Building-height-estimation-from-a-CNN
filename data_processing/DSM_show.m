@@ -7,6 +7,9 @@ if isequal(filename,0)||isequal(filepath,0)
 end
 %  origin = imread(filefullpath);
    img = imread(filefullpath);
+   %% 如果是三通道的，只能显示一个
+%    img = img(:,:,1);
+   %% 
 %  row_mid = size(origin,1)/2;
 %  col_mid = size(origin,2)/2;
 %  row_start=row_mid-2000; row_end=row_mid+2000;
