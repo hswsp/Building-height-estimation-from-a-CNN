@@ -22,8 +22,8 @@ from keras import backend as K
 
 batch_size=100
 epochs=1000
-img_row=256
-img_cols=256
+img_row=1024
+img_cols=1024
 momentum=0.9
 Lambda=0.5
 base_lr = 0.01
@@ -32,9 +32,9 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/dataset/'
-TrainData1='Potsdam.mat'
+TrainData1='Potsdam_1024.mat'
 # TrainData2='Postdam1.mat'
-# ValData = 'Postdam2.mat'
+ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
 
 google_dir = './largeImage/model/'
@@ -129,7 +129,7 @@ def loadData(dset):
             dsm_num_val = len(X_depths_val)
             print dsm_num_val
             X_depths_val = np.array(X_depths_val[:dsm_num_val / 2]).astype(np.float32)
-            X_depths_val = normalization(X_depths_val) #_float ,np.max(X_depths_val)
+            X_depths_val = normalization_float(X_depths_val,np.max(X_depths_val)) #  normalization(X_depths_val)
 
             X_images_val =hv["images"]
             img_num = len(X_images_val)
@@ -263,7 +263,7 @@ def pred_single_image_depth_using_CNN(path):
     img_array=cv2.imread(path)
     
     img_array=np.expand_dims(img_array,axis=0)
-    img_array=np.array([cv2.resize(img_array[i],(256,256)) for i in range(1)])
+    img_array=np.array([cv2.resize(img_array[i],(img_row/2,img_cols/2)) for i in range(1)])
     img_array=np.array([cv2.pyrDown(img_array[i]) for i in range(1)])
     img_array=rescale(img_array)
     out = model.predict(img_array)

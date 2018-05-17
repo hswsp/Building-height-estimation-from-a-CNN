@@ -236,76 +236,77 @@ def train_fine():
     
     #save model
     model.save(fine_dir)
+def train():
+    with h5py.File(dataFile, "r") as mat:
+        # number of the first dim
+        image_num = len(mat['images']) 
+        depth_num = len(mat['depths'])
+        try:
+        image_num == depth_num
+        except IOError:
+        print "number not match, input error!"
+        print image_num
 
-mat = h5py.File(dataFile)
-# number of the first dim
-image_num = len(mat['images']) 
-depth_num = len(mat['depths'])
-try:
-    image_num == depth_num
-except IOError:
-    print "number not match, input error!"
+    X_1,y_1=convert(mat,0,image_num/4)
+    X_2,y_2=convert(mat,image_num/4,image_num/2)
+    X_3,y_3=convert(mat,image_num/2,3*image_num/4)
+    X_4,y_4=convert(mat,3*image_num/4,image_num)
+    print(X_1.shape,y_1.shape)
+    print(X_2.shape,y_2.shape)
+    print(X_3.shape,y_3.shape)
+    print(X_4.shape,y_4.shape)
 
-X_1,y_1=convert(mat,0,image_num/4)
-X_2,y_2=convert(mat,image_num/4,image_num/2)
-X_3,y_3=convert(mat,image_num/2,3*image_num/4)
-X_4,y_4=convert(mat,3*image_num/4,image_num)
-print(X_1.shape,y_1.shape)
-print(X_2.shape,y_2.shape)
-print(X_3.shape,y_3.shape)
-print(X_4.shape,y_4.shape)
+    X_5=np.concatenate((X_1,X_2),axis=0)
+    # release memory
+    del X_1,X_2
+    y_5=np.concatenate((y_1,y_2),axis=0)
+    del y_1,y_2
 
-X_5=np.concatenate((X_1,X_2),axis=0)
-# release memory
-del X_1,X_2
-y_5=np.concatenate((y_1,y_2),axis=0)
-del y_1,y_2
+    X_6=np.concatenate((X_4,X_3),axis=0)
+    del X_4,X_3
+    y_6=np.concatenate((y_4,y_3),axis=0)    
+    del y_4,y_3
 
-X_6=np.concatenate((X_4,X_3),axis=0)
-del X_4,X_3
-y_6=np.concatenate((y_4,y_3),axis=0)    
-del y_4,y_3
+    X_data = np.concatenate((X_5,X_6),axis=0)
+    del X_5,X_6
+    y_data = np.concatenate((y_5,y_6),axis=0)
+    del y_5,y_6
+    print(X_data.shape,y_data.shape)
+    # 归一化
+    X_data=rescale(X_data)
+    y_data=rescale_float(y_data)
 
-X_data = np.concatenate((X_5,X_6),axis=0)
-del X_5,X_6
-y_data = np.concatenate((y_5,y_6),axis=0)
-del y_5,y_6
-print(X_data.shape,y_data.shape)
-# 归一化
-X_data=rescale(X_data)
-y_data=rescale_float(y_data)
+    train_end=int(0.8*image_num)
+    test_num= image_num - train_end
+    X_train=X_data[:train_end]
+    y_train=y_data[:train_end]
 
-train_end=int(0.8*image_num)
-test_num= image_num - train_end
-X_train=X_data[:train_end]
-y_train=y_data[:train_end]
+    X_test=X_data[train_end:image_num]
+    y_test=y_data[train_end:image_num]
 
-X_test=X_data[train_end:image_num]
-y_test=y_data[train_end:image_num]
+    print(X_train.shape)
+    print(y_train.shape)
+    print(X_test.shape)
+    print(y_test.shape)
 
-print(X_train.shape)
-print(y_train.shape)
-print(X_test.shape)
-print(y_test.shape)
+    X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
+    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
+    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
 
-X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
 
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+    print(X_train.shape)
+    print(y_train.shape)
+    print(X_test.shape)
+    print(y_test.shape)
 
-print(X_train.shape)
-print(y_train.shape)
-print(X_test.shape)
-print(y_test.shape)
+    train_coarse()
+    train_fine()
 
-
-train_coarse()
-train_fine()
-
+train()
 eval(coarse_dir)
 eval(fine_dir)
