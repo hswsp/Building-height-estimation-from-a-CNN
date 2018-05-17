@@ -26,8 +26,8 @@ coarse_weights='./coarse_data/building_coarse_weights.h5'
 fine_dir='./fine_data/building_fine_model.h5'
 fine_weights='./fine_data/building_fine_weights.h5'
 
-log_corsepath = './tmp/building_corse_log'
-log_finepath = './tmp/building_fine_log'
+log_corsepath = './log/building_corse_log'
+log_finepath = './log/building_fine_log'
 
 dataFile='/home/Dataset/Potsdam_1024.mat'
 
@@ -41,9 +41,9 @@ isExists=os.path.exists('fine_data')
 if not isExists:
     os.makedirs('fine_data')
     
-isExists=os.path.exists('tmp')
+isExists=os.path.exists('log')
 if not isExists:
-    os.makedirs('tmp')
+    os.makedirs('log')
 
 def scale_invarient_error(y_true,y_pred):
     log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
