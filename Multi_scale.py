@@ -53,9 +53,9 @@ def scale_invarient_error(y_true,y_pred):
 batch_size=32
 coarse_epochs = 1000
 fine_epoches = 1000
-img_row=640
-img_cols=480
-learning_rate=0.1
+img_row=1024
+img_cols=1024
+learning_rate=0.001
 momentum=0.9
 Lambda=0.5
 
@@ -236,9 +236,11 @@ def train_fine():
     
     #save model
     model.save(fine_dir)
+
+
 with h5py.File(dataFile, "r") as mat:
     # number of the first dim
-    X_data = mat['images'][:].transpose((1, 2, 0))
+    X_data = mat['images'][:].transpose((0,2, 3, 1))
     y_data = mat['depths'][:]
     image_num = len(X_data) 
     depth_num = len(y_data)
@@ -307,5 +309,3 @@ print(y_test.shape)
 train_coarse()
 train_fine()
 
-eval(coarse_dir)
-eval(fine_dir)
