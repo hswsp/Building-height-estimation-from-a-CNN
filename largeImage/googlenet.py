@@ -32,9 +32,9 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/dataset/'
-TrainData1='Postdam.mat'
-TrainData2='Postdam1.mat'
-ValData = 'Postdam2.mat'
+TrainData1='Potsdam.mat'
+# TrainData2='Postdam1.mat'
+# ValData = 'Postdam2.mat'
 os.chdir(root)
 
 google_dir = './largeImage/model/'
@@ -101,29 +101,28 @@ def load_largeData(X_depths,img_type):
 def loadData(dset):
     #channels_last
     with h5py.File(dset+TrainData1, "r") as hf: 
-        X_depths_train1 = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
-#         X_depths_train,num1 = load_largeData(X_depths_train,'depths')
-        X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
+        X_depths_train1 = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         X_depths_train,num1 = load_largeData(X_depths_train,'depths')
+        # X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
         print X_depths_train1.shape
         X_images_train1 = hf["images"]
-#         X_images_train,num1 = load_largeData(X_images_train,'images')
-        X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
+        X_images_train1 = load_largeData(X_images_train,'images')
+        # X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
         X_images_train1 = normalization(X_images_train1)
         hf.close()
 
-    with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
-        X_depths_train = hm["depths"]
-        X_depths_train = load_largeData(X_depths_train,'depths')
-        print X_depths_train.shape
-        X_images_train = hm["images"]
-        X_images_train = load_largeData(X_images_train,'images')
-        hm.close()
+    # with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
+    #     X_depths_train = hm["depths"]
+    #     X_depths_train = load_largeData(X_depths_train,'depths')
+    #     print X_depths_train.shape
+    #     X_images_train = hm["images"]
+    #     X_images_train = load_largeData(X_images_train,'images')
+    #     hm.close()
     
-    X_depths_train = np.concatenate((X_depths_train, X_depths_train1),axis = 0)
-    X_depths_train = normalization(X_depths_train)
+    # X_depths_train = np.concatenate((X_depths_train, X_depths_train1),axis = 0)
+    # X_depths_train = normalization(X_depths_train)
 
-    X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0) 
-    X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
+    # X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0) 
+    # X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
     
     with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
             X_depths_val = hv["depths"]
@@ -319,10 +318,10 @@ def train():
     print(X_images_val.shape)
     print(X_depths_val.shape)
     
-    dim = img_row*img_cols/4
-    y_train = y_train.reshape(-1,dim)    # must match output of net                 
-    y_test = y_test.reshape(-1,dim)      
-    X_depths_val = X_depths_val.reshape(-1,dim)
+    # dim = img_row*img_cols/4
+    # y_train = y_train.reshape(-1,dim)    # must match output of net                 
+    # y_test = y_test.reshape(-1,dim)      
+    # X_depths_val = X_depths_val.reshape(-1,dim)
                          
 
     # for e in range(nb_epoch):
