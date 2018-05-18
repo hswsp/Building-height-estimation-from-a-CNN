@@ -315,8 +315,8 @@ def train():
         y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     
     # Y轴镜像
-    X_train = np.concatenate((X_train,X_train[:,::-1]),,axis = 0)
-    y_train = np.concatenate((y_train,y_train[:,::-1]),,axis = 0)
+    X_train = np.concatenate((X_train,X_train[:,::-1]),axis = 0)
+    y_train = np.concatenate((y_train,y_train[:,::-1]),axis = 0)
     # X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
     # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
     
