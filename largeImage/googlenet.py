@@ -63,7 +63,7 @@ def scale_invarient_error(y_true,y_pred):
 
 def normalization(X):
     #[0,255]=>[0,1]
-    X = X.data.astype('float32')
+    X = X.astype('float32')
     return X / 255.0
 
 def normalization_float(X,maxX):
@@ -84,7 +84,7 @@ def load_largeData(X_depths,img_type):
         X2 = np.concatenate((X_depths3, X_depths4), axis=0)
         del X_depths3, X_depths4
         X_depths_train = np.concatenate((X1, X2), axis=0)
-        X_depths_train = np.array(X_depths_train)
+        # X_depths_train = np.array(X_depths_train)
     elif img_type == 'images':
         # have been norm
         X_depths1 = np.array(X_depths[:dsm_num / 4])                                #.astype(np.float32)
@@ -98,7 +98,7 @@ def load_largeData(X_depths,img_type):
         # X2 = normalization(np.concatenate((X_depths3, X_depths4), axis=0))
         del X_depths3, X_depths4
         X_depths_train = np.concatenate((X1, X2), axis=0)
-        X_depths_train = np.array(X_depths_train)
+        # X_depths_train = np.array(X_depths_train)
         X_depths_train = normalization(X_depths_train)
 
     return X_depths_train
