@@ -297,7 +297,7 @@ def train():
     img_num = len(X_train)
     label_num = len(y_train)
     if img_num != label_num:
-        print "number not match!
+        print "number not match!"
         return
     train_end=int(img_num)
     # test_num= img_num - train_end
