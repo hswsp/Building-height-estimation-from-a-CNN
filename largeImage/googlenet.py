@@ -21,7 +21,7 @@ from keras import backend as K
 
 
 batch_size=100
-epochs=500
+epochs=200
 img_row=1024
 img_cols=1024
 momentum=0.9
@@ -318,12 +318,12 @@ def train():
         X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)]) # input must in [0,1]!and type=float32
         y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     
-    # Y轴镜像
-    X_train = np.concatenate((X_train,X_train[:,::-1]),axis = 0)
-    y_train = np.concatenate((y_train,y_train[:,::-1]),axis = 0)
+    # Y轴镜像,由于太慢了，不要了！
+    # X_train = np.concatenate((X_train,X_train[:,::-1]),axis = 0)
+    # y_train = np.concatenate((y_train,y_train[:,::-1]),axis = 0)
+
     # X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
     # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-    
     # X_images_val=np.array([cv2.pyrDown(X_images_val[i]) for i in range(len(X_images_val))])
     # X_depths_val=np.array([cv2.pyrDown(X_depths_val[i]) for i in range(len(X_depths_val))])
     
@@ -345,7 +345,7 @@ def train():
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
     tb_cb = TensorBoard(log_dir=log_filepath,write_graph=False, write_grads=False)
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.3) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.2) 
     #validation_data=(X_test,y_test) 
 
     # steps_per_epoch =,validation_steps = test_iter                       
