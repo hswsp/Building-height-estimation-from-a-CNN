@@ -257,7 +257,7 @@ def google_net(model_name= 'modify_googlenet'):
     loss1_fc=Activation('relu')(loss1_fc) 
     dsm_out = Reshape((int(img_row/8),int(img_cols/8)))(loss1_fc)
 
-    google_net = Model(inputs=inputs,outputs=loss1_fc,name = model_name)
+    google_net = Model(inputs=inputs,outputs=dsm_out,name = model_name)
 
     return google_net
 
@@ -344,7 +344,9 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.2) #validation_data=(X_test,y_test) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.2) 
+    #validation_data=(X_test,y_test) 
+
     # steps_per_epoch =,validation_steps = test_iter                       
     #save_model
     google_model.save(google_dir+'googlenet_weights.h5')
