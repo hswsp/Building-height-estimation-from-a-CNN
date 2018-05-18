@@ -294,8 +294,8 @@ def train():
     # y_data = normalization_float(y_data,np.max(y_data))
     
     
-    # img_num = len(X_data)
-    # train_end=int(0.9*img_num)
+    img_num = len(X_data)
+    train_end=int(img_num)
     # test_num= img_num - train_end
     # X_train=X_data[:train_end]
     # y_train=y_data[:train_end]
