@@ -74,6 +74,7 @@ def load_largeData(X_depths,img_type):
     dsm_num = len(X_depths)
     print dsm_num
     if img_type == 'depths':
+        # not norm
         X_depths1 = np.array(X_depths[:dsm_num/4]).astype(np.float32)
         X_depths2 = np.array(X_depths[dsm_num / 4:dsm_num / 2]).astype(np.float32)
         X1 = np.concatenate((X_depths1,X_depths2), axis = 0)
@@ -85,6 +86,7 @@ def load_largeData(X_depths,img_type):
         X_depths_train = np.concatenate((X1, X2), axis=0)
         X_depths_train = np.array(X_depths_train)
     elif img_type == 'images':
+        # have been norm
         X_depths1 = np.array(X_depths[:dsm_num / 4]).astype(np.float32)
         X_depths2 = np.array(X_depths[dsm_num / 4:dsm_num / 2]).astype(np.float32) # must be float32 in order to divide
         X1 = normalization(np.concatenate((X_depths1, X_depths2), axis=0))
@@ -101,13 +103,14 @@ def load_largeData(X_depths,img_type):
 def loadData(dset):
     #channels_last
     with h5py.File(dset+TrainData1, "r") as hf: 
-        X_depths_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         X_depths_train,num1 = load_largeData(X_depths_train,'depths')
+        X_depths_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         
+        X_depths_train = load_largeData(X_depths_train,'depths')
         # X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
         print X_depths_train.shape
         X_images_train = hf["images"]
         X_images_train = load_largeData(X_images_train,'images')
         # X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
-        X_images_train = normalization(X_images_train)
+        X_depths_train = normalization(X_depths_train)
         hf.close()
 
     # with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
@@ -129,7 +132,7 @@ def loadData(dset):
             dsm_num_val = len(X_depths_val)
             print dsm_num_val
             X_depths_val = np.array(X_depths_val[:dsm_num_val / 2]).astype(np.float32)
-            X_depths_val = normalization_float(X_depths_val,np.max(X_depths_val)) #  normalization(X_depths_val)
+            X_depths_val =  normalization(X_depths_val)# normalization_float(X_depths_val,np.max(X_depths_val)) 
 
             X_images_val =hv["images"]
             img_num = len(X_images_val)
