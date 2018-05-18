@@ -21,7 +21,7 @@ from keras import backend as K
 
 
 batch_size=100
-epochs=1000
+epochs=800
 img_row=1024
 img_cols=1024
 momentum=0.9
@@ -57,7 +57,7 @@ def scale_invarient_error(y_true,y_pred):
     # log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
     # return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
     dist = K.sqrt(K.sum(K.square(y_true - y_pred)))  
-    return dist/(2.0*(img_row*img_cols)/4)
+    return dist/(2.0*((img_row/4)*(img_cols/4))
 
 
 
@@ -344,7 +344,7 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.2) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.4) 
     #validation_data=(X_test,y_test) 
 
     # steps_per_epoch =,validation_steps = test_iter                       
