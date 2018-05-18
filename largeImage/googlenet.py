@@ -257,7 +257,7 @@ def google_net(model_name= 'modify_googlenet'):
     loss1_fc=Activation('relu')(loss1_fc) 
     dsm_out = Reshape((int(img_row/8),int(img_cols/8)))(loss1_fc)
 
-    google_net = Model(inputs=inputs,output=loss1_fc,name = model_name)
+    google_net = Model(inputs=inputs,outputs=loss1_fc,name = model_name)
 
     return google_net
 
