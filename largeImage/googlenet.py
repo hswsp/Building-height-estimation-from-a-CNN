@@ -21,7 +21,7 @@ from keras import backend as K
 
 
 batch_size=100
-epochs=800
+epochs=600
 img_row=1024
 img_cols=1024
 momentum=0.9
