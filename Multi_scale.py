@@ -291,15 +291,17 @@ print(X_test.shape)
 print(y_test.shape)
 del X_data,y_data
 
-X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+# [1024,1024]->[256,256]
+for j in range(2):
+    X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
+    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
+    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
 
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+    # X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
+    # y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])   
+    # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
 
 print(X_train.shape)
 print(y_train.shape)

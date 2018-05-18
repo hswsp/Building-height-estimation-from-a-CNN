@@ -32,7 +32,7 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/'
-TrainData1='Potsdam_1024.mat'
+TrainData1='test_val.mat' #Potsdam_1024.mat
 # TrainData2='Postdam1.mat'
 ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
@@ -92,8 +92,8 @@ def load_largeData(X_depths,img_type):
         X1 = np.concatenate((X_depths1, X_depths2), axis=0)
         # X1 = normalization(np.concatenate((X_depths1, X_depths2), axis=0))
         del X_depths1, X_depths2
-        X_depths3 = np.array(X_depths[dsm_num / 2:3 * dsm_num / 4]).astype(np.float32)
-        X_depths4 = np.array(X_depths[3 * dsm_num / 4:]).astype(np.float32)
+        X_depths3 = np.array(X_depths[dsm_num / 2:3 * dsm_num / 4])
+        X_depths4 = np.array(X_depths[3 * dsm_num / 4:])
         X2 = np.concatenate((X_depths3, X_depths4), axis=0)
         # X2 = normalization(np.concatenate((X_depths3, X_depths4), axis=0))
         del X_depths3, X_depths4
@@ -106,14 +106,16 @@ def load_largeData(X_depths,img_type):
 def loadData(dset):
     #channels_last
     with h5py.File(dset+TrainData1, "r") as hf: 
-        X_depths_train = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         
-        X_depths_train = load_largeData(X_depths_train,'depths')
+        X_depths_train = hf["depths"][:] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         
+        # X_depths_train = load_largeData(X_depths_train,'depths')
         # X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
         print X_depths_train.shape
-        X_images_train = hf["images"]
-        X_images_train = load_largeData(X_images_train,'images')
+        X_images_train = hf["images"][:]
+        print X_images_train.shape
+        # X_images_train = load_largeData(X_images_train,'images')
         # X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
         X_depths_train = normalization(X_depths_train)
+        X_images_train =  normalization(X_images_train)
         hf.close()
 
     # with h5py.File(dset+TrainData2, "r") as hm:#'test.mat'
@@ -130,20 +132,20 @@ def loadData(dset):
     # X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0) 
     X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
     
-    with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
-            X_depths_val = hv["depths"]
-            dsm_num_val = len(X_depths_val)
-            print dsm_num_val
-            X_depths_val = np.array(X_depths_val[:dsm_num_val / 2]).astype(np.float32)
-            X_depths_val =  normalization(X_depths_val)# normalization_float(X_depths_val,np.max(X_depths_val)) 
+    # with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
+    #         X_depths_val = hv["depths"]
+    #         dsm_num_val = len(X_depths_val)
+    #         print dsm_num_val
+    #         X_depths_val = np.array(X_depths_val[:dsm_num_val / 2]).astype(np.float32)
+    #         X_depths_val =  normalization(X_depths_val)# normalization_float(X_depths_val,np.max(X_depths_val)) 
 
-            X_images_val =hv["images"]
-            img_num = len(X_images_val)
-            X_images_val = np.array(X_images_val[:img_num / 2])
+    #         X_images_val =hv["images"]
+    #         img_num = len(X_images_val)
+    #         X_images_val = np.array(X_images_val[:img_num / 2])
             
-            X_images_val = X_images_val.transpose(0, 2, 3, 1)
-            X_images_val = normalization(X_images_val.astype(np.float32))
-    return X_depths_train, X_images_train, X_depths_val, X_images_val
+    #         X_images_val = X_images_val.transpose(0, 2, 3, 1)
+    #         X_images_val = normalization(X_images_val.astype(np.float32))
+    return X_depths_train, X_images_train#, X_depths_val, X_images_val
 
 def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
@@ -288,41 +290,45 @@ def train():
     google_model.summary()
 
     # Load and rescale data
-    y_data, X_data, X_depths_val, X_images_val = loadData(dset)
+    y_data, X_data = loadData(dset) #, X_depths_val, X_images_val 
     # y_data = normalization_float(y_data,np.max(y_data))
     
     
-    img_num = len(X_data)
-    train_end=int(0.9*img_num)
-    test_num= img_num - train_end
-    X_train=X_data[:train_end]
-    y_train=y_data[:train_end]
+    # img_num = len(X_data)
+    # train_end=int(0.9*img_num)
+    # test_num= img_num - train_end
+    # X_train=X_data[:train_end]
+    # y_train=y_data[:train_end]
 
-    X_test=X_data[train_end:img_num]
-    y_test=y_data[train_end:img_num]
+    # X_test=X_data[train_end:img_num]
+    # y_test=y_data[train_end:img_num]
     
     print(X_train.shape)
     print(y_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
-    print(X_images_val.shape)
-    print(X_depths_val.shape)
+    # print(X_test.shape)
+    # print(y_test.shape)
+    # print(X_images_val.shape)
+    # print(X_depths_val.shape)
+    #[1024,1024]->[256,256]
+    for j in range(2):
+        X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)]) # input must in [0,1]!and type=float32
+        y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     
-    X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)]) # input must in [0,1]!and type=float32
-    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    # Y轴镜像
+    X_train = np.concatenate((X_train,X_train[:,::-1]),,axis = 0)
+    y_train = np.concatenate((y_train,y_train[:,::-1]),,axis = 0)
+    # X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
+    # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
     
-    X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
-    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-    
-    X_images_val=np.array([cv2.pyrDown(X_images_val[i]) for i in range(len(X_images_val))])
-    X_depths_val=np.array([cv2.pyrDown(X_depths_val[i]) for i in range(len(X_depths_val))])
+    # X_images_val=np.array([cv2.pyrDown(X_images_val[i]) for i in range(len(X_images_val))])
+    # X_depths_val=np.array([cv2.pyrDown(X_depths_val[i]) for i in range(len(X_depths_val))])
     
     print(X_train.shape)
     print(y_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
-    print(X_images_val.shape)
-    print(X_depths_val.shape)
+    # print(X_test.shape)
+    # print(y_test.shape)
+    # print(X_images_val.shape)
+    # print(X_depths_val.shape)
     
     # dim = img_row*img_cols/4
     # y_train = y_train.reshape(-1,dim)    # must match output of net                 
@@ -334,7 +340,7 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_data=(X_test,y_test) ) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.2) #validation_data=(X_test,y_test) 
     # steps_per_epoch =,validation_steps = test_iter                       
     #save_model
     google_model.save(google_dir+'googlenet_weights.h5')
