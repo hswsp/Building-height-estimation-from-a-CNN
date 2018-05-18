@@ -31,14 +31,14 @@ gamma =  0.96
 stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
-dset = '/home/Dataset/dataset/'
+dset = '/home/Dataset/'
 TrainData1='Potsdam_1024.mat'
 # TrainData2='Postdam1.mat'
 ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
 
-google_dir = './largeImage/model/'
-log_filepath = './largeImage/log/'
+google_dir = './largeImage/model-5-18/'
+log_filepath = './largeImage/log-5-18/'
 
 isExists=os.path.exists(google_dir)    
 if not isExists:
@@ -328,7 +328,7 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_data=(X_images_val,X_depths_val) ) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_data=(X_test,y_test) ) 
     # steps_per_epoch =,validation_steps = test_iter                       
     #save_model
     google_model.save(google_dir+'googlenet_weights.h5')

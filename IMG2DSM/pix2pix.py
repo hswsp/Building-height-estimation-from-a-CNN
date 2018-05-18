@@ -273,6 +273,12 @@ def load_examples():
 
         raw_input.set_shape([None, None, 3])
 
+        # synchronize seed for image operations so that we do the same operations to both
+        # input and output images
+        seed = random.randint(0, 2**31 - 1)
+        if a.flip:
+            raw_input = tf.image.random_flip_up_down(raw_input, seed=seed)
+
         if a.lab_colorization:
             # load color and brightness from image, no B image exists here
             lab = rgb_to_lab(raw_input)
@@ -295,16 +301,11 @@ def load_examples():
     else:
         raise Exception("invalid direction")
 
-    # synchronize seed for image operations so that we do the same operations to both
-    # input and output images
-    seed = random.randint(0, 2**31 - 1)
+    
     def transform(image,depth):
         r = image
         d = depth
-        # if a.flip:
-        #     r = tf.image.random_flip_left_right(r, seed=seed)
-        #     d = tf.image.random_flip_left_right(r, seed=seed)
-
+       
         # area produces a nice downscaling, but does nearest neighbor for upscaling
         # assume we're going to be doing downscaling here
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
