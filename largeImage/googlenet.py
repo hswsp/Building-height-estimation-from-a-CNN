@@ -32,7 +32,7 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/'
-TrainData1='test_val.mat' #Potsdam_1024.mat
+TrainData1='Potsdam_1024.mat' #test_val.mat
 # TrainData2='Postdam1.mat'
 ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
@@ -106,11 +106,11 @@ def load_largeData(X_depths,img_type):
 def loadData(dset):
     #channels_last
     with h5py.File(dset+TrainData1, "r") as hf: 
-        X_depths_train = hf["depths"][:] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         
+        X_depths_train = hf["depths"][:100] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间         
         # X_depths_train = load_largeData(X_depths_train,'depths')
         # X_depths_train1 = np.array(X_depths_train1[:len(X_depths_train1)]).astype(np.float32)
         print X_depths_train.shape
-        X_images_train = hf["images"][:]
+        X_images_train = hf["images"][:100]
         print X_images_train.shape
         # X_images_train = load_largeData(X_images_train,'images')
         # X_images_train1 = np.array(X_images_train1[:len(X_images_train1)]).astype(np.float32)
