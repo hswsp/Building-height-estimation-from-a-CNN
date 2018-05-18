@@ -32,7 +32,7 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/'
-TrainData1='test_val.mat' #Potsdam_1024.mat
+TrainData1='Potsdam_1024.mat' #test_val.mat
 # TrainData2='Postdam1.mat'
 ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
@@ -154,7 +154,7 @@ def google_net(model_name= 'modify_googlenet'):
     # channel last
     bias_ini = initializers.Constant(0.5)
      
-    inputs=Input(shape=(int(img_row/2),int(img_cols/2),3))
+    inputs=Input(shape=(int(img_row/4),int(img_cols/4),3))
     #conv1/7x7_s2
     conv1=Convolution2D(64,(7,7),strides=(2,2),name='conv1/7x7_s2',padding='same',bias_initializer=bias_ini)(inputs)
     conv1=Activation('relu')(conv1)
@@ -253,11 +253,11 @@ def google_net(model_name= 'modify_googlenet'):
 
     #loss1/fc
     loss1_fc=Flatten(name='loss1/fl')(convloss1)
-    loss1_fc=Dense(img_row*img_cols/4,use_bias=True,bias_initializer=bias_ini)(loss1_fc) #128*128
+    loss1_fc=Dense((img_row/8)*(img_cols/8),use_bias=True,bias_initializer=bias_ini)(loss1_fc) #128*128
     loss1_fc=Activation('relu')(loss1_fc) 
-    dsm_out = Reshape((int(img_row/2),int(img_cols/2)))(loss1_fc)
+    dsm_out = Reshape((int(img_row/8),int(img_cols/8)))(loss1_fc)
 
-    google_net = Model(input=inputs,output=loss1_fc,name = model_name)
+    google_net = Model(inputs=inputs,output=loss1_fc,name = model_name)
 
     return google_net
 
