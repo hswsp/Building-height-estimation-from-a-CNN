@@ -32,7 +32,7 @@ stepsize = 100
 
 root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/'
-TrainData1='Potsdam_1024.mat' #test_val.mat
+TrainData1='test_val.mat' #Potsdam_1024.mat
 # TrainData2='Postdam1.mat'
 ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
@@ -344,7 +344,7 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    tb_cb = TensorBoard(log_dir=log_filepath,write_graph=False,write_images=False, embeddings_freq=epochs)
+    tb_cb = TensorBoard(log_dir=log_filepath,write_graph=False,write_images=False, embeddings_freq=epochs/2)
     google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.3) 
     #validation_data=(X_test,y_test) 
 
