@@ -344,7 +344,8 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,TensorBoard(log_dir=log_filepath)],batch_size=batch_size,shuffle=True,validation_split=0.4) 
+    tb_cb=keras.callbacks.TensorBoard(log_dir=log_filepath,write_graph=False,write_images=False, embeddings_freq=epochs)
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.3) 
     #validation_data=(X_test,y_test) 
 
     # steps_per_epoch =,validation_steps = test_iter                       
