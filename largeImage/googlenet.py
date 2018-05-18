@@ -89,10 +89,12 @@ def load_largeData(X_depths,img_type):
         # have been norm
         X_depths1 = np.array(X_depths[:dsm_num / 4])                                #.astype(np.float32)
         X_depths2 = np.array(X_depths[dsm_num / 4:dsm_num / 2]) # must be float32 in order to divide
+        X1 = np.concatenate((X_depths1, X_depths2), axis=0)
         # X1 = normalization(np.concatenate((X_depths1, X_depths2), axis=0))
         del X_depths1, X_depths2
         X_depths3 = np.array(X_depths[dsm_num / 2:3 * dsm_num / 4]).astype(np.float32)
         X_depths4 = np.array(X_depths[3 * dsm_num / 4:]).astype(np.float32)
+        X2 = np.concatenate((X_depths3, X_depths4), axis=0)
         # X2 = normalization(np.concatenate((X_depths3, X_depths4), axis=0))
         del X_depths3, X_depths4
         X_depths_train = np.concatenate((X1, X2), axis=0)
@@ -126,7 +128,7 @@ def loadData(dset):
     # X_depths_train = normalization(X_depths_train)
 
     # X_images_train = np.concatenate((X_images_train, X_images_train1),axis = 0) 
-    # X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
+    X_images_train = X_images_train.transpose(0, 2, 3, 1) # matlab->python= num*c*H*W
     
     with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
             X_depths_val = hv["depths"]
