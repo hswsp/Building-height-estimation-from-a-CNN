@@ -290,7 +290,7 @@ def train():
     google_model.summary()
 
     # Load and rescale data
-    y_data, X_data = loadData(dset) #, X_depths_val, X_images_val 
+    y_train, X_train = loadData(dset) #, X_depths_val, X_images_val 
     # y_data = normalization_float(y_data,np.max(y_data))
     
     
