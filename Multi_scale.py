@@ -299,8 +299,8 @@ for j in range(2):
     y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
     y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-    
-X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
+# lable[128*128]   
+y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
 y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
     # X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
     # y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
