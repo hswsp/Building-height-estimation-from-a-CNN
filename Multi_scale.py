@@ -137,7 +137,7 @@ def convert(mat,start,end):
     return np.array(X),np.array(y)
 
 def train_coarse():
-    inputs=Input(shape=(int(img_row/2),int(img_cols/2),3))
+    inputs=Input(shape=(int(img_row/4),int(img_cols/4),3))
 
     #coarse_1
     coarse_1=Convolution2D(96,(11,11),strides=(4,4),padding='same')(inputs)
