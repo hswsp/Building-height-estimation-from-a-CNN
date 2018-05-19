@@ -137,7 +137,7 @@ def convert(mat,start,end):
     return np.array(X),np.array(y)
 
 def train_coarse():
-    inputs=Input(shape=(int(img_row/4),int(img_cols/4),3))
+    inputs=Input(shape=(int(img_row/2),int(img_cols/2),3))
 
     #coarse_1
     coarse_1=Convolution2D(96,(11,11),strides=(4,4),padding='same')(inputs)
@@ -293,15 +293,17 @@ print(X_test.shape)
 print(y_test.shape)
 del X_data,y_data
 
-# [1024,1024]->[256,256]
-for j in range(2):
-    X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
-    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
-    X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
-    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
-# lable[128*128]   
+# [1024,1024]->[512,512]
+
+X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
 y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
 y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
+
+for j in range(2):
+    # lable[256*256]   
+    y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
+    y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
     # X_train=np.array([cv2.pyrDown(X_train[i]) for i in range(train_end)])
     # y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])   
