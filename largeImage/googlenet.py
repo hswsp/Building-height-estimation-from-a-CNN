@@ -255,6 +255,7 @@ def google_net(model_name= 'modify_googlenet'):
     loss1_fc=Flatten(name='loss1/fl')(convloss1)
     loss1_fc=Dense((img_row/4)*(img_cols/4),use_bias=True,bias_initializer=bias_ini)(loss1_fc) #256*256
     loss1_fc=Activation('relu')(loss1_fc) 
+    loss1_fc=Activation('softmax')(loss1_fc)
     dsm_out = Reshape((int(img_row/4),int(img_cols/4)))(loss1_fc)
 
     google_net = Model(inputs=inputs,outputs=dsm_out,name = model_name)
