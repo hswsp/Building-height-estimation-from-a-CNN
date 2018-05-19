@@ -241,7 +241,9 @@ def train_fine():
 with h5py.File(dataFile, "r") as mat:
     # number of the first dim
     X_data = mat['images'][:].transpose((0,2, 3, 1))
+    print("length of X_data is %d" % len(X_data))
     y_data = mat['depths'][:]
+    print("length of y_data is %d" % len(y_data))
     image_num = len(X_data) 
     depth_num = len(y_data)
     try:
@@ -277,7 +279,7 @@ with h5py.File(dataFile, "r") as mat:
 #     print(X_data.shape,y_data.shape)
 # 归一化
 X_data=rescale(X_data)
-y_data=rescale_float(y_data)
+y_data=rescale(y_data)#rescale_float
 
 train_end=int(0.8*image_num)
 test_num= image_num - train_end
