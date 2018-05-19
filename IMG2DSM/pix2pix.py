@@ -7,7 +7,7 @@ import tensorflow as tf
 import numpy as np
 import argparse
 import os
-import cv2
+# import cv2
 import json
 import glob
 import random
