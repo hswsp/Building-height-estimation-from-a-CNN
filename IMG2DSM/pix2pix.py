@@ -767,7 +767,7 @@ def main():
         else:
             # training
             start = time.time()
-            print "start train..."
+            print("start train···")
             # coord = tf.train.Coordinator()  
             # thread = tf.train.start_queue_runners(sess=sess,coord=coord)  
             # try:  
