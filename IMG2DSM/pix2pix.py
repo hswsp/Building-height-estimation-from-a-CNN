@@ -41,7 +41,7 @@ parser.add_argument("--ndf", type=int, default=64, help="number of discriminator
 parser.add_argument("--scale_size", type=int, default=286, help="scale images to this size before cropping to 256x256")
 parser.add_argument("--flip", dest="flip", action="store_true", help="flip images horizontally")
 parser.add_argument("--no_flip", dest="flip", action="store_false", help="don't flip images horizontally")
-parser.set_defaults(flip=False)
+parser.set_defaults(flip=True)
 parser.add_argument("--lr", type=float, default=0.0002, help="initial learning rate for adam")
 parser.add_argument("--beta1", type=float, default=0.5, help="momentum term of adam")
 parser.add_argument("--l1_weight", type=float, default=100.0, help="weight on L1 term for generator gradient")
