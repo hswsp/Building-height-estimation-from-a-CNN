@@ -18,7 +18,8 @@ from keras.layers import Convolution2D, MaxPooling2D,AveragePooling2D, Dense, Dr
 from keras import initializers
 from keras.callbacks import LearningRateScheduler,TensorBoard 
 from keras import backend as K
-
+from keras.utils import np_utils  
+from keras.utils.vis_utils import plot_model  
 
 batch_size=100
 epochs=200
