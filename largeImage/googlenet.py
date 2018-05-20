@@ -21,8 +21,8 @@ from keras import backend as K
 from keras.utils import np_utils  
 from keras.utils.vis_utils import plot_model  
 
-batch_size=100
-epochs=200
+batch_size=4
+epochs=150
 img_row=1024
 img_cols=1024
 momentum=0.9
@@ -321,8 +321,8 @@ def train():
         y_train=np.array([cv2.pyrDown(y_train[i]) for i in range(train_end)])
     
     # Y轴镜像,由于太慢了，不要了！
-    # X_train = np.concatenate((X_train,X_train[:,::-1]),axis = 0)
-    # y_train = np.concatenate((y_train,y_train[:,::-1]),axis = 0)
+    X_train = np.concatenate((X_train,X_train[:,::-1]),axis = 0)
+    y_train = np.concatenate((y_train,y_train[:,::-1]),axis = 0)
 
     # X_test=np.array([cv2.pyrDown(X_test[i]) for i in range(test_num)])
     # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
