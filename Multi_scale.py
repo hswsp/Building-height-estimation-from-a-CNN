@@ -52,13 +52,15 @@ def scale_invarient_error(y_true,y_pred):
 
 batch_size=32
 coarse_epochs = 800
-fine_epoches = 500
+fine_epoches = 800
 img_row=1024
 img_cols=1024
 learning_rate=0.001
 momentum=0.9
 Lambda=0.5
 
+# def step_decay(epoch):
+#     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
 
 def pred_single_image_depth_using_fine(path):
     model=load_model(fine_dir,custom_objects={'scale_invarient_error':scale_invarient_error})
@@ -221,6 +223,7 @@ def train_fine():
     fine_4=Activation('linear')(fine_4)
     fine_4=Reshape((int(img_row/8),int(img_cols/8)))(fine_4)
     
+    
     model=Model(input=inputs,output=fine_4)
     model.compile(loss=scale_invarient_error,optimizer=SGD(learning_rate,momentum),metrics=['accuracy'])
     
@@ -231,6 +234,7 @@ def train_fine():
     except:
         pass
     #将loss ，acc， val_loss ,val_acc记录tensorboard
+    # lrate = LearningRateScheduler(step_decay)
     tensorboard = TensorBoard(log_dir=log_finepath) #, histogram_freq=1,write_graph=True,write_images=1
     history = model.fit(X_train,y_train,batch_size=batch_size,epochs=fine_epoches,shuffle=True,validation_split=0.2,callbacks=[tensorboard])
     
@@ -244,14 +248,6 @@ with h5py.File(dataFile, "r") as mat:
     print("length of X_data is %d" % len(X_data))
     y_data = mat['depths'][:]
     print("length of y_data is %d" % len(y_data))
-    image_num = len(X_data) 
-    depth_num = len(y_data)
-    try:
-        image_num == depth_num
-    except IOError:
-        print "number not match, input error!"
-    print image_num
-
 #     X_1,y_1=convert(mat,0,image_num/4)
 #     X_2,y_2=convert(mat,image_num/4,image_num/2)
 #     X_3,y_3=convert(mat,image_num/2,3*image_num/4)
@@ -280,6 +276,17 @@ with h5py.File(dataFile, "r") as mat:
 # 归一化
 X_data=rescale(X_data)
 y_data=rescale(y_data)#rescale_float
+# Y轴镜像
+X_data = np.concatenate((X_data,X_data[:,::-1]),axis = 0)
+y_data = np.concatenate((y_data,y_data[:,::-1]),axis = 0)
+
+image_num = len(X_data) 
+depth_num = len(y_data)
+try:
+    image_num == depth_num
+except IOError:
+    print "number not match, input error!"
+print image_num
 
 train_end=int(0.8*image_num)
 test_num= image_num - train_end
