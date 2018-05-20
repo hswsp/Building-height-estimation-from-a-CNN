@@ -57,7 +57,7 @@ def scale_invarient_error(y_true,y_pred):
     # log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
     # log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
     # return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
-    dist = K.sqrt(K.sum(K.square(y_true - y_pred)))  
+    dist = K.sum(K.square(y_true - y_pred))  #K.sqrt()  
     return dist/(2.0*((img_row/4)*(img_cols/4)))
 
 
