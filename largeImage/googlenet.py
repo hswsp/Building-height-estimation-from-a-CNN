@@ -35,7 +35,7 @@ root = '/home/smiletranquilly/HeightEstimation/'
 dset = '/home/Dataset/'
 TrainData1='Potsdam_1024.mat' #test_val.mat
 # TrainData2='Postdam1.mat'
-ValData = 'Vaihingen_1024.mat'
+# ValData = 'Vaihingen_1024.mat'
 os.chdir(root)
 
 google_dir = './largeImage/model-5-18/'
