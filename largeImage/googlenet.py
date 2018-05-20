@@ -158,62 +158,62 @@ def google_net(model_name= 'modify_googlenet'):
     inputs=Input(shape=(int(img_row/4),int(img_cols/4),3))
     #conv1/7x7_s2
     conv1=Convolution2D(64,(7,7),strides=(2,2),name='conv1/7x7_s2',padding='same',bias_initializer=bias_ini)(inputs)
-    conv1=Activation('relu')(conv1)
+    conv1=Activation('sigmoid')(conv1)
     conv1=MaxPooling2D(pool_size=(3, 3),strides=(2,2))(conv1)
     conv1=BatchNormalization(axis=-1)(conv1)
 
     #conv2/3x3_reduce
     conv2 = Convolution2D(64,(1,1),name='conv2/1x1',bias_initializer=bias_ini)(conv1)
-    conv2=Activation('relu')(conv2)
+    conv2=Activation('sigmoid')(conv2)
     conv2 = Convolution2D(192,(3,3),name='conv2/3x3_reduce',padding='same',bias_initializer=bias_ini)(conv2)
-    conv2=Activation('relu')(conv2)
+    conv2=Activation('sigmoid')(conv2)
     conv2=BatchNormalization(axis=-1)(conv2)
     conv2=MaxPooling2D(pool_size=(3, 3),strides=(2,2))(conv2)
 
     #inception_3a/1x1
     conv3_1 = Convolution2D(64,(1,1),name='inception_3a/1x1',bias_initializer=bias_ini)(conv2)
-    conv3_1 = Activation('relu')(conv3_1)
+    conv3_1 = Activation('sigmoid')(conv3_1)
 
     #inception_3a/3x3_reduce
     conv3_3 =  Convolution2D(96,(1,1),name='inception_3a/3x3_reduce',bias_initializer=bias_ini)(conv2)
-    conv3_3 = Activation('relu')(conv3_3)
+    conv3_3 = Activation('sigmoid')(conv3_3)
     conv3_3 =  Convolution2D(128,(3,3),name='inception_3a/3x3',padding='same',bias_initializer=bias_ini)(conv3_3)
-    conv3_3 = Activation('relu')(conv3_3)
+    conv3_3 = Activation('sigmoid')(conv3_3)
 
     # inception_3a/5x5_reduce
     conv3_5 =  Convolution2D(16,(1,1),name='inception_3a/5x5_reduce',bias_initializer=bias_ini)(conv2)
-    conv3_5 = Activation('relu')(conv3_5)
+    conv3_5 = Activation('sigmoid')(conv3_5)
     conv3_5 =  Convolution2D(32,(5,5),name='inception_3a/5x5',padding='same',bias_initializer=bias_ini)(conv3_5)
-    conv3_5 = Activation('relu')(conv3_5)
+    conv3_5 = Activation('sigmoid')(conv3_5)
 
     #inception_3a/pool
     conv3_p= MaxPooling2D(pool_size=(3, 3),strides=(1,1),padding='same',name='inception_3a/pool')(conv2)
     conv3_p =  Convolution2D(32,(1,1),name='inception_3a/pool_proj',bias_initializer=bias_ini)(conv3_p)
-    conv3_p = Activation('relu')(conv3_p)
+    conv3_p = Activation('sigmoid')(conv3_p)
 
     # inception_3a/output
     inception_3a_output = Concatenate(axis = -1)([conv3_1,conv3_3,conv3_5,conv3_p])
 
     # inception_3b/1x1
     conv3b_1 = Convolution2D(128,(1,1),name='inception_3b/1x1',bias_initializer=bias_ini)(inception_3a_output)
-    conv3b_1 = Activation('relu')(conv3b_1)
+    conv3b_1 = Activation('sigmoid')(conv3b_1)
 
     #inception_3b/3x3_reduce
     conv3b_3 =  Convolution2D(128,(1,1),name='inception_3b/3x3_reduce',bias_initializer=bias_ini)(inception_3a_output)
-    conv3b_3 = Activation('relu')(conv3b_3)
+    conv3b_3 = Activation('sigmoid')(conv3b_3)
     conv3b_3 =  Convolution2D(192,(3,3),name='inception_3b/3x3',padding='same',bias_initializer=bias_ini)(conv3b_3)
-    conv3b_3 = Activation('relu')(conv3b_3)
+    conv3b_3 = Activation('sigmoid')(conv3b_3)
 
     # inception_3b/5x5_reduce
     conv3b_5 =  Convolution2D(32,(1,1),name='inception_3b/5x5_reduce',bias_initializer=bias_ini)(inception_3a_output)
-    conv3b_5 = Activation('relu')(conv3b_5)
+    conv3b_5 = Activation('sigmoid')(conv3b_5)
     conv3b_5 =  Convolution2D(96,(5,5),name='inception_3b/5x5',padding='same',bias_initializer=bias_ini)(conv3b_5)
-    conv3b_5 = Activation('relu')(conv3b_5)
+    conv3b_5 = Activation('sigmoid')(conv3b_5)
 
     #inception_3b/pool
     conv3b_p = MaxPooling2D(pool_size=(3, 3),strides=(1,1),padding='same',name='inception_3b/pool')(inception_3a_output)
     conv3b_p = Convolution2D(64,(1,1),name='inception_3b/pool_proj',bias_initializer=bias_ini)(conv3b_p)
-    conv3b_p = Activation('relu')(conv3b_p)
+    conv3b_p = Activation('sigmoid')(conv3b_p)
 
     # inception_3b/output
     inception_3b_output = Concatenate(axis = -1)([conv3b_1,conv3b_3,conv3b_5,conv3b_p])
@@ -223,24 +223,24 @@ def google_net(model_name= 'modify_googlenet'):
 
     # inception_4a/1x1
     conv4a_1 = Convolution2D(192,(1,1),name='inception_4a/1x1',bias_initializer=bias_ini)(pool3_3)
-    conv4a_1 = Activation('relu')(conv4a_1)
+    conv4a_1 = Activation('sigmoid')(conv4a_1)
 
     #inception_4a/3x3_reduce
     conv4a_3 =  Convolution2D(96,(1,1),name='inception_4a/3x3_reduce',bias_initializer=bias_ini)(pool3_3)
-    conv4a_3 = Activation('relu')(conv4a_3)
+    conv4a_3 = Activation('sigmoid')(conv4a_3)
     conv4a_3 =  Convolution2D(208,(3,3),name='inception_4a/3x3',padding='same',bias_initializer=bias_ini)(conv4a_3)
-    conv4a_3 = Activation('relu')(conv4a_3)
+    conv4a_3 = Activation('sigmoid')(conv4a_3)
 
     # inception_4a/5x5_reduce
     conv4a_5 =  Convolution2D(16,(1,1),name='inception_4a/5x5_reduce',bias_initializer=bias_ini)(pool3_3)
-    conv4a_5 = Activation('relu')(conv4a_5)
+    conv4a_5 = Activation('sigmoid')(conv4a_5)
     conv4a_5 =  Convolution2D(48,(5,5),name='inception_4a/5x5',padding='same',bias_initializer=bias_ini)(conv4a_5)
-    conv4a_5 = Activation('relu')(conv4a_5)
+    conv4a_5 = Activation('sigmoid')(conv4a_5)
 
     #inception_4a/pool
     conv4a_p = MaxPooling2D(pool_size=(3, 3),strides=(1,1),padding='same',name='inception_4a/pool')(pool3_3)
     conv4a_p = Convolution2D(64,(1,1),name='inception_4a/pool_proj',bias_initializer=bias_ini)(conv4a_p)
-    conv4a_p = Activation('relu')(conv4a_p)
+    conv4a_p = Activation('sigmoid')(conv4a_p)
 
     # inception_4a/output
     inception_4a_output = Concatenate(axis = -1)([conv4a_1,conv4a_3,conv4a_5,conv4a_p])
@@ -250,13 +250,13 @@ def google_net(model_name= 'modify_googlenet'):
 
     #loss1/conv
     convloss1 = Convolution2D(128,(1,1),name='loss1/conv',bias_initializer=bias_ini)(loss1_ap)
-    convloss1 = Activation('relu')(convloss1)
+    convloss1 = Activation('sigmoid')(convloss1)
 
     #loss1/fc
     loss1_fc=Flatten(name='loss1/fl')(convloss1)
     loss1_fc=Dense((img_row/4)*(img_cols/4),use_bias=True,bias_initializer=bias_ini)(loss1_fc) #256*256
-    loss1_fc=Activation('relu')(loss1_fc) 
-    loss1_fc=Activation('softmax')(loss1_fc)
+    loss1_fc=Activation('sigmoid')(loss1_fc) 
+    # loss1_fc=Activation('softmax')(loss1_fc)
     dsm_out = Reshape((int(img_row/4),int(img_cols/4)))(loss1_fc)
 
     google_net = Model(inputs=inputs,outputs=dsm_out,name = model_name)
