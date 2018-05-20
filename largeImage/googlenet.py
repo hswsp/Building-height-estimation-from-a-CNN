@@ -328,7 +328,7 @@ def train():
     # y_test=np.array([cv2.pyrDown(y_test[i]) for i in range(test_num)])
     # X_images_val=np.array([cv2.pyrDown(X_images_val[i]) for i in range(len(X_images_val))])
     # X_depths_val=np.array([cv2.pyrDown(X_depths_val[i]) for i in range(len(X_depths_val))])
-    
+   
     print(X_train.shape)
     print(y_train.shape)
     # print(X_test.shape)
