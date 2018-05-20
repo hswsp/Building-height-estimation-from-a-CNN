@@ -18,7 +18,7 @@ from keras import backend as K
 from keras.callbacks import TensorBoard
 
 #设置当前目录
-root = '/home/smiletranquilly/Multi-Scale_Deep_Network' 
+root = '/home/smiletranquilly/FYP/Multi-Scale_Deep_Network' 
 os.chdir(root)
 
 coarse_dir='./coarse_data/building_coarse_model.h5'
