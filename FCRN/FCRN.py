@@ -118,8 +118,9 @@ def FCRN(model_name):
     # 从con层输出
     #默认参数：include_top=True, weights='imagenet',input_tensor=None, input_shape=None,
     #pooling=None, classes=1000
-    inputs=Input(shape=(int(img_row/2),int(img_cols/2),3))
-    base_model = keras.applications.resnet50.ResNet50(include_top=False,weights=None)
+    # inputs=Input(shape=)
+    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/2),int(img_cols/2),3),
+                                                      weights=None)
     x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(base_model.output)
     x = BatchNormalization(axis=-1)(x)
     #1024->64
@@ -130,7 +131,7 @@ def FCRN(model_name):
         x = Up_Projection(x,2**i,num)
     x = Conv2D(1, (3, 3), name='con2D_last', padding="same")(x)
 
-    FCRN =  Model(inputs=inputs,outputs=x,name = model_name)
+    FCRN =  Model(inputs=base_model.input,outputs=x,name = model_name)
     return FCRN
 
 def berHu(y_true,y_pred,c):
