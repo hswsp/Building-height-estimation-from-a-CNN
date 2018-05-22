@@ -3,7 +3,7 @@ import math, json, os, sys
 import glob
 import random
 import matplotlib.image as Img
-# import cv2
+import cv2
 from scipy import misc
 
 import keras
