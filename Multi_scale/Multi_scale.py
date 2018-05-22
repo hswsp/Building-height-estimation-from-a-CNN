@@ -21,15 +21,16 @@ from keras.callbacks import TensorBoard
 root = '/home/smiletranquilly/Multi-Scale_Deep_Network' 
 os.chdir(root)
 
-coarse_dir='./coarse_data/building_coarse_model.h5'
-coarse_weights='./coarse_data/building_coarse_weights.h5'
-fine_dir='./fine_data/building_fine_model.h5'
-fine_weights='./fine_data/building_fine_weights.h5'
+coarse_dir='./coarse_data/building_coarse_model_522.h5'
+coarse_weights='./coarse_data/building_coarse_weights_522.h5'
+fine_dir='./fine_data/building_fine_model_522.h5'
+fine_weights='./fine_data/building_fine_weights_522.h5'
 
-log_corsepath = './log/building_corse_log'
-log_finepath = './log/building_fine_log'
+log_corsepath = './log/building_corse_log_522'
+log_finepath = './log/building_fine_log_522'
 
 dataFile='/home/Dataset/Potsdam_1024.mat'
+dataFile2 = '/home/Dataset/Vaihingen_1024.mat'
 
 # 新建文件夹
 isExists=os.path.exists('coarse_data')    
@@ -248,10 +249,12 @@ with h5py.File(dataFile, "r") as mat:
     print("length of X_data is %d" % len(X_data))
     y_data = mat['depths'][:]
     print("length of y_data is %d" % len(y_data))
-#     X_1,y_1=convert(mat,0,image_num/4)
-#     X_2,y_2=convert(mat,image_num/4,image_num/2)
-#     X_3,y_3=convert(mat,image_num/2,3*image_num/4)
-#     X_4,y_4=convert(mat,3*image_num/4,image_num)
+with h5py.File(dataFile2, "r") as f:
+    # number of the first dim
+    X_data2 = f['images'][:].transpose((0,2, 3, 1))
+    print("length of X_data is %d" % len(X_data2))
+    y_data2 = f['depths'][:]
+    print("length of y_data is %d" % len(y_data2))
 
 #     print(X_1.shape,y_1.shape)
 #     print(X_2.shape,y_2.shape)
@@ -268,9 +271,8 @@ with h5py.File(dataFile, "r") as mat:
 #     y_6=np.concatenate((y_4,y_3),axis=0)    
 #     del y_4,y_3
 
-#     X_data = np.concatenate((X_5,X_6),axis=0)
-#     del X_5,X_6
-#     y_data = np.concatenate((y_5,y_6),axis=0)
+X_data = np.concatenate((X_data,X_data2),axis=0)
+y_data = np.concatenate((y_data,y_data2),axis=0)
 #     del y_5,y_6
 #     print(X_data.shape,y_data.shape)
 # 归一化
