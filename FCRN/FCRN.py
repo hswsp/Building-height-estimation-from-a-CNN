@@ -96,7 +96,7 @@ def load_data(input_dir):
     return input_paths,len(input_paths)
 
 # net definition
-def Up-Projection(x,f,num):
+def Up_Projection(x,f,num):
 
     x = UpSampling2D(size=(2, 2))(x)
     x1 = Conv2D(f, (5, 5), name='con5_main_'+str(num), padding="same")(x)
