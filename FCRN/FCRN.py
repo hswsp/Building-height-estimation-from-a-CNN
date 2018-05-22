@@ -169,7 +169,7 @@ def train():
     
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
-    lrate = LearningRateScheduler(step_decay)
+    # lrate = LearningRateScheduler(step_decay)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
