@@ -124,6 +124,7 @@ def FCRN(model_name):
                                                       weights=None,pooling=None)
     #pop the last avepooling                                                  
     base_model.layers.pop()
+    base_model.outputs = [base_model.layers[-1].output]
     x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(base_model.output)
     x = BatchNormalization(axis=-1)(x)
     #1024->64
