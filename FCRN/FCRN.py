@@ -170,8 +170,7 @@ def train():
     #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size),
-    max_q_size=2000,verbose=0)
+    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
     FCRNmodel.save(FCRN_dir)
     return
 
