@@ -26,7 +26,7 @@ import h5py
 
 img_row = 1024
 img_cols = 1024
-batch_size = 2
+batch_size = 4
 momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
@@ -69,7 +69,7 @@ def process_line(line):
   
 def generate_arrays_from_file(input_paths,batch_size):  
     while 1:  
-        random.shuffle(input_paths)  
+        random.shuffle(input_paths)# every epoch shuffle  
         cnt = 0  
         X =[]  
         Y =[]  
@@ -82,10 +82,12 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = misc.imresize(X,0.5)# input is 512
+                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
+                # X = misc.imresize(X,0.5)# input is 512
                 for i in range(2):
-                    Y = misc.imresize(Y,0.5)#output is 156 
-                yield (np.array(X),np.array(Y))  
+                    # Y = misc.imresize(Y,0.5)#output is 256
+                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(X))]) 
+                yield (X,Y)  
                 X = []  
                 Y = []  
      
