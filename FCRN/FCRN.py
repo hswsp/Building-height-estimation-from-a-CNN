@@ -7,12 +7,14 @@ import matplotlib.image as Img
 
 import keras
 from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard
-from keras.layers import Dense
 from keras.models import Model
 from keras.optimizers import Adam,SGD
-from keras.models import Sequential, model_from_json, Model, load_model
-from keras.layers import Input, Reshape, concatenate, Activation, Flatten, merge
-from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout,UpSampling2D
+from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda, Reshape
+from keras.layers.convolutional import Conv2D, Deconv2D, ZeroPadding2D, UpSampling2D
+from keras.layers import Input, Concatenate
+from keras.layers.advanced_activations import LeakyReLU
+from keras.layers.normalization import BatchNormalization
+from keras.layers.pooling import MaxPooling2D
 from keras import backend as K
 
 
