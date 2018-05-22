@@ -159,7 +159,7 @@ def train():
     tensorboard = TensorBoard(log_dir=log_path)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     print("Start training")
-    model.fit_generator(batches,samples_per_epoch=ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
+    FCRNmodel.fit_generator(batches,samples_per_epoch=ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[tensorboard],validation_data=val_batches,validation_steps=ceil(val_num/batch_size),
     max_q_size=2000,verbose=1)
     FCRNmodel.save(FCRN_dir)
