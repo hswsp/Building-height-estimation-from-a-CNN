@@ -114,7 +114,7 @@ def Up_Projection(x,f,num):
     x = Activation("relu")(x)
     return x
 
-def FCRN():
+def FCRN(model_name):
     # 从con层输出
     #默认参数：include_top=True, weights='imagenet',input_tensor=None, input_shape=None,
     #pooling=None, classes=1000
@@ -154,7 +154,7 @@ def train():
     # callback_dis.set_model(discriminator_model)
     # train_dis_names = ["train_loss"]
     
-    FCRNmodel = FCRN()
+    FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     print("Start training")
