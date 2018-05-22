@@ -3,7 +3,7 @@ import math, json, os, sys
 import glob
 import random
 import matplotlib.image as Img
-
+import cv2
 
 import keras
 from keras.utils import generic_utils
@@ -80,8 +80,10 @@ def generate_arrays_from_file(input_paths,batch_size):
             Y.append(y)  
             cnt += 1  
             if cnt==batch_size:  
-                cnt = 0  
-                yield (np.array(X), np.array(Y))  
+                cnt = 0
+                X = np.array(X)
+                Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
+                yield (X,Y)  
                 X = []  
                 Y = []  
      
