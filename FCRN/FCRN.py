@@ -122,6 +122,8 @@ def FCRN(model_name):
     # inputs=Input(shape=)
     base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row),int(img_cols),3),
                                                       weights=None,pooling=None)
+    #pop the last avepooling                                                  
+    base_model.layers.pop()
     x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(base_model.output)
     x = BatchNormalization(axis=-1)(x)
     #1024->64
