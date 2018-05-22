@@ -25,7 +25,7 @@ import h5py
 
 img_row = 1024
 img_cols = 1024
-batch_size = 4
+batch_size = 2
 momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
@@ -81,7 +81,8 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = np.array(X)
+                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X)))
+                Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
                 Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
                 yield (X,Y)  
                 X = []  
@@ -122,7 +123,7 @@ def FCRN(model_name):
     #默认参数：include_top=True, weights='imagenet',input_tensor=None, input_shape=None,
     #pooling=None, classes=1000
     # inputs=Input(shape=)
-    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row),int(img_cols),3),
+    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/2),int(img_cols/2),3),
                                                       weights=None,pooling=None)
     #pop the last avepooling                                                  
     base_model.layers.pop()
