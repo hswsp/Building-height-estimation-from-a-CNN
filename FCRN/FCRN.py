@@ -127,7 +127,7 @@ def FCRN():
     num = 0
     for i in nb_conv:
         num = num + 1  #for name
-        x = Up-Projection(x,2**i,num)
+        x = Up_Projection(x,2**i,num)
     x = Conv2D(1, (3, 3), name='con2D_last', padding="same")(x)
 
     FCRN =  Model(inputs=inputs,outputs=x,name = model_name)
