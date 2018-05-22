@@ -126,8 +126,8 @@ def FCRN(model_name):
                                                       weights=None,pooling=None)
     #pop the last avepooling                                                  
     base_model.layers.pop()
-    base_model.outputs = [base_model.layers[-1].output]
-    x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(base_model.output)
+    last = base_model.layers[-1].output
+    x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(last)
     x = BatchNormalization(axis=-1)(x)
     #1024->64
     nb_conv = [9,8,7,6]
@@ -167,7 +167,7 @@ def train():
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
     # progbar.add(batch_size, values=[("logloss", scale_invarient_error)])
-
+    #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size),
