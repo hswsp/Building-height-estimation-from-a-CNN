@@ -81,7 +81,7 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X)))
+                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
                 Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
                 Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
                 yield (X,Y)  
