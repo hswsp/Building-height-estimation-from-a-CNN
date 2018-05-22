@@ -31,6 +31,8 @@ momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
 nb_epoch = 200
+epochs_drop = 10
+gamma =  0.96
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
@@ -152,7 +154,7 @@ def berHu(y_true,y_pred,c):
         return (x**2+c**2)/(2*c)
 
 def step_decay(epoch):
-    return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
+    return base_lr * math.pow (gamma ,math.floor(epoch / epochs_drop))
 
 def train():
     # Create optimizers
@@ -167,6 +169,7 @@ def train():
     
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
+    lrate = LearningRateScheduler(step_decay)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
