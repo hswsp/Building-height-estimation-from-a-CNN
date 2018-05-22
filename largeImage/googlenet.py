@@ -53,13 +53,14 @@ def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
 
 # loss function
-def scale_invarient_error(y_true,y_pred):
-    # log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
-    # log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
-    # return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
+def L2error(y_true,y_pred):
     dist = K.sum(K.square(y_true - y_pred))  #K.sqrt()  
     return dist/(2.0*((img_row/4)*(img_cols/4)))
 
+def scale_invarient_error(y_true,y_pred):
+    log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
+    log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
+    return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 
 def normalization(X):
@@ -346,8 +347,9 @@ def train():
     # stop at epochs
     lrate = LearningRateScheduler(step_decay)
     start = time.time()
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)
     tb_cb = TensorBoard(log_dir=log_filepath,write_graph=False, write_grads=False)
-    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[lrate,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.2) 
+    google_model.fit(X_train,y_train,epochs=epochs,callbacks=[reduce_lr,tb_cb],batch_size=batch_size,shuffle=True,validation_split=0.2) 
     #validation_data=(X_test,y_test) 
 
     # steps_per_epoch =,validation_steps = test_iter                       
