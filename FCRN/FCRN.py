@@ -6,6 +6,7 @@ import matplotlib.image as Img
 
 
 import keras
+from keras.utils import generic_utils
 from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard
 from keras.models import Model
 from keras.optimizers import Adam,SGD
@@ -158,7 +159,11 @@ def train():
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
+    # progbar = generic_utils.Progbar(train_num)
     print("Start training")
+    # progbar.add(batch_size, values=[("logloss", scale_invarient_error)])
+
+    FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size),
     max_q_size=2000,verbose=1)
