@@ -3,7 +3,8 @@ import math, json, os, sys
 import glob
 import random
 import matplotlib.image as Img
-import cv2
+# import cv2
+from scipy import misc
 
 import keras
 from keras.utils import generic_utils
@@ -33,7 +34,7 @@ nb_epoch = 200
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
-dset = '/home/Dataset/P_V_merge/P_V_1024'
+dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
 FCRN_dir = './model/'
@@ -81,10 +82,10 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
-                Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
-                Y=np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))]) #output is 512 
-                yield (X,Y)  
+                X = misc.imresize(X,0.5)# input is 512
+                for i in range(2):
+                    Y = misc.imresize(Y,0.5)#output is 156 
+                yield (np.array(X),np.array(Y))  
                 X = []  
                 Y = []  
      
