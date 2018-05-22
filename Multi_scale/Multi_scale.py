@@ -15,7 +15,7 @@ from keras.optimizers import SGD
 from keras.layers import Input, Reshape, concatenate, Activation, Flatten, merge
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout
 from keras import backend as K
-from keras.callbacks import TensorBoard
+from keras.callbacks import TensorBoard,ReduceLROnPlateau
 
 #设置当前目录
 root = '/home/smiletranquilly/Multi-Scale_Deep_Network' 
@@ -188,8 +188,8 @@ def train_coarse():
         pass
     #将loss ，acc， val_loss ,val_acc记录tensorboard
     tensorboard = TensorBoard(log_dir=log_corsepath)#, histogram_freq=1,write_graph=True,write_images=1
-                           
-    model.fit(X_train,y_train,epochs=coarse_epochs,batch_size=batch_size,shuffle=True,validation_split=0.2,callbacks=[tensorboard])
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)                       
+    model.fit(X_train,y_train,epochs=coarse_epochs,batch_size=batch_size,shuffle=True,validation_split=0.2,callbacks=[tensorboard,reduce_lr])
                                
     #save_model
     model.save(coarse_dir)
@@ -236,8 +236,9 @@ def train_fine():
         pass
     #将loss ，acc， val_loss ,val_acc记录tensorboard
     # lrate = LearningRateScheduler(step_decay)
+    reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)
     tensorboard = TensorBoard(log_dir=log_finepath) #, histogram_freq=1,write_graph=True,write_images=1
-    history = model.fit(X_train,y_train,batch_size=batch_size,epochs=fine_epoches,shuffle=True,validation_split=0.2,callbacks=[tensorboard])
+    history = model.fit(X_train,y_train,batch_size=batch_size,epochs=fine_epoches,shuffle=True,validation_split=0.2,callbacks=[tensorboard,reduce_lr])
     
     #save model
     model.save(fine_dir)
