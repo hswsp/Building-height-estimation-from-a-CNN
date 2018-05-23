@@ -30,7 +30,7 @@ batch_size = 4
 momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
-nb_epoch = 100
+nb_epoch = 120
 epochs_drop = 10
 gamma =  0.96
 

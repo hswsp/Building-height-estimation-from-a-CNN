@@ -1,6 +1,7 @@
 -
 IMG2DSM/models/
 largeImage/model*/
+FCRN/model/
 nohup.out
 Multi_scale/nohup.out
 FCRN/nohup.out
