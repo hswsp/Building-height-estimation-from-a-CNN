@@ -15,7 +15,7 @@ from keras.optimizers import SGD
 from keras.layers import Input, Reshape, concatenate, Activation, Flatten, merge
 from keras.layers import Convolution2D, MaxPooling2D, Dense, Dropout
 from keras import backend as K
-from keras.callbacks import TensorBoard,ReduceLROnPlateau
+from keras.callbacks import TensorBoard,ReduceLROnPlateau,LearningRateScheduler
 
 #设置当前目录
 root = '/home/smiletranquilly/Multi-Scale_Deep_Network' 
