@@ -68,7 +68,12 @@ def process_line(line):
     x = tmp[:,:width//2,:]  #Data
     y = tmp[:,width//2:,:]  #label
     return x,y  
-  
+
+def rescale(data):
+    data=data.astype('float32')
+    data /= 255.0   
+    return data
+
 def generate_arrays_from_file(input_paths,batch_size):  
     while 1:  
         random.shuffle(input_paths)# every epoch shuffle  
@@ -88,7 +93,9 @@ def generate_arrays_from_file(input_paths,batch_size):
                 # X = misc.imresize(X,0.5)# input is 512
                 for i in range(2):
                     # Y = misc.imresize(Y,0.5)#output is 256
-                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(X))]) 
+                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(X))])
+                X = rescale(X)
+                Y = rescale(Y) 
                 yield (X,Y)  
                 X = []  
                 Y = []  
