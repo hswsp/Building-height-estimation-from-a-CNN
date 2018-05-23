@@ -157,9 +157,9 @@ y_data = np.concatenate((y_data,y_data2),axis=0)
 
 X_data=rescale(X_data)
 y_data=rescale(y_data)
-# Y轴镜像
-X_data = np.concatenate((X_data,X_data[:,::-1]),axis = 0)
-y_data = np.concatenate((y_data,y_data[:,::-1]),axis = 0)
+# # Y轴镜像
+# X_data = np.concatenate((X_data,X_data[:,::-1]),axis = 0)
+# y_data = np.concatenate((y_data,y_data[:,::-1]),axis = 0)
 
 image_num = len(X_data) 
 depth_num = len(y_data)
