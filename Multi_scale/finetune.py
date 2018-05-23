@@ -105,7 +105,7 @@ def train_fine():
     
     #fine_2:
     coarse_output=model.output
-    coarse_output=Reshape((int(img_row/8),int(img_cols/8),1))(coarse_output)
+    coarse_output=Reshape((int(img_row/8),int(img_cols/8),1),name='fine_reshape1')(coarse_output)
     fine_2=concatenate([fine_1,coarse_output],axis=3)
     
     #fine_3:
@@ -115,7 +115,7 @@ def train_fine():
     #fine_4:
     fine_4=Convolution2D(1,(5,5),padding='same',name='fine_con2d3')(fine_3)
     fine_4=Activation('linear',name='fine_linear1')(fine_4)
-    fine_4=Reshape((int(img_row/8),int(img_cols/8)))(fine_4)
+    fine_4=Reshape((int(img_row/8),int(img_cols/8)),name='fine_reshape2')(fine_4)
     
     
     model=Model(input=inputs,output=fine_4)
