@@ -21,13 +21,13 @@ from keras.callbacks import TensorBoard,ReduceLROnPlateau,LearningRateScheduler
 root = '/home/smiletranquilly/Multi-Scale_Deep_Network' 
 os.chdir(root)
 
-coarse_dir='./coarse_data/building_coarse_model_522.h5'
-coarse_weights='./coarse_data/building_coarse_weights_522.h5'
-fine_dir='./fine_data/building_fine_model_522.h5'
-fine_weights='./fine_data/building_fine_weights_522.h5'
+coarse_dir='./coarse_data/coarse_model_523.h5'
+coarse_weights='./coarse_data/coarse_weights_523.h5'
+fine_dir='./fine_data/fine_model_523.h5'
+fine_weights='./fine_data/fine_weights_523.h5'
 
-log_corsepath = './log/building_corse_log_522'
-log_finepath = './log/building_fine_log_522'
+log_corsepath = './log/building_corse_log_523'
+log_finepath = './log/building_fine_log_523'
 
 dataFile='/home/Dataset/Potsdam_1024.mat'
 dataFile2 = '/home/Dataset/Vaihingen_1024.mat'
@@ -60,7 +60,7 @@ learning_rate=0.001
 momentum=0.9
 Lambda=0.5
 stepsize = 100
-base_lr = 0.001
+base_lr = 0.002
 gamma = 0.5
 
 def step_decay(epoch):
@@ -191,8 +191,10 @@ def train_coarse():
         pass
     #将loss ，acc， val_loss ,val_acc记录tensorboard
     tensorboard = TensorBoard(log_dir=log_corsepath)#, histogram_freq=1,write_graph=True,write_images=1
-    reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)                       
-    model.fit(X_train,y_train,epochs=coarse_epochs,batch_size=batch_size,shuffle=True,validation_split=0.2,callbacks=[tensorboard,reduce_lr])
+    # reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)
+    lrate = LearningRateScheduler(step_decay)                       
+    model.fit(X_train,y_train,epochs=coarse_epochs,batch_size=batch_size,shuffle=True,validation_split=0.2,
+    callbacks=[tensorboard,lrate])
                                
     #save_model
     model.save(coarse_dir)
@@ -238,10 +240,11 @@ def train_fine():
     except:
         pass
     #将loss ，acc， val_loss ,val_acc记录tensorboard
-    # lrate = LearningRateScheduler(step_decay)
-    reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)
+    lrate = LearningRateScheduler(step_decay)
+    # reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=20)
     tensorboard = TensorBoard(log_dir=log_finepath) #, histogram_freq=1,write_graph=True,write_images=1
-    history = model.fit(X_train,y_train,batch_size=batch_size,epochs=fine_epoches,shuffle=True,validation_split=0.2,callbacks=[tensorboard,reduce_lr])
+    history = model.fit(X_train,y_train,batch_size=batch_size,epochs=fine_epoches,shuffle=True,
+    validation_split=0.2,callbacks=[tensorboard,lrate])
     
     #save model
     model.save(fine_dir)
