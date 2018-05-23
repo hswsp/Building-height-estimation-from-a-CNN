@@ -73,7 +73,7 @@ def rescale(data):
     return data
 
 
-def train_corse():
+def train_coarse():
     new_model = load_model(base_model_corse)
     try:
         os.makedirs(log_corsepath)
