@@ -55,12 +55,12 @@ coarse_epochs = 500
 fine_epoches = 800
 img_row=1024
 img_cols=1024
-learning_rate=0.001
+# learning_rate=0.001
 momentum=0.9
 Lambda=0.5
 stepsize = 100
-base_lr = 0.002
-gamma = 0.5
+base_lr = 0.001
+gamma = 0.96
 
 def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
@@ -177,7 +177,7 @@ def train_coarse():
     coarse_7=Reshape((int(img_row/8),int(img_cols/8)))(coarse_7)
         
     model=Model(input=inputs,output=coarse_7)
-    model.compile(loss=scale_invarient_error,optimizer=SGD(learning_rate,momentum),metrics=['accuracy'])
+    model.compile(loss=scale_invarient_error,optimizer=SGD(base_lr,momentum),metrics=['accuracy'])
     
     #print model
     model.summary() 
@@ -228,7 +228,7 @@ def train_fine():
     
     
     model=Model(input=inputs,output=fine_4)
-    model.compile(loss=scale_invarient_error,optimizer=SGD(learning_rate,momentum),metrics=['accuracy'])
+    model.compile(loss=scale_invarient_error,optimizer=SGD(base_lr,momentum),metrics=['accuracy'])
     
     model.summary()
     
