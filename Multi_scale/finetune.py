@@ -27,7 +27,7 @@ fine_dir='./fine_data/building_fine_model_523.h5'
 log_corsepath = './log/building_corse_log_523'
 log_finepath = './log/building_fine_log_523'
 
-dataFile='/home/Dataset/Vaihingen_1024.mat' #Potsdam_1024.mat
+dataFile='/home/Dataset/Potsdam_1024.mat' #Vaihingen_1024.mat
 dataFile2 = '/home/Dataset/Vaihingen_1024.mat'
 
 base_model_corse = './coarse_data/building_coarse_model_522.h5'
@@ -47,8 +47,8 @@ if not isExists:
     os.makedirs('log')
 
 batch_size=32
-coarse_epochs = 1
-fine_epoches = 1
+coarse_epochs = 200
+fine_epoches = 800
 img_row=1024
 img_cols=1024
 learning_rate=0.001
@@ -59,7 +59,7 @@ base_lr = 0.001
 gamma = 0.5
 
 def step_decay(epoch):
-    return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
+    return base_lr * math.pow (gamma ,math.floor(epoch+1 / stepsize))
 
 def scale_invarient_error(y_true,y_pred):
     log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
