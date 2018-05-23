@@ -27,7 +27,7 @@ import h5py
 img_row = 1024
 img_cols = 1024
 batch_size = 4
-momentum = 0.9
+momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
@@ -39,7 +39,7 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-FCRN_dir = './model/'
+FCRN_dir = './model/'#need to be end with .h5！
 log_path = './log/'
 
 isExists=os.path.exists(FCRN_dir)    

@@ -52,16 +52,19 @@ def scale_invarient_error(y_true,y_pred):
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 batch_size=32
-coarse_epochs = 1000
+coarse_epochs = 200
 fine_epoches = 800
 img_row=1024
 img_cols=1024
 learning_rate=0.001
 momentum=0.9
 Lambda=0.5
+stepsize = 100
+base_lr = 0.001
+gamma = 0.5
 
-# def step_decay(epoch):
-#     return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
+def step_decay(epoch):
+    return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
 
 def pred_single_image_depth_using_fine(path):
     model=load_model(fine_dir,custom_objects={'scale_invarient_error':scale_invarient_error})
