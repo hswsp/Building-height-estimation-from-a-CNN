@@ -66,7 +66,7 @@ def process_line(line):
     tmp = np.array(tmp)
     width = tmp.shape[1]
     x = tmp[:,:width//2,:]  #Data
-    y = tmp[:,width//2:,1]  #label,in P_V_1024 label has 3 channel！！
+    y = tmp[:,width//2:,:]  #label,in P_V_1024 label has 3 channel！！
     return x,y  
 
 def rescale(data):
@@ -91,9 +91,11 @@ def generate_arrays_from_file(input_paths,batch_size):
                 cnt = 0
                 X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
                 # X = misc.imresize(X,0.5)# input is 512
+                Y = np.array(Y[:,:,0]) # only take one channel!
+                Y = np.expand_dims(img_array,axis=-1)
                 for i in range(2):
                     # Y = misc.imresize(Y,0.5)#output is 256
-                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(X))])
+                    Y = [cv2.pyrDown(Y[i]) for i in range(len(X))]
                 X = rescale(X)
                 Y = rescale(Y) 
                 yield (X,Y)  
