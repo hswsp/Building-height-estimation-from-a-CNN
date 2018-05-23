@@ -94,9 +94,11 @@ def generate_arrays_from_file(input_paths,batch_size):
                 Y = np.array(Y) 
                 Y = Y[:,:,:,0] # only take one channel!
                 Y = np.expand_dims(Y,axis=4) # output is (?,?,?,?)
+                print Y.shape
                 for i in range(2):
                     # Y = misc.imresize(Y,0.5)#output is 256
                     Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))])
+                print Y.shape
                 X = rescale(X)
                 Y = rescale(Y) 
                 yield (X,Y)  
