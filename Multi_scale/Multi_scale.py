@@ -52,7 +52,7 @@ def scale_invarient_error(y_true,y_pred):
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 batch_size=32
-coarse_epochs = 200
+coarse_epochs = 300
 fine_epoches = 800
 img_row=1024
 img_cols=1024
@@ -125,8 +125,6 @@ def rescale_float(label):
     label=label.astype('float32')
     label = label /255.0
     return label
-
-
 
 
 def convert(mat,start,end):
