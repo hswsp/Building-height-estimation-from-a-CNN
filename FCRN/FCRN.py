@@ -171,7 +171,7 @@ def step_decay(epoch):
 def train():
     # Create optimizers
     # opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-    opt_dcgan = SGD(learning_rate,momentum)
+    opt_dcgan = SGD(base_lr,momentum)
 
     inputs_path,train_num = load_data(dset)
     val_path,val_num = load_data(dset)
