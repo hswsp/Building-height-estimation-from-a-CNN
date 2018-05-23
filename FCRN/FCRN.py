@@ -66,7 +66,7 @@ def process_line(line):
     tmp = np.array(tmp)
     width = tmp.shape[1]
     x = tmp[:,:width//2,:]  #Data
-    y = tmp[:,width//2:,:]  #label
+    y = tmp[:,width//2:,1]  #label,in P_V_1024 label has 3 channel！！
     return x,y  
 
 def rescale(data):
