@@ -109,11 +109,11 @@ def train_fine():
     fine_2=concatenate([fine_1,coarse_output],axis=3)
     
     #fine_3:
-    fine_3=Convolution2D(64,(5,5),padding='same')(fine_2)
+    fine_3=Convolution2D(64,(5,5),padding='same',name='fine_con2d2')(fine_2)
     fine_3=Activation('relu')(fine_3)
     
     #fine_4:
-    fine_4=Convolution2D(1,(5,5),padding='same')(fine_3)
+    fine_4=Convolution2D(1,(5,5),padding='same',name='fine_con2d3')(fine_3)
     fine_4=Activation('linear')(fine_4)
     fine_4=Reshape((int(img_row/8),int(img_cols/8)))(fine_4)
     
@@ -197,7 +197,9 @@ print(y_train.shape)
 print(X_test.shape)
 print(y_test.shape)
 
+print "start train coarse"
 train_coarse()
+print "start train fine"
 train_fine()
 
 
