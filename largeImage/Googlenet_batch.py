@@ -8,7 +8,7 @@ from scipy import misc
 
 import keras
 from keras.utils import generic_utils
-from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard
+from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard,LearningRateScheduler
 from keras.models import Model
 from keras.optimizers import Adam,SGD
 from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda, Reshape
@@ -28,7 +28,7 @@ img_row = 1024
 img_cols = 1024
 batch_size = 4
 momentum = 0.9
-base_lr = 0.01
+base_lr = 0.001
 Lambda=0.5
 nb_epoch = 100
 epochs_drop = 10
@@ -39,8 +39,8 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-google_dir = './model/'
-log_path = './log/'
+google_dir = './model/googlenet23.h5'
+log_path = './log/05-23/'
 
 isExists=os.path.exists(google_dir)    
 if not isExists:
@@ -60,6 +60,11 @@ def gen_batch(X1, X2, batch_size):
         idx = np.random.choice(X1.shape[0], batch_size, replace=False) #random choice
         # X1.shape[0]为所有数据总量
         yield X1[idx], X2[idx]
+
+def rescale(data):
+    data=data.astype('float32')
+    data /= 255.0   
+    return data
         
 def process_line(line):  
     tmp = Img.imread(line) 
@@ -85,10 +90,13 @@ def generate_arrays_from_file(input_paths,batch_size):
             if cnt==batch_size:  
                 cnt = 0
                 X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
-                # X = misc.imresize(X,0.5)# input is 512
+                Y = np.array(Y) 
+                Y = Y[:,:,:,0] # only take one channel!
                 for i in range(2):
                     # Y = misc.imresize(Y,0.5)#output is 256
                     Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(X))]) 
+                X = rescale(X)
+                Y = rescale(Y) 
                 yield (X,Y)  
                 X = []  
                 Y = []  
@@ -223,13 +231,6 @@ def google_net(model_name= 'modify_googlenet'):
 
     return google_net
 
-def berHu(y_true,y_pred,c):
-    x = abs(y_true-y_pred)
-    if x<c:
-        return x
-    else:
-        return (x**2+c**2)/(2*c)
-
 def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch / epochs_drop))
 
@@ -243,13 +244,14 @@ def train():
     
     google_model = google_net()
     tensorboard = TensorBoard(log_dir=log_path)
+    lrate = LearningRateScheduler(step_decay)  
     google_model.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     print("Start training")
     #print net info
     google_model.summary()
     google_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
-    google_model.save(google_dir+'0525.h5')
+    callbacks=[tensorboard，lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
+    google_model.save(google_dir)
     return
 
 train()

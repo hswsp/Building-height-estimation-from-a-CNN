@@ -47,16 +47,16 @@ if not isExists:
     os.makedirs('log')
 
 batch_size=32
-coarse_epochs = 200
+coarse_epochs = 500
 fine_epoches = 800
 img_row=1024
 img_cols=1024
 learning_rate=0.001
 momentum=0.9
 Lambda=0.5
-stepsize = 100
 base_lr = 0.001
 gamma = 0.5
+epochs_drop = 100
 
 def step_decay(epoch):
     return base_lr * math.pow (gamma ,math.floor(epoch+1 / stepsize))
@@ -71,6 +71,8 @@ def rescale(data):
     data /= 255.0   
     return data
 
+def step_decay(epoch):
+    return base_lr * math.pow (gamma ,math.floor(epoch / epochs_drop))
 
 def train_coarse():
     new_model = load_model(base_model_corse,custom_objects={'scale_invarient_error':scale_invarient_error})
