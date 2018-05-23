@@ -110,11 +110,11 @@ def train_fine():
     
     #fine_3:
     fine_3=Convolution2D(64,(5,5),padding='same',name='fine_con2d2')(fine_2)
-    fine_3=Activation('relu')(fine_3)
+    fine_3=Activation('relu',name='fine_relu2')(fine_3)
     
     #fine_4:
     fine_4=Convolution2D(1,(5,5),padding='same',name='fine_con2d3')(fine_3)
-    fine_4=Activation('linear')(fine_4)
+    fine_4=Activation('linear',name='fine_linear1')(fine_4)
     fine_4=Reshape((int(img_row/8),int(img_cols/8)))(fine_4)
     
     
