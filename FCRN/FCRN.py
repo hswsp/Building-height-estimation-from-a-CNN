@@ -8,7 +8,7 @@ from scipy import misc
 
 import keras
 from keras.utils import generic_utils
-from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard
+from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard,LearningRateScheduler
 from keras.models import Model
 from keras.optimizers import Adam,SGD
 from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda, Reshape
@@ -32,7 +32,7 @@ base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
 epochs_drop = 10
-gamma =  0.96
+gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
@@ -170,7 +170,9 @@ def step_decay(epoch):
 
 def train():
     # Create optimizers
-    opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+    # opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+    opt_dcgan = SGD(learning_rate,momentum)
+
     inputs_path,train_num = load_data(dset)
     val_path,val_num = load_data(dset)
     batches = generate_arrays_from_file(inputs_path,batch_size=batch_size)
@@ -181,7 +183,7 @@ def train():
     
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
-    # lrate = LearningRateScheduler(step_decay)
+    lrate = LearningRateScheduler(step_decay)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
@@ -189,7 +191,7 @@ def train():
     #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
+    callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
     FCRNmodel.save(FCRN_dir+'0525.h5')
     return
 
