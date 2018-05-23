@@ -27,7 +27,7 @@ fine_dir='./fine_data/building_fine_model_523.h5'
 log_corsepath = './log/building_corse_log_523'
 log_finepath = './log/building_fine_log_523'
 
-dataFile='/home/Dataset/Potsdam_1024.mat'
+dataFile='/home/Dataset/Potsdam_1024.mat' #Vaihingen_1024.mat
 dataFile2 = '/home/Dataset/Vaihingen_1024.mat'
 
 base_model_corse = './coarse_data/building_coarse_model_522.h5'
@@ -48,7 +48,7 @@ if not isExists:
 
 batch_size=32
 coarse_epochs = 200
-fine_epoches = 600
+fine_epoches = 800
 img_row=1024
 img_cols=1024
 learning_rate=0.001
@@ -59,7 +59,7 @@ base_lr = 0.001
 gamma = 0.5
 
 def step_decay(epoch):
-    return base_lr * math.pow (gamma ,math.floor(epoch / stepsize))
+    return base_lr * math.pow (gamma ,math.floor(epoch+1 / stepsize))
 
 def scale_invarient_error(y_true,y_pred):
     log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
@@ -99,23 +99,23 @@ def train_fine():
     inputs=model.input
     
     #fine_1:
-    fine_1=Convolution2D(63,(9,9),strides=(2,2),padding='same')(inputs)
-    fine_1=Activation('relu')(fine_1)
-    fine_1=MaxPooling2D(pool_size=(2,2))(fine_1)
+    fine_1=Convolution2D(63,(9,9),strides=(2,2),padding='same',name='fine_con2d1')(inputs)
+    fine_1=Activation('relu',name='fine_relu1')(fine_1)
+    fine_1=MaxPooling2D(pool_size=(2,2),name='fine_maxp1')(fine_1)
     
     #fine_2:
     coarse_output=model.output
-    coarse_output=Reshape((int(img_row/8),int(img_cols/8),1))(coarse_output)
+    coarse_output=Reshape((int(img_row/8),int(img_cols/8),1),name='fine_reshape1')(coarse_output)
     fine_2=concatenate([fine_1,coarse_output],axis=3)
     
     #fine_3:
-    fine_3=Convolution2D(64,(5,5),padding='same')(fine_2)
-    fine_3=Activation('relu')(fine_3)
+    fine_3=Convolution2D(64,(5,5),padding='same',name='fine_con2d2')(fine_2)
+    fine_3=Activation('relu',name='fine_relu2')(fine_3)
     
     #fine_4:
-    fine_4=Convolution2D(1,(5,5),padding='same')(fine_3)
-    fine_4=Activation('linear')(fine_4)
-    fine_4=Reshape((int(img_row/8),int(img_cols/8)))(fine_4)
+    fine_4=Convolution2D(1,(5,5),padding='same',name='fine_con2d3')(fine_3)
+    fine_4=Activation('linear',name='fine_linear1')(fine_4)
+    fine_4=Reshape((int(img_row/8),int(img_cols/8)),name='fine_reshape2')(fine_4)
     
     
     model=Model(input=inputs,output=fine_4)
@@ -197,7 +197,9 @@ print(y_train.shape)
 print(X_test.shape)
 print(y_test.shape)
 
+print "start train coarse"
 train_coarse()
+print "start train fine"
 train_fine()
 
 
