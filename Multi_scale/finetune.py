@@ -27,7 +27,7 @@ fine_dir='./fine_data/building_fine_model_523.h5'
 log_corsepath = './log/building_corse_log_523'
 log_finepath = './log/building_fine_log_523'
 
-dataFile='/home/Dataset/Potsdam_1024.mat'
+dataFile='/home/Dataset/Vaihingen_1024.mat' #Potsdam_1024.mat
 dataFile2 = '/home/Dataset/Vaihingen_1024.mat'
 
 base_model_corse = './coarse_data/building_coarse_model_522.h5'
@@ -47,8 +47,8 @@ if not isExists:
     os.makedirs('log')
 
 batch_size=32
-coarse_epochs = 200
-fine_epoches = 600
+coarse_epochs = 1
+fine_epoches = 1
 img_row=1024
 img_cols=1024
 learning_rate=0.001
@@ -99,9 +99,9 @@ def train_fine():
     inputs=model.input
     
     #fine_1:
-    fine_1=Convolution2D(63,(9,9),strides=(2,2),padding='same')(inputs)
-    fine_1=Activation('relu')(fine_1)
-    fine_1=MaxPooling2D(pool_size=(2,2))(fine_1)
+    fine_1=Convolution2D(63,(9,9),strides=(2,2),padding='same',name='fine_con2d1')(inputs)
+    fine_1=Activation('relu',name='fine_relu1')(fine_1)
+    fine_1=MaxPooling2D(pool_size=(2,2),name='fine_maxp1')(fine_1)
     
     #fine_2:
     coarse_output=model.output
