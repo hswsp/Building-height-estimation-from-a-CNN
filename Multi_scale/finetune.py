@@ -74,7 +74,7 @@ def rescale(data):
 
 
 def train_coarse():
-    new_model = load_model(base_model_corse)
+    new_model = load_model(base_model_corse,custom_objects={'scale_invarient_error':scale_invarient_error})
     try:
         os.makedirs(log_corsepath)
     except:
