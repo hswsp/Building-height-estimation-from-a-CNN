@@ -154,7 +154,7 @@ def identity_block_last(input_tensor, kernel_size, filters, stage, block):
     x = Conv2D(filters3, (1, 1), dilation_rate=2,name=conv_name_base + '2c')(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
-    x = layers.add([x, input_tensor])
+    x = keras.layers.add([x, input_tensor])
     x = Activation('relu')(x)
     return x
 
