@@ -39,8 +39,8 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-FCRN_dir = './model/05-23_new/'#need to be end with .h5！
-log_path = './log/05-23_new/'
+FCRN_dir = './model/05-24/'#need to be end with .h5！
+log_path = './log/05-24/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
@@ -193,7 +193,7 @@ def train():
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
-    FCRNmodel.save(FCRN_dir+'0525.h5')
+    FCRNmodel.save(FCRN_dir+'FCRN_predict.h5')
     return
 
 train()
