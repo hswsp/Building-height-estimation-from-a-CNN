@@ -50,8 +50,8 @@ if not isExists:
     os.makedirs(log_path) 
 
 def scale_invarient_error(y_true,y_pred):
-    log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
-    log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
+    log_1=K.clip(y_pred,K.epsilon(),np.inf)+1.#K.log()
+    log_2=K.clip(y_true,K.epsilon(),np.inf)+1.#K.log()
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 def gen_batch(X1, X2, batch_size):
@@ -125,7 +125,8 @@ def load_data(input_dir):
 # net definition
 def Up_Projection(x,f,num):
 
-    x = UpSampling2D(size=(2, 2))(x)
+    # x = UpSampling2D(size=(2, 2))(x)
+    x = Deconv2D(f, (1, 1), output_shape=o_shape, strides=(2, 2), padding="same")(x)
     x1 = Conv2D(f, (5, 5), name='con5_main_'+str(num), padding="same")(x)
     x1 = Activation("relu")(x1)
     x1 = Conv2D(f, (3, 3), name='con3_main_'+str(num), padding="same")(x1)
