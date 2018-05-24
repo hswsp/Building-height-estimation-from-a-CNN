@@ -40,8 +40,8 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-FCRN_dir = './model/05-24/'#need to be end with .h5！
-log_path = './log/05-24/'
+FCRN_dir = './model/05-242/'#need to be end with .h5！
+log_path = './log/05-242/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
