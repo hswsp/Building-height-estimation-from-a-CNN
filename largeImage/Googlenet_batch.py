@@ -26,11 +26,11 @@ img_row = 1024
 img_cols = 1024
 batch_size = 4
 momentum = 0.9
-base_lr = 0.001
+base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
 epochs_drop = 10
-gamma =  0.96
+gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/largeImage'
 os.chdir(root)
