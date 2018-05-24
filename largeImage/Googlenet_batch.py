@@ -250,7 +250,7 @@ def train():
     #print net info
     google_model.summary()
     google_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[tensorboard，lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
+    callbacks=[tensorboard,lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
     google_model.save(google_dir+'googlenet23.h5')
     return
 
