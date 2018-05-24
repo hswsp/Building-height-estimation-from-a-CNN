@@ -39,7 +39,7 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-google_dir = './model/googlenet23.h5'
+google_dir = './model/'
 log_path = './log/05-23/'
 
 isExists=os.path.exists(google_dir)    
@@ -251,7 +251,7 @@ def train():
     google_model.summary()
     google_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[tensorboard，lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
-    google_model.save(google_dir)
+    google_model.save(google_dir+'googlenet23.h5')
     return
 
 train()
