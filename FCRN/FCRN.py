@@ -127,7 +127,7 @@ def load_data(input_dir):
 def Up_Projection(x,f,num):
 
     # x = UpSampling2D(size=(2, 2))(x)
-    x = Deconv2D(f, (1, 1), output_shape=o_shape, strides=(2, 2), padding="same")(x)
+    x = Deconv2D(f, (1, 1),  strides=(2, 2), padding="same")(x)
     x1 = Conv2D(f, (5, 5), name='con5_main_'+str(num), padding="same")(x)
     x1 = Activation("relu")(x1)
     x1 = Conv2D(f, (3, 3), name='con3_main_'+str(num), padding="same")(x1)
