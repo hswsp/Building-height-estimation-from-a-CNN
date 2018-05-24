@@ -6,19 +6,16 @@ import matplotlib.image as Img
 import cv2
 from scipy import misc
 
-import keras
-from keras.utils import generic_utils
-from keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard,LearningRateScheduler
-from keras.models import Model
-from keras.optimizers import Adam,SGD
-from keras.layers.core import Flatten, Dense, Dropout, Activation, Lambda, Reshape
-from keras.layers.convolutional import Conv2D, Deconv2D, ZeroPadding2D, UpSampling2D
-from keras.layers import Input, Concatenate
-from keras import initializers
-from keras.layers.advanced_activations import LeakyReLU
+from keras.optimizers import SGD
+from keras.layers import Input, Reshape, Concatenate, Activation, Flatten, merge
 from keras.layers.normalization import BatchNormalization
-from keras.layers.pooling import MaxPooling2D
+from keras.layers import Convolution2D, MaxPooling2D,AveragePooling2D, Dense, Dropout
+from keras import initializers
+from keras.callbacks import LearningRateScheduler,TensorBoard 
 from keras import backend as K
+from keras.utils import np_utils  
+from keras.utils.vis_utils import plot_model  
+
 
 
 from keras.utils import np_utils
