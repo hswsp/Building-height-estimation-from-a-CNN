@@ -27,7 +27,7 @@ import h5py
 img_row = 1024
 img_cols = 1024
 batch_size = 4
-Val_batch_size = 32
+Val_batch_size = 16
 momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
@@ -193,7 +193,7 @@ def train():
     #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
+    callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/Val_batch_size))
     FCRNmodel.save(FCRN_dir+'FCRN_predict.h5')
     return
 
