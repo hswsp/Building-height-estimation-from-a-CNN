@@ -31,7 +31,7 @@ momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
-epochs_drop = 10
+epochs_drop = 20
 gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
