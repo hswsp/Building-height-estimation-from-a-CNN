@@ -31,8 +31,8 @@ Val_batch_size = 16
 momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
-nb_epoch = 1
-epochs_drop = 20
+nb_epoch = 110
+epochs_drop = 16
 gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
@@ -254,7 +254,8 @@ def berHu(y_true,y_pred,c):
         return (x**2+c**2)/(2*c)
 
 def step_decay(epoch):
-    return base_lr * math.pow (gamma ,math.floor(epoch / epochs_drop))
+    lr = base_lr * math.pow (gamma ,math.floor(epoch / epochs_drop))
+    return lr
 
 def train():
     # Create optimizers
