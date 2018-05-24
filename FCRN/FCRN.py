@@ -27,6 +27,7 @@ import h5py
 img_row = 1024
 img_cols = 1024
 batch_size = 4
+Val_batch_size = 32
 momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
