@@ -121,7 +121,7 @@ def google_net(model_name= 'modify_googlenet'):
     # channel last
     bias_ini = initializers.Constant(0.5)
      
-    inputs=Input(shape=(int(img_row/4),int(img_cols/4),3))
+    inputs=Input(shape=(int(img_row/2),int(img_cols/2),3))
     #conv1/7x7_s2
     conv1=Convolution2D(64,(7,7),strides=(2,2),name='conv1/7x7_s2',padding='same',bias_initializer=bias_ini)(inputs)
     conv1=Activation('sigmoid')(conv1)
