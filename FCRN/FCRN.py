@@ -226,7 +226,7 @@ def FCRN(model_name):
                                                       weights=None,pooling=None)
     #pop the last avepooling                                                  
     base_model.layers.pop()
-    x = base_model.layers['activation_40'].output
+    x = base_model.get_layer('activation_40').output
     # 最后只缩小16倍！=32
     x = conv_block_last(x, 3, [512, 512, 2048], stage=5, block='a',strides=(1,1))
     x = identity_block_last(x, 3, [512, 512, 2048], stage=5, block='b')
