@@ -58,8 +58,8 @@ def L2error(y_true,y_pred):
     return dist/(2.0*((img_row/4)*(img_cols/4)))
 
 def scale_invarient_error(y_true,y_pred):
-    log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
-    log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
+    log_1=K.clip(y_pred,K.epsilon(),np.inf)+1. #K.log()
+    log_2=K.clip(y_true,K.epsilon(),np.inf)+1. #K.log()
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 
