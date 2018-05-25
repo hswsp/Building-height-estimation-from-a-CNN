@@ -31,7 +31,7 @@ Val_batch_size = 16
 momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
-nb_epoch = 110
+nb_epoch = 100
 epochs_drop = 16
 gamma =  0.5
 
@@ -40,8 +40,8 @@ os.chdir(root)
 dset = '/home/Dataset/P_V_1024'
 Valdir = '/home/Dataset/P_V_Val'
 
-FCRN_dir = './model/05-242/'#need to be end with .h5！
-log_path = './log/05-242/'
+FCRN_dir = './model/05-25/'#need to be end with .h5！
+log_path = './log/05-25/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
@@ -51,9 +51,9 @@ if not isExists:
     os.makedirs(log_path) 
 
 def scale_invarient_error(y_true,y_pred):
-    log_1=K.clip(y_pred,K.epsilon(),np.inf)+1.#K.log()
-    log_2=K.clip(y_true,K.epsilon(),np.inf)+1.#K.log()
-    return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
+    y_p=K.clip(y_pred,K.epsilon(),np.inf)+1.#
+    y_t=K.clip(y_true,K.epsilon(),np.inf)+1.#
+    return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)+Lambda*K.mean(abs(y_p-y_t),axis=-1) #K.square()
 
 def gen_batch(X1, X2, batch_size):
 
@@ -259,8 +259,8 @@ def step_decay(epoch):
 
 def train():
     # Create optimizers
-    # opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-    opt_dcgan = SGD(base_lr,momentum)
+    opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+    # opt_dcgan = SGD(base_lr,momentum)
 
     inputs_path,train_num = load_data(dset)
     val_path,val_num = load_data(dset)
@@ -272,7 +272,7 @@ def train():
     
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
-    lrate = LearningRateScheduler(step_decay)
+    # lrate = LearningRateScheduler(step_decay)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
@@ -280,7 +280,7 @@ def train():
     #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/Val_batch_size))
+    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/Val_batch_size))#lrate,
     FCRNmodel.save(FCRN_dir+'FCRN_predict.h5')
     return
 
