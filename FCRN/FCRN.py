@@ -53,7 +53,7 @@ if not isExists:
 def scale_invarient_error(y_true,y_pred):
     y_p=K.clip(y_pred,K.epsilon(),np.inf)+1.#K.log()
     y_t=K.clip(y_true,K.epsilon(),np.inf)+1.#K.log()
-    return K.mean(K.square(K.log(y_p)-K.log(y_t),axis=-1))-Lambda*K.square(K.mean(K.log(y_p)-K.log(y_t),axis=-1))
+    return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)-Lambda*K.square(K.mean(K.log(y_p)-K.log(y_t),axis=-1))
     # return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)+Lambda*K.mean(abs(y_p-y_t),axis=-1) #K.square()
 
 def gen_batch(X1, X2, batch_size):
