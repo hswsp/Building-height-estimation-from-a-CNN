@@ -32,7 +32,7 @@ momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
-epochs_drop = 16
+epochs_drop = 20
 gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
@@ -40,8 +40,8 @@ os.chdir(root)
 dset = '/home/Dataset/Potsdam_1024'
 Valdir = '/home/Dataset/Potsdam_1024_Val'
 
-FCRN_dir = './model/05-25_2/'#need to be end with .h5！
-log_path = './log/05-25_2/'
+FCRN_dir = './model/05-26/'#need to be end with .h5！
+log_path = './log/05-26/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
@@ -105,8 +105,9 @@ def generate_arrays_from_file(input_paths,batch_size):
                     Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))])
                 Y = np.expand_dims(Y,axis=-1) # output is (?,?,?,?)
                 # print Y.shape
-                X = rescale(X)
-                Y = rescale(Y) 
+                # if normalization
+                # X = rescale(X)
+                # Y = rescale(Y) 
                 yield (X,Y)  
                 X = []  
                 Y = []  
