@@ -39,7 +39,7 @@ dset = '/home/Dataset/Vaihingen_1024_merge'
 Valdir = '/home/Dataset/Vaihingen_1024__Val'
 
 google_dir = './model/'
-log_path = './log/05-25/'
+log_path = './log/05-25_2/'
 
 isExists=os.path.exists(google_dir)    
 if not isExists:
