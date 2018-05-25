@@ -31,14 +31,14 @@ Val_batch_size = 16
 momentum = 0.9  
 base_lr = 0.01
 Lambda=100
-nb_epoch = 100
+nb_epoch = 60
 epochs_drop = 16
 gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
-dset = '/home/Dataset/P_V_1024'
-Valdir = '/home/Dataset/P_V_Val'
+dset = '/home/Dataset/Vaihingen_1024_merge'
+Valdir = '/home/Dataset/Vaihingen_1024_val'
 
 FCRN_dir = './model/05-25/'#need to be end with .h5！
 log_path = './log/05-25/'
@@ -53,7 +53,8 @@ if not isExists:
 def scale_invarient_error(y_true,y_pred):
     y_p=K.clip(y_pred,K.epsilon(),np.inf)+1.#
     y_t=K.clip(y_true,K.epsilon(),np.inf)+1.#
-    return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)+Lambda*K.mean(abs(y_p-y_t),axis=-1) #K.square()
+    return K.mean(K.square(y_p-y_t),axis=-1)-Lambda*K.square(K.mean(y_p-y_t,axis=-1))
+    # return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)+Lambda*K.mean(abs(y_p-y_t),axis=-1) #K.square()
 
 def gen_batch(X1, X2, batch_size):
 
