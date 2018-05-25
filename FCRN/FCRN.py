@@ -32,7 +32,7 @@ momentum = 0.9
 base_lr = 0.01
 Lambda=0.5
 nb_epoch = 100
-epochs_drop = 20
+epochs_drop = 18
 gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
@@ -106,8 +106,8 @@ def generate_arrays_from_file(input_paths,batch_size):
                 Y = np.expand_dims(Y,axis=-1) # output is (?,?,?,?)
                 # print Y.shape
                 # if normalization
-                # X = rescale(X)
-                # Y = rescale(Y) 
+                X = rescale(X)
+                Y = rescale(Y) 
                 yield (X,Y)  
                 X = []  
                 Y = []  
