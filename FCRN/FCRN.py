@@ -27,7 +27,7 @@ import h5py
 img_row = 1024
 img_cols = 1024
 batch_size = 4
-Val_batch_size = 16
+Val_batch_size = 4
 momentum = 0.9  
 base_lr = 0.01
 Lambda=0.5
@@ -264,8 +264,8 @@ def step_decay(epoch):
 
 def train():
     # Create optimizers
-    opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-    # opt_dcgan = SGD(base_lr,momentum)
+    # opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+    opt_dcgan = SGD(base_lr,momentum)
 
     inputs_path,train_num = load_data(dset)
     val_path,val_num = load_data(dset)
@@ -277,7 +277,7 @@ def train():
     
     FCRNmodel = FCRN('FCRN')
     tensorboard = TensorBoard(log_dir=log_path)
-    # lrate = LearningRateScheduler(step_decay)
+    lrate = LearningRateScheduler(step_decay)
     FCRNmodel.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
@@ -285,7 +285,7 @@ def train():
     #print net info
     FCRNmodel.summary()
     FCRNmodel.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
-    callbacks=[tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/Val_batch_size))#lrate,
+    callbacks=[tensorboard,lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/Val_batch_size))#lrate,
     FCRNmodel.save(FCRN_dir+'FCRN_predict.h5')
     return
 
