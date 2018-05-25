@@ -37,11 +37,11 @@ gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
-dset = '/home/Dataset/Vaihingen_1024_merge'
-Valdir = '/home/Dataset/Vaihingen_1024_val'
+dset = '/home/Dataset/Potsdam_1024'
+Valdir = '/home/Dataset/Potsdam_1024_Val'
 
-FCRN_dir = './model/05-25/'#need to be end with .h5！
-log_path = './log/05-25/'
+FCRN_dir = './model/05-25_2/'#need to be end with .h5！
+log_path = './log/05-25_2/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
