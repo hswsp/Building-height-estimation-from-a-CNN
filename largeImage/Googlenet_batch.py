@@ -14,7 +14,8 @@ from keras import initializers
 from keras.callbacks import LearningRateScheduler,TensorBoard 
 from keras import backend as K
 from keras.utils import np_utils  
-from keras.utils.vis_utils import plot_model  
+from keras.utils import plot_model
+# from keras.utils.vis_utils import plot_model  
 
 
 
@@ -247,6 +248,7 @@ def train():
     tensorboard = TensorBoard(log_dir=log_path)
     lrate = LearningRateScheduler(step_decay)  
     google_model.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
+    plot_model(model, to_file="./figures/Googlenet.png" , show_shapes=True, show_layer_names=True)
     print("Start training")
     #print net info
     google_model.summary()
