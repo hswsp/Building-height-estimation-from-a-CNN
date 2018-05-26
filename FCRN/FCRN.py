@@ -53,7 +53,7 @@ if not isExists:
 def scale_invarient_error(y_true,y_pred):
     log_1=K.clip(y_pred,K.epsilon(),np.inf)+1. #K.log()
     log_2=K.clip(y_true,K.epsilon(),np.inf)+1. #K.log()
-    return K.mean(abs(log_1-log_2),axis=-1)-Lambda*K.square(abs(log_1-log_2,axis=-1))#abs()
+    return K.mean(abs(log_1-log_2),axis=-1)-Lambda*abs(K.mean(log_1-log_2,axis=-1))#abs()
     # return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))#abs()
     # y_p=K.clip(y_pred,K.epsilon(),np.inf)+1.#K.log()
     # y_t=K.clip(y_true,K.epsilon(),np.inf)+1.#K.log()
