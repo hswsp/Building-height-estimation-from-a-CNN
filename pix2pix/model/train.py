@@ -87,6 +87,7 @@ def train(**kwargs):
                                           batch_size)
 
         generator_model.compile(loss='mae', optimizer=opt_discriminator)
+        plot_model(generator_model, to_file="../figures/%s.png" % "generator_unet_deconv" , show_shapes=True, show_layer_names=True)
         discriminator_model.trainable = False
 
         DCGAN_model = models.DCGAN(generator_model,
@@ -101,6 +102,7 @@ def train(**kwargs):
 
         discriminator_model.trainable = True
         discriminator_model.compile(loss='binary_crossentropy', optimizer=opt_discriminator)
+        plot_model(discriminator_model, to_file="../figures/%s.png" % "DCGAN_discriminator", show_shapes=True, show_layer_names=True)
 
         gen_loss = 100
         disc_loss = 100
