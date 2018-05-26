@@ -40,8 +40,8 @@ os.chdir(root)
 dset = '/home/Dataset/Vaihingen_1024_merge' #Potsdam_1024
 Valdir = '/home/Dataset/Vaihingen_1024_val' #Potsdam_1024_Val
 
-FCRN_dir = './model/05-26/'#need to be end with .h5！
-log_path = './log/05-26/'
+FCRN_dir = './model/05-26V/'#need to be end with .h5！
+log_path = './log/05-26V/'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
