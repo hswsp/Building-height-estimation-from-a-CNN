@@ -69,6 +69,7 @@ def build_HDF5(jpeg_dir, nb_channels, size=256):
                                              dtype=np.uint8)
 
             num_files = len(list_img)
+            print num_files
             chunk_size = 100
             num_chunks = num_files / chunk_size
             arr_chunks = np.array_split(np.arange(num_files), num_chunks)
