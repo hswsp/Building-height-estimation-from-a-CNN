@@ -94,49 +94,64 @@ def load_largeData(X_full,img_type):
 def load_data(dset, image_data_format):
 
     # output:[-1,1]
+    # with h5py.File(dset+TrainData1, "r") as hf: #'test.mat'
+    #     y_data = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
+    #     y_data = load_largeData(y_data,'depths')
+    #     X_data = hf["images"]
+    #     X_data = load_largeData(X_data,'images') 
+    #     hf.close()
+    # with h5py.File(dset+TrainData2, "r") as hm: #
+    #     y_data1 = hm["depths"]
+    #     y_data1 = load_largeData(y_data1,'depths')
+    #     X_data1 = hm["images"]
+    #     X_data1 = load_largeData(X_data1,'images')
+    #     hm.close()
 
-    with h5py.File(dset+TrainData1, "r") as hf: #'test.mat'
-        y_data = hf["depths"] # 关键：这里的h5f与dataset并不包含真正的数据，只是包含了数据的相关信息，不会占据内存空间
-        y_data = load_largeData(y_data,'depths')
-        X_data = hf["images"]
-        X_data = load_largeData(X_data,'images')
+    # y_data = np.concatenate((y_data, y_data1),axis = 0)
+    # X_data = np.concatenate((X_data, X_data1),axis = 0)
+
+    # if image_data_format == "channels_last":
+    #     y_data = np.expand_dims(y_data, axis=3)
+    #     y_data = normalization(y_data) # =>[-1,1] _float ,np.max(y_data)
+    #     y_data = np.concatenate((y_data,y_data,y_data), axis = 3) # zero aixis is number, 3 is channel
+    #     X_data = X_data.transpose(0, 2, 3, 1)
         
-        hf.close()
-    with h5py.File(dset+TrainData2, "r") as hm: #
-        y_data1 = hm["depths"]
-        y_data1 = load_largeData(y_data1,'depths')
-        X_data1 = hm["images"]
-        X_data1 = load_largeData(X_data1,'images')
-        hm.close()
+    # with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
+    #         y_data_val = hv["depths"]
+    #         dsm_num = len(y_data_val)
+    #         y_data_val = np.array(y_data_val[:dsm_num / 2]).astype(np.float16)
+    #         X_data_val =hv["images"]
+    #         img_num = len(X_data_val)
+    #         X_data_val = np.array(X_data_val[:img_num / 2]).astype(np.uint8)
+    #         if image_data_format == "channels_last":
+    #             y_data_val = np.expand_dims(y_data_val, axis=3)
+    #             y_data_val = normalization(y_data_val)  #=>[-1,1] _float ,np.max(y_data_val)
+    #             y_data_val = np.concatenate((y_data_val, y_data_val,y_data_val),  axis=3)
+    #             X_data_val = normalization(X_data_val.transpose(0, 2, 3, 1))
+    with h5py.File("../../data/processed/%s_data.h5" % dset, "r") as hf:
 
-    y_data = np.concatenate((y_data, y_data1),axis = 0)
-    X_data = np.concatenate((X_data, X_data1),axis = 0)
+        X_full_train = hf["train_data_full"][:].astype(np.float32)
+        X_full_train = normalization(X_full_train)
 
-    if image_data_format == "channels_last":
-        y_data = np.expand_dims(y_data, axis=3)
-        y_data = normalization(y_data) # =>[-1,1] _float ,np.max(y_data)
-        y_data = np.concatenate((y_data,y_data,y_data), axis = 3) # zero aixis is number, 3 is channel
-        X_data = X_data.transpose(0, 2, 3, 1)
-        
+        X_sketch_train = hf["train_data_sketch"][:].astype(np.float32)
+        X_sketch_train = normalization(X_sketch_train)
 
+        if image_data_format == "channels_last":
+            X_full_train = X_full_train.transpose(0, 2, 3, 1)
+            X_sketch_train = X_sketch_train.transpose(0, 2, 3, 1)
 
-    with h5py.File(dset+ValData, "r") as hv:#'test_val.mat'
-            y_data_val = hv["depths"]
-            dsm_num = len(y_data_val)
-            y_data_val = np.array(y_data_val[:dsm_num / 2]).astype(np.float16)
-            
-            X_data_val =hv["images"]
-            img_num = len(X_data_val)
-            X_data_val = np.array(X_data_val[:img_num / 2]).astype(np.uint8)
-           
-            if image_data_format == "channels_last":
-                y_data_val = np.expand_dims(y_data_val, axis=3)
-                y_data_val = normalization(y_data_val)  #=>[-1,1] _float ,np.max(y_data_val)
-                y_data_val = np.concatenate((y_data_val, y_data_val,y_data_val),  axis=3)
-                X_data_val = normalization(X_data_val.transpose(0, 2, 3, 1))
-                
+        X_full_val = hf["val_data_full"][:].astype(np.float32)
+        X_full_val = normalization(X_full_val)
 
-    return y_data, X_data, y_data_val, X_data_val
+        X_sketch_val = hf["val_data_sketch"][:].astype(np.float32)
+        X_sketch_val = normalization(X_sketch_val)
+
+        if image_data_format == "channels_last":
+            X_full_val = X_full_val.transpose(0, 2, 3, 1)
+            X_sketch_val = X_sketch_val.transpose(0, 2, 3, 1)
+
+        return X_full_train, X_sketch_train, X_full_val, X_sketch_val
+    # return y_data, X_data, y_data_val, X_data_val
 
 
 def gen_batch(X1, X2, batch_size):
