@@ -121,7 +121,7 @@ if __name__ == '__main__':
     parser.add_argument('nb_channels', type=int, help='number of image channels')
     parser.add_argument('--img_size', default=256, type=int,
                         help='Desired Width == Height')
-    parser.add_argument('--do_plot', action="store_true",default=False
+    parser.add_argument('--do_plot', action="store_true",default=False,
                         help='Plot the images to make sure the data processing went OK')
     args = parser.parse_args()
 
