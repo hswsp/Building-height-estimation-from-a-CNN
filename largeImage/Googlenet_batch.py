@@ -35,11 +35,11 @@ gamma =  0.96
 
 root = '/home/smiletranquilly/HeightEstimation/largeImage'
 os.chdir(root)
-dset = '/home/Dataset/Vaihingen_1024_merge'
-Valdir = '/home/Dataset/Vaihingen_1024__Val'
+dset = '/home/Dataset/Potsdam_1024'
+Valdir = '/home/Dataset/Potsdam_1024_Val'
 
-google_dir = './model/'
-log_path = './log/05-25_2/'
+google_dir = './model/05-26'
+log_path = './log/05-26/'
 
 isExists=os.path.exists(google_dir)    
 if not isExists:
@@ -254,7 +254,7 @@ def train():
     google_model.summary()
     google_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[tensorboard,lrate],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
-    google_model.save(google_dir+'googlenet25.h5')
+    google_model.save(google_dir+'googlenet.h5')
     return
 
 train()
