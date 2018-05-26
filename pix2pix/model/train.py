@@ -7,6 +7,8 @@ import tensorflow as tf
 import models
 from keras.utils import generic_utils
 from keras.optimizers import Adam, SGD
+from keras.utils import np_utils      
+from keras.utils.vis_utils import plot_model  
 from keras import backend as K
 from keras.callbacks import TensorBoard
 # Utils
