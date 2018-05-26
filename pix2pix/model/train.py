@@ -87,9 +87,9 @@ def train(**kwargs):
                                           bn_mode,
                                           use_mbd,
                                           batch_size)
-
+       
         generator_model.compile(loss='mae', optimizer=opt_discriminator)
-        plot_model(generator_model, to_file="../figures/%s.png" % "generator_unet_deconv" , show_shapes=True, show_layer_names=True)
+        # plot_model(generator_model, to_file="../figures/%s.png" % "generator_unet_deconv" , show_shapes=True, show_layer_names=True)
         discriminator_model.trainable = False
 
         DCGAN_model = models.DCGAN(generator_model,
@@ -104,17 +104,17 @@ def train(**kwargs):
 
         discriminator_model.trainable = True
         discriminator_model.compile(loss='binary_crossentropy', optimizer=opt_discriminator)
-        plot_model(discriminator_model, to_file="../figures/%s.png" % "DCGAN_discriminator", show_shapes=True, show_layer_names=True)
+        # plot_model(discriminator_model, to_file="../figures/%s.png" % "DCGAN_discriminator", show_shapes=True, show_layer_names=True)
 
         gen_loss = 100
         disc_loss = 100
 
         # before training init callback (for tensorboard log) 
-        callback_DCGAN = TensorBoard('../logs/DCGAN/')
+        callback_DCGAN = TensorBoard('../logs/DCGAN/',write_graph=True)
         callback_DCGAN.set_model(DCGAN_model)
         train_DCGAN_names = ["train_G_tot", "train_G_L1" ,"train_G_logloss"]
         
-        callback_dis = TensorBoard('../logs/Dis/')
+        callback_dis = TensorBoard('../logs/Dis/',write_graph=True)
         callback_dis.set_model(discriminator_model)
         train_dis_names = ["train_D_logloss"]
 
