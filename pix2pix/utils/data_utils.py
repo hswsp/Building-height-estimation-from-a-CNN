@@ -128,7 +128,7 @@ def load_data(dset, image_data_format):
     #             y_data_val = normalization(y_data_val)  #=>[-1,1] _float ,np.max(y_data_val)
     #             y_data_val = np.concatenate((y_data_val, y_data_val,y_data_val),  axis=3)
     #             X_data_val = normalization(X_data_val.transpose(0, 2, 3, 1))
-    with h5py.File("../../data/processed/%s_data.h5" % dset, "r") as hf:
+    with h5py.File("../processed/%s_data.h5" % dset, "r") as hf:
 
         X_full_train = hf["train_data_full"][:].astype(np.float32)
         X_full_train = normalization(X_full_train)
