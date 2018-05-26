@@ -37,8 +37,8 @@ gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
-dset = '/home/Dataset/Potsdam_1024'
-Valdir = '/home/Dataset/Potsdam_1024_Val'
+dset = '/home/Dataset/Vaihingen_1024_merge' #Potsdam_1024
+Valdir = '/home/Dataset/Vaihingen_1024_val' #Potsdam_1024_Val
 
 FCRN_dir = './model/05-26/'#need to be end with .h5！
 log_path = './log/05-26/'
@@ -53,7 +53,8 @@ if not isExists:
 def scale_invarient_error(y_true,y_pred):
     log_1=K.clip(y_pred,K.epsilon(),np.inf)+1. #K.log()
     log_2=K.clip(y_true,K.epsilon(),np.inf)+1. #K.log()
-    return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))#abs()
+    return K.mean(abs(log_1-log_2),axis=-1)-Lambda*K.square(abs(log_1-log_2,axis=-1))#abs()
+    # return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))#abs()
     # y_p=K.clip(y_pred,K.epsilon(),np.inf)+1.#K.log()
     # y_t=K.clip(y_true,K.epsilon(),np.inf)+1.#K.log()
     # return K.mean(K.square(K.log(y_p)-K.log(y_t)),axis=-1)-Lambda*K.square(K.mean(K.log(y_p)-K.log(y_t),axis=-1))
