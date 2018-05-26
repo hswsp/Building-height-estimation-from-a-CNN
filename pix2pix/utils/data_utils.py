@@ -7,9 +7,9 @@ import h5py
 import matplotlib.pylab as plt
 import scipy
 
-TrainData1='Postdam.mat'
-TrainData2='Postdam1.mat'
-ValData = 'Postdam2.mat'               #'Vaihingen.mat'
+# TrainData1='Postdam.mat'
+# TrainData2='Postdam1.mat'
+# ValData = 'Postdam2.mat'               #'Vaihingen.mat'
 
 def normalization(X):
     #[0,255]=>[-1,1]
