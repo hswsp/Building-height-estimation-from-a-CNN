@@ -6,6 +6,8 @@ from keras.layers import Input, Concatenate
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.normalization import BatchNormalization
 from keras.layers.pooling import MaxPooling2D
+from keras.utils import np_utils      
+from keras.utils.vis_utils import plot_model  
 from keras import backend as K
 from keras.layers import Lambda
 import tensorflow as tf
