@@ -1,5 +1,6 @@
 -
 pix2pix/models/
+pix2pix/processed/
 largeImage/model*/
 FCRN/model/
 nohup.out
