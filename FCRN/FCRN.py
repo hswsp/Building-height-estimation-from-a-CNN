@@ -26,6 +26,7 @@ import h5py
 
 img_row = 1024
 img_cols = 1024
+size = 256
 batch_size = 4
 Val_batch_size = 4
 momentum = 0.9  
@@ -96,14 +97,14 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
-                # X = misc.imresize(X,0.5)# input is 512
+                # input is 256
+                X = np.array([cv2.resize(X[i], (size, size), interpolation=cv2.INTER_AREA) for i in range(len(X))]) 
                 Y = np.array(Y) 
                 Y = Y[:,:,:,0] # only take one channel!
                 # print Y.shape
                 for i in range(1):
                     # Y = misc.imresize(Y,0.5)#output is 256
-                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))])
+                    Y = np.array([cv2.resize(Y[i], (size, size), interpolation=cv2.INTER_AREA) for i in range(len(Y))])
                 Y = np.expand_dims(Y,axis=-1) # output is (?,?,?,?)
                 # print Y.shape
                 # if normalization
@@ -229,7 +230,7 @@ def FCRN(model_name):
     #默认参数：include_top=True, weights='imagenet',input_tensor=None, input_shape=None,
     #pooling=None, classes=1000
     # inputs=Input(shape=)
-    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/2),int(img_cols/2),3),
+    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/4),int(img_cols/4),3),
                                                       weights=None,pooling=None)
     #pop the last avepooling                                                  
     base_model.layers.pop()
