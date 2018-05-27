@@ -24,8 +24,8 @@ def format_image(img_path, size, nb_channels):
     w = img.shape[1]
 
     # Slice image in 2 to get both parts
-    img_full = img[:, :w // 2, :]
-    img_sketch = img[:, w // 2:, :]
+    img_sketch = img[:, :w // 2, :]
+    img_full = img[:, w // 2:, :]
 
     img_full = cv2.resize(img_full, (size, size), interpolation=cv2.INTER_AREA)
     img_sketch = cv2.resize(img_sketch, (size, size), interpolation=cv2.INTER_AREA)
