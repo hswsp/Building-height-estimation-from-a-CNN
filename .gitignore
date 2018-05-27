@@ -9,8 +9,11 @@ largeImage/model*/
 largeImage/log*/
 FCRN/model/
 FCRN/log/
-
-Multi_scale/nohup.out
+FCRN/myfile.out
 FCRN/nohup.out
+Multi_scale/nohup.out
 nohup.out
 .ipynb_checkpoints
+pix2pix/models/
+pix2pix/logs/
+pix2pix/processed/
