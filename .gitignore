@@ -1,10 +1,3 @@
--
-pix2pix/models/
-<<<<<<< HEAD
-pix2pix/logs/
-=======
-pix2pix/processed/
->>>>>>> 3e648ef88807c0e1e07e9050c417c2fa2ccfc68b
 largeImage/model*/
 largeImage/log*/
 FCRN/model/
