@@ -26,22 +26,23 @@ import h5py
 
 img_row = 1024
 img_cols = 1024
+size = 256
 batch_size = 4
 momentum = 0.9  
 base_lr = 0.001
 Lambda=0.5
-nb_epoch = 100
+nb_epoch = 150
 epochs_drop = 30
 gamma =  0.96
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
-dset = '/home/Dataset/P_V_1024'
-Valdir = '/home/Dataset/P_V_Val'
+dset = '/home/Dataset/Potsdam_1024'
+Valdir = '/home/Dataset/Potsdam_1024_Val'
 
-FCRN_dir = './model/05-24/'#need to be end with .h5！
-log_path = './log/05-24/'
-model_dir = './model/05-23_new/0525.h5'
+FCRN_dir = './model/05-27_finetune/'#need to be end with .h5！
+log_path = './log/05-27_finetune/'
+model_dir = './model/05-27_finetune/FCRN_predict.h5'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
@@ -51,8 +52,8 @@ if not isExists:
     os.makedirs(log_path) 
 
 def scale_invarient_error(y_true,y_pred):
-    log_1=K.log(K.clip(y_pred,K.epsilon(),np.inf)+1.)
-    log_2=K.log(K.clip(y_true,K.epsilon(),np.inf)+1.)
+    log_1=K.clip(y_pred,K.epsilon(),np.inf)+1. #K.log()
+    log_2=K.clip(y_true,K.epsilon(),np.inf)+1. #K.log()
     return K.mean(K.square(log_1-log_2),axis=-1)-Lambda*K.square(K.mean(log_1-log_2,axis=-1))
 
 def gen_batch(X1, X2, batch_size):
@@ -90,14 +91,10 @@ def generate_arrays_from_file(input_paths,batch_size):
             cnt += 1  
             if cnt==batch_size:  
                 cnt = 0
-                X = np.array([cv2.pyrDown(X[i]) for i in range(len(X))])
-                # X = misc.imresize(X,0.5)# input is 512
+                X = np.array([cv2.resize(X[i], (size, size), interpolation=cv2.INTER_AREA) for i in range(len(X))]) 
                 Y = np.array(Y) 
                 Y = Y[:,:,:,0] # only take one channel!
-                # print Y.shape
-                for i in range(2):
-                    # Y = misc.imresize(Y,0.5)#output is 256
-                    Y = np.array([cv2.pyrDown(Y[i]) for i in range(len(Y))])
+                Y = np.array([cv2.resize(Y[i], (size, size), interpolation=cv2.INTER_AREA) for i in range(len(Y))])
                 Y = np.expand_dims(Y,axis=-1) # output is (?,?,?,?)
                 # print Y.shape
                 X = rescale(X)
@@ -123,37 +120,37 @@ def load_data(input_dir):
     # DSM_paths = sorted(DSM_paths)
     return input_paths,len(input_paths)
 
-# net definition
-def Up_Projection(x,f,num):
+# # net definition
+# def Up_Projection(x,f,num):
 
-    x = UpSampling2D(size=(2, 2))(x)
-    x1 = Conv2D(f, (5, 5), name='con5_main_'+str(num), padding="same")(x)
-    x1 = Activation("relu")(x1)
-    x1 = Conv2D(f, (3, 3), name='con3_main_'+str(num), padding="same")(x1)
-    x2 = Conv2D(f, (5, 5), name='con5_proj_'+str(num), padding="same")(x)
-    # must channel last
-    x = Concatenate(axis=-1)([x1, x2])
-    x = Activation("relu")(x)
-    return x
+#     x = UpSampling2D(size=(2, 2))(x)
+#     x1 = Conv2D(f, (5, 5), name='con5_main_'+str(num), padding="same")(x)
+#     x1 = Activation("relu")(x1)
+#     x1 = Conv2D(f, (3, 3), name='con3_main_'+str(num), padding="same")(x1)
+#     x2 = Conv2D(f, (5, 5), name='con5_proj_'+str(num), padding="same")(x)
+#     # must channel last
+#     x = Concatenate(axis=-1)([x1, x2])
+#     x = Activation("relu")(x)
+#     return x
 
-def Finetune_FCRN(model_name):
-    base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/2),int(img_cols/2),3),
-                                                      weights=None,pooling=None)
-    #pop the last avepooling                                                  
-    base_model.layers.pop()
-    last = base_model.layers[-1].output
-    x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(last)
-    x = BatchNormalization(axis=-1)(x)
-    #1024->64
-    nb_conv = [9,8,7,6]
-    num = 0
-    for i in nb_conv:
-        num = num + 1  #for name
-        x = Up_Projection(x,2**i,num)
-    x = Conv2D(1, (3, 3), name='con2D_last', padding="same")(x)
+# def Finetune_FCRN(model_name):
+#     base_model = keras.applications.resnet50.ResNet50(include_top=False,input_shape=(int(img_row/2),int(img_cols/2),3),
+#                                                       weights=None,pooling=None)
+#     #pop the last avepooling                                                  
+#     base_model.layers.pop()
+#     last = base_model.layers[-1].output
+#     x = Conv2D(1024, (1, 1), name='con2D_1', padding="same")(last)
+#     x = BatchNormalization(axis=-1)(x)
+#     #1024->64
+#     nb_conv = [9,8,7,6]
+#     num = 0
+#     for i in nb_conv:
+#         num = num + 1  #for name
+#         x = Up_Projection(x,2**i,num)
+#     x = Conv2D(1, (3, 3), name='con2D_last', padding="same")(x)
 
-    FCRN =  Model(inputs=base_model.input,outputs=x,name = model_name)
-    return FCRN
+#     FCRN =  Model(inputs=base_model.input,outputs=x,name = model_name)
+#     return FCRN
 
 def berHu(y_true,y_pred,c):
     x = abs(y_true-y_pred)
@@ -185,7 +182,7 @@ def train():
     Fine_tune_model.summary()
     Fine_tune_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
-    Fine_tune_model.save(FCRN_dir+'0525.h5')
+    Fine_tune_model.save(FCRN_dir+'FCRN_predict.h5')
     return
 
 train()
