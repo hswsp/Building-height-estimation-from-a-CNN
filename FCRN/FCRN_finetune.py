@@ -29,11 +29,11 @@ img_cols = 1024
 size = 256
 batch_size = 4
 momentum = 0.9  
-base_lr = 0.001
+base_lr = 0.0003
 Lambda=0.5
-nb_epoch = 150
-epochs_drop = 30
-gamma =  0.96
+nb_epoch = 100
+epochs_drop = 10
+gamma =  0.5
 
 root = '/home/smiletranquilly/HeightEstimation/FCRN'
 os.chdir(root)
