@@ -42,7 +42,7 @@ Valdir = '/home/Dataset/Potsdam_1024_Val'
 
 FCRN_dir = './model/05-27_finetune/'#need to be end with .h5！
 log_path = './log/05-27_finetune/'
-model_dir = './model/05-27_finetune/FCRN_predict.h5'
+model_dir = './model/05-27/FCRN_predict.h5'
 
 isExists=os.path.exists(FCRN_dir)    
 if not isExists:
