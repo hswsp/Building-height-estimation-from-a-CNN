@@ -174,7 +174,7 @@ def train():
     Fine_tune_model=load_model(model_dir,custom_objects={'scale_invarient_error':scale_invarient_error})
     tensorboard = TensorBoard(log_dir=log_path)
     lrate = LearningRateScheduler(step_decay)
-    Fine_tune_model.compile(loss=scale_invarient_error,optimizer=opt_dcgan,metrics=['accuracy'])
+    Fine_tune_model.compile(loss=scale_invarient_error,optimizer=opt_dcgan) #,metrics=['accuracy']
     # progbar = generic_utils.Progbar(train_num)
     print("Start training")
     # progbar.add(batch_size, values=[("logloss", scale_invarient_error)])
