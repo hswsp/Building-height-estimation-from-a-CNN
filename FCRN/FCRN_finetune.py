@@ -118,7 +118,11 @@ def load_data(input_dir):
     #     DSM_paths = glob.glob(os.path.join(DSM_dir, "*.png"))
     # input_paths = sorted(input_paths)
     # DSM_paths = sorted(DSM_paths)
-    return input_paths,len(input_paths)
+    random.shuffle(input_paths)
+    num = len(input_paths)
+    input_paths = input_paths[:0.8*num]
+    val_paths = input_paths[0.8*num:]
+    return input_paths,val_paths
 
 # # net definition
 # def Up_Projection(x,f,num):
@@ -165,12 +169,12 @@ def step_decay(epoch):
 def train():
     # Create optimizers
     # opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+    
+    # inputs_path,train_num = load_data(dset)
+    # val_path,val_num = load_data(dset)
+    # batches = generate_arrays_from_file(inputs_path,batch_size=batch_size)
+    # val_batches = generate_arrays_from_file(inputs_path,batch_size=batch_size)
     opt_dcgan = SGD(base_lr,momentum)
-    inputs_path,train_num = load_data(dset)
-    val_path,val_num = load_data(dset)
-    batches = generate_arrays_from_file(inputs_path,batch_size=batch_size)
-    val_batches = generate_arrays_from_file(inputs_path,batch_size=batch_size)
-
     Fine_tune_model=load_model(model_dir,custom_objects={'scale_invarient_error':scale_invarient_error})
     tensorboard = TensorBoard(log_dir=log_path)
     lrate = LearningRateScheduler(step_decay)
@@ -180,8 +184,14 @@ def train():
     # progbar.add(batch_size, values=[("logloss", scale_invarient_error)])
     #print net info
     Fine_tune_model.summary()
+    for e in range(nb_epoch):
+
+         inputs_path,val_path = load_data(dset)
+    
+
     Fine_tune_model.fit_generator(batches,samples_per_epoch=math.ceil(train_num/batch_size) ,nb_epoch=nb_epoch,
     callbacks=[lrate,tensorboard],validation_data=val_batches,validation_steps=math.ceil(val_num/batch_size))
+
     Fine_tune_model.save(FCRN_dir+'FCRN_predict.h5')
     return
 
