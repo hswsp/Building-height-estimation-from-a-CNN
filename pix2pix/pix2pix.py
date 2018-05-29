@@ -651,8 +651,8 @@ def main():
 
     examples = load_examples()
     print("examples count = %d" % examples.count)
-    print examples.inputs.shape+'\n'
-    print examples.targets.shape+'\n'
+    print(examples.inputs.shape+'\n')
+    print(examples.targets.shape+'\n') 
     
 
     # inputs and targets are [batch_size, height, width, channels]
