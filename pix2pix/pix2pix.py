@@ -7,7 +7,7 @@ import tensorflow as tf
 import numpy as np
 import argparse
 import os
-# import cv2
+import cv2
 import json
 import glob
 import random
@@ -306,9 +306,11 @@ def load_examples():
     def transform(image,depth):
         r = image
         d = depth
-        # for j in range(2):
-        #     r=np.array(cv2.pyrDown(r)) # 1500->375
-        #     d=np.array(cv2.pyrDown(d))
+        
+        for j in range(2):
+            r=np.array(cv2.pyrDown(r)) # 1500->375
+            d=np.array(cv2.pyrDown(d))
+
         # area produces a nice downscaling, but does nearest neighbor for upscaling
         # assume we're going to be doing downscaling here
         r = tf.image.resize_images(r, [a.scale_size, a.scale_size], method=tf.image.ResizeMethod.AREA)
